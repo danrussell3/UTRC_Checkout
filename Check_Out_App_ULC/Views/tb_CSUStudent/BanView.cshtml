@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.BanUserView>
+@{
+    ViewBag.Title = "BanView";
+}
+
+<h2>Banned Users!</h2>
+
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:30px"><mark><strong><span>@ViewBag.Message</span></strong></mark></p>
+}
+
+@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+{
+    @Html.Partial("BanUser", new tb_BannedUserTable(), new ViewDataDictionary())
+}
+
+<div style="border:12px; border-style:solid; border-color:#00245a; padding: 1em;">
+    @if (Model != null)
+    {
+        <center><h2><u>Users banned from checkout</u></h2></center>
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    @*<th data-sortable="true">
+                        @Html.Display("Name") </th>*@
+                    <th data-field="CsuId" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CsuId)
+                    </th>
+                    <th data-field="name" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th data-field="Ename" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.EName)
+                    </th>
+                    <th data-field="banReason" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.BanReason)
+                    </th>
+
+                    <th data-field="bannedBy" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.BannedBy)
+                    </th>
+                    <th data-field="dateBanned" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.DateBanned)
+                    </th>
+                    <th data-field="isBanned" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.IsBanned)
+                    </th>
+                    <th data-field="isPermBanned">
+                        @Html.DisplayNameFor(model => model.IsPermBanned)
+                    </th>               
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CsuId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BanReason)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BannedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateBanned)
+                        </td>
+                    
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsBanned)
+                        </td>
+                        <td>
+                            @if(item.IsPermBanned != true)
+                            {
+                                
+                                <input type="button" class="btn btn-default" value="Unban User" onclick="location.href='@Url.Action("UnbanUser", "tb_CSUStudent", new { item.CsuId })'" />
+                            }
+                            else
+                            {
+                                <h5><strong>[Permanently Banned]</strong></h5>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+</div>

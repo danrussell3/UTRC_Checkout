@@ -1,0 +1,29 @@
+﻿@model Check_Out_App_ULC.Models.tb_CSUCheckoutCheckin
+    
+@{
+    ViewBag.Title = "_Create";    
+}
+<div>
+    @using(Html.BeginForm("Create", "tb_CSUCheckout", FormMethod.Post))
+{
+
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
+    <center>
+        <p style="font-size:22px"><strong><u>Check Out an Item</u></strong></p>
+    </center>
+    <hr />
+
+    @Html.TextBox("csuID", "", new { maxlength = 10, placeholder = "CSU ID" })
+    <br />
+    @Html.TextBox("upc", "", new { placeholder = "Item #1", maxlength = "8" })
+
+    @Html.TextBox("upc1", "", new { placeholder = "Item #2", maxlength = "8" })
+
+    @Html.TextBox("upc2", "", new { placeholder = "Item #3", maxlength = "8" })
+    <br />
+
+    <input type="submit" value="Submit" />
+
+</div>
+}
+</div>

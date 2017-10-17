@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSUCheckoutCheckin>
+
+@{
+    ViewBag.Title = "feeWaived";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<center><h2>Fees Waived</h2></center>
+<p>
+    @Html.ActionLink("View late checkins", "isLate")</p>
+<p>
+    @Html.ActionLink("View applied fines", "fineApplied")</p>
+<div style="border:12px; border-style:solid; border-color:#cce6ff; padding: 1em;">
+    @if (Model != null)
+    {
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-show-export="true"
+               data-pagination="true"
+               data-filter-control="true"
+               data-click-to-select="true"
+               data-filter-show-clear="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th data-field="CSU_IDFK" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CSU_IDFK)
+                    </th>
+                    <th data-field="ItemUPCFK" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.ItemUPCFK)
+                    </th>
+                    <th data-field="CheckoutLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckoutLabTech)
+                    </th>
+                    <th data-field="CheckoutDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckoutDate)
+                    </th>
+                    <th data-field="CheckinLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckinLabTech)
+                    </th>
+                    <th data-field="CheckinDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckinDate)
+                    </th>
+
+                    <th data-field="isLate" data-sortable="true" data-filter-control="select">
+                        @Html.DisplayNameFor(model => model.isLate)
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CSU_IDFK)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemUPCFK)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckoutLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckoutDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckinLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckinDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.isLate)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Change Fine Status", "Edit", new { id = item.CheckoutCheckinId }) |
+                            @* @Html.ActionLink("Details", "Details", new { id=item.CheckoutCheckinId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.CheckoutCheckinId })*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    </div>
+    @Html.ActionLink("Back to Fines", "isLate")

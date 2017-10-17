@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StudentsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'students.dbo.v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout">
+          <Key>
+            <PropertyRef Name="ENAME" />
+          </Key>
+          <Property Name="CSU_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="ENAME" Type="nvarchar" MaxLength="35" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="LAST_NAME" Type="nvarchar" MaxLength="35" />
+          <Property Name="EMAIL_ADDRESS" Type="nvarchar" MaxLength="70" />
+          <Property Name="PHONE" Type="nvarchar" MaxLength="15" />
+        </EntityType>
+        <EntityContainer Name="StudentsModelStoreContainer">
+          <EntitySet Name="v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout" EntityType="Self.v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout].[CSU_ID] AS [CSU_ID], 
+    [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout].[ENAME] AS [ENAME], 
+    [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout].[FIRST_NAME] AS [FIRST_NAME], 
+    [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout].[LAST_NAME] AS [LAST_NAME], 
+    [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout].[EMAIL_ADDRESS] AS [EMAIL_ADDRESS], 
+    [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout].[PHONE] AS [PHONE]
+    FROM [dbo].[v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout] AS [v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StudentsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HeraStudents_Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout" EntityType="StudentsModel.v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout" />
+        </EntityContainer>
+        <EntityType Name="v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout">
+          <Key>
+            <PropertyRef Name="ENAME" />
+          </Key>
+          <Property Name="CSU_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="ENAME" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StudentsModelStoreContainer" CdmEntityContainer="HeraStudents_Entities">
+          <EntitySetMapping Name="v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout">
+            <EntityTypeMapping TypeName="StudentsModel.v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout">
+              <MappingFragment StoreEntitySet="v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout">
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="ENAME" ColumnName="ENAME" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

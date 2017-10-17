@@ -1,0 +1,60 @@
+﻿@model Check_Out_App_ULC.Models.tb_CSUStudent
+@{
+    ViewBag.Title = "Waiver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Waiver</h2>
+<p>"Please have this user sign a waiver before checkout"</p>
+
+@if (Model != null)
+{
+<table class="table">
+    <tr>
+      
+        <th>
+            @Html.DisplayNameFor(Model => Model.CSU_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.FIRST_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.LAST_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.ENAME)
+        </th>
+    </tr>
+
+   
+    
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.CSU_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.FIRST_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.LAST_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ENAME)
+            </td>
+            <td>
+                @Html.ActionLink("Waiver Signed", "WaiverSign", new { id = Model.CSU_ID }) |
+
+            </td>
+        </tr>
+    
+
+</table>
+}
+<p>If the user refuses to sign </p>
+@Html.ActionLink("Back to Home", "Index", "Home")
+@if (ViewBag.Message != null)
+{
+    <span>@ViewBag.Message</span>
+}
+
+

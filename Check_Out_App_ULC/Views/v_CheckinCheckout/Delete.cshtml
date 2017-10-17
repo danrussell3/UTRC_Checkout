@@ -1,0 +1,81 @@
+﻿@model Check_Out_App_ULC.Models.v_CheckinCheckout
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>v_CheckinCheckout</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinLabTech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinLabTech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinLocationFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutLabTech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutLabTech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutLocationFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isBanned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isBanned)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

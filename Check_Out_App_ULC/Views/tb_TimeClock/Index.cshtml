@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_TimeClock>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIDFK)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClockIn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClockOut)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoursWorked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edited)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserIDFK)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClockIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClockOut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoursWorked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Edited)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TimeClockID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TimeClockID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TimeClockID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@ViewBag.Title - URTC Checkout Program </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <!--  date picker -->
+    <!-- Include Required Prerequisites -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-table.css">
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <link rel="stylesheet" href="http://bootstrap-table.wenzhixin.net.cn/assets/css/docs.min.css">
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                @if (SessionVariables.CurrentUser != null)
+                {
+                    @Html.ActionLink(@SessionVariables.CurrentUser.First_Name.ToString() + " " + @SessionVariables.CurrentUser.Last_Name.ToString(), "Index", "Home" , null, new { @class = "navbar-brand" })
+                }
+                else
+                {
+                    <a href="@Url.Content("~")/shiblogin", class="navbar-brand"> Login </a>
+                }
+                
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.UserRights)
+                    {
+                        <li class="nav navbar-form">
+                            @if (SessionVariables.CurrentLocation.ToString() == "BSB")
+                            {
+                                <select id="ddl" name="ddl" onchange="ChangeLocation(this.value);" onmousedown="this.value='';">
+                                    <option value='BSB'>BSB</option>
+                                    <option value='LSC'>LSC</option>
+                                    <option value='TLT'>TLT</option>
+                                    <option value='notset'>All Locations</option>
+                                </select>
+                            }
+                            else if (SessionVariables.CurrentLocation.ToString() == "LSC")
+                            {
+                                <select id="ddl" name="ddl" onmousedown="this.value='';" onchange="ChangeLocation(this.value);">
+                                    <option value='LSC'>LSC</option>
+                                    <option value='BSB'>BSB</option>
+                                    <option value='TLT'>TLT</option>
+                                    <option value='notset'>All Locations</option>
+                                </select>
+                            }
+                            else if (SessionVariables.CurrentLocation.ToString() == "TLT")
+                            {
+                                <select id="ddl" name="ddl" onmousedown="this.value='';" onchange="ChangeLocation(this.value);">
+                                    <option value='TLT'>TLT</option>
+                                    <option value='BSB'>BSB</option>
+                                    <option value='LSC'>LSC</option>
+                                    <option value='notset'>All Locations</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select id="ddl" name="ddl" onmousedown="this.value='';" onchange="ChangeLocation(this.value);">
+                                    <option value='notset'>All Locations</option>
+                                    <option value='BSB'>BSB</option>
+                                    <option value='LSC'>LSC</option>
+                                    <option value='TLT'>TLT</option>
+                                </select>
+                            }
+                        </li>
+                        <li>@Html.ActionLink("CheckOut", "Index", "tb_CSUCheckout")</li>
+                        <li>@Html.ActionLink("ItemCheckIn", "Index", "tb_CSUCheckin")</li>
+                        <li>@Html.ActionLink("Search Students", "Index", "tb_CSUStudent")</li>
+                        <li>@Html.ActionLink("Check Fines", "LateView", "tb_CSUCheckoutCheckin")</li>
+                        
+
+                    }
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>
+    @model tb_CSULabLocations
+         @Html.BeginForm("changeLoc", "Home", FormMethod.Post)
+         {
+         @Html.DropDownList(Model.LocationNameAcronym)
+         }
+
+     <!--  sends location selection to HomeController so SessionVariables.CurrentLocation can be set -->
+
+      <li>*@<script>
+           ChangeLocation = function (value) {
+               $.ajax({
+                   url: "@Url.Action("changeLoc", "Home")",
+                   dataType: 'text',
+                   type: 'POST',
+                   data: { 'value': value },
+                   success: function (data) { window.location.reload(true);}
+               });
+           };
+
+
+       </script>
+     
+                    
+                    
+                    
+                    
+
+                        @*<li><input type="button" value="Logout (Closes Browser Session)" onclick="self.close()" /></li>*@
+                    </li>
+                </ul>
+
+
+            </div>
+
+    
+
+
+
+
+
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - UTRC- </p>
+        </footer>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).keydown(
+               function(event) {
+                   if (event.which == '113') {
+                       event.preventDefault();
+                       $.ajax({
+                           url: "@Url.Action("Index", "tb_CSUCheckout")"
+
+
+                       });
+               }
+                   if (event.which == "120") {
+                       event.preventDefault();
+                       $.ajax({
+                           url: "@Url.Action("Index", "tb_CSUCheckin")"
+                       });
+        }
+        });
+            $("#item").focus();
+            $("#csuID").focus();
+            $("#csuID").keypress(
+                function(event) {
+                    if (event.which == '13') {
+                        event.preventDefault();
+                        $("#upc").focus();
+                    }
+                });
+            $("#csuID").keyup(function (event) {
+                if ($("#csuID").val().length >= 10) {
+                    $("#upc").focus();
+            
+                    //$("#upc").val($("#upc").val().replace("%B601717", "").replace("u", "").replace("b", "").substring(0, 10));
+                }
+            
+            });
+
+            $("#upc").keyup(function (event) {
+                if ($("#upc").val().length >= 8) {
+                    $("#upc1").focus();
+                }
+            });
+
+            $("#upc1").keyup(function (event) {
+                if ($("#upc1").val().length >= 8) {
+                    $("#upc2").focus();
+                }
+            }); 
+           
+        });
+        </script>
+
+    <script src="bootstrap-table.js"></script>
+    <script src="bootstrap-table-en-US.js"></script>
+    <script src="~/Scripts/JquerySortTable/jquery-latest.js"></script>
+    <script src="~/Scripts/JquerySortTable/jquery.tablesorter.js"></script>
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-en-US.js"></script>
+
+    
+    @*Table formatter/search/paging/export CDN*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/filter/bootstrap-table-filter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/toolbar/bootstrap-table-toolbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/sticky-header/bootstrap-table-sticky-header.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/sticky-header/bootstrap-table-sticky-header.css" />
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+   
+    <script>
+    var $table = $('#table');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+                exportDataType: $(this).val()
+            });
+        });
+    });
+    </script>
+    <script>
+        $("input").on("keydown", function (e) {
+            return e.which !== 32;
+        });
+    </script>
+
+
+
+
+
+</body>
+</html>

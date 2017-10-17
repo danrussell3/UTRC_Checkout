@@ -1,0 +1,62 @@
+﻿
+
+@{
+    ViewBag.Title = "tb_CSUStudent";
+}
+
+<center><h2><u>Students</u></h2></center>
+
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:20px"> <span>@ViewBag.Message</span></p>
+}
+<div style="border:3px; border-style:solid; border-color:#4d4d00; padding: 2em;">
+    <center><u>Search for a Student by CSU ID, Ename, or Name.</u></center>
+    <br />
+    <br />
+    <!--Search-->
+    @using (Html.BeginForm("CsuIdLookUp", "tb_CSUStudent", FormMethod.Post))
+    {
+        @Html.Label("")
+        <label for="CSU ID">CSU ID #</label>
+        @Html.TextBox("csuId")
+        <Input type="submit" value="Submit" />
+    }
+ or
+    <br />
+    @using (Html.BeginForm("EnameLookUp", "tb_CSUStudent", FormMethod.Post))
+    {
+        @Html.Label("")
+        <label for="ENAME">Ename</label>
+        @Html.TextBox("ename")
+        <Input type="submit" value="Submit" />
+    }
+    or
+    <br />
+
+    @using (Html.BeginForm("StudentsLookup", "tb_CSUStudent", FormMethod.Post))
+
+    {
+
+        <label for="FIRST_NAME">First Name</label>
+            @Html.TextBox("Firstname")
+
+            <label for="LAST_NAME">Last Name</label>
+            @Html.TextBox("Lastname")
+
+            <Input type="submit" value="Submit" />
+    }
+</div>
+<br />
+    <div>
+        <p style="font-size:14px">Or you can Add a new student to the system by clicking the link here:</p>
+        <a href="@Url.Action("Create", "tb_CSUStudent")" class="btn btn-primary btn-large btn-block">
+            <span class="glyphicon
+                  glyphicon-thumbs-up"></span> Add a Student to the System
+        </a>
+    </div>
+    @if (ViewBag.Message != null)
+    {
+        <span>@ViewBag.Message</span>
+    }
+

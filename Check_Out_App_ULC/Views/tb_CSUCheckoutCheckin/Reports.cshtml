@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSUCheckoutCheckin>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align: center;" >
+    <h2>Generate Reports</h2>
+
+</div>
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:24px"> <span>@ViewBag.Message</span></p>
+}
+
+
+@using (Html.BeginForm("EndOfDayReport", "Report", FormMethod.Post))
+{
+    <div style="text-align: center; border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
+        <div  >
+            <p style="font-size:22px"><strong>Submit an End of Day Report
+            </strong></p>
+        </div>
+        <hr />
+        <div style="text-align: center;" >
+          
+            @Html.TextArea("notes", "", new { placeholder = "notes" })
+          
+            <br/>
+            <input type="submit" value="Submit" />
+            <br /><br /><br /><br /><br /><br /><br />
+        </div>
+        
+    </div>
+
+}
+
+
+
+

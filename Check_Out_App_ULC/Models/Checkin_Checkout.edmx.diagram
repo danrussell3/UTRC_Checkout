@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e0a6f1a40327448696baf83d6e7a2fe2" Name="Diagram1" ZoomLevel="80">
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_BannedUserTable" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSUCheckoutCheckin" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSULabInventoryItems" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSULabLocations" Width="1.5" PointX="0.75" PointY="3.625" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSULabTechs" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_ItemRepair" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_Reports" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" Width="1.5" PointX="3.375" PointY="8.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSUStudent" Width="1.5" PointX="7.375" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,99 @@
+﻿@model Check_Out_App_ULC.Models.tb_ItemRepair
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_ItemRepair</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignedTo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Issue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Issue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateIssued)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateIssued)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateRepaired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateRepaired)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnRepairable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnRepairable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RepairedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepairedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemUpcFk)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemUpcFk)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemIdFk)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemIdFk)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RepairId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

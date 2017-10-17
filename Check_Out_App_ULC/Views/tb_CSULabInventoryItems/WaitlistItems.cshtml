@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSULabInventoryItems>
+
+@{
+    ViewBag.Title = "Waitlist Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<center><h2><u>Waitlist Item Inventory</u></h2></center>
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:20px"><mark><span>@ViewBag.Message</span></mark></p>
+}
+
+
+<p style="font-size:16px"><u>@Html.ActionLink("Back to Waitlist", "LongtermWaitlist", "tb_LongtermWaitlist")</u></p>
+
+<div style="border:12px; border-style:solid; border-color:#cc6600; padding: 1em;">
+    <table     id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-pagination-switch="true"
+               data-page-list="[100, ALL]"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-show-export="true"
+               data-pagination="true"
+               data-filter-control="true"
+               data-click-to-select="true"
+               data-filter-show-clear="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+        <thead>
+            <tr>
+                <th data-field="ItemUPC" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemUPC)</th>
+                <th data-field="ItemDescription" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemDescription)</th>
+                <th data-field="ItemSerialNumber" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemSerialNumber)</th>
+                <th data-field="ItemLocationFK" data-sortable="true" data-filter-control="select">
+                    @Html.DisplayNameFor(model => model.ItemLocationFK)
+                </th>
+                <th data-field="CreatedBy" data-sortable="true" data-filter-control="input">
+                    @Html.DisplayNameFor(model => model.isCheckedOut)
+                </th>
+                <th data-field="CreatedOn" data-sortable="true" data-filter-control="input">
+                    @Html.DisplayNameFor(model => model.ReservedTo)
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (SessionVariables.CurrentLocation.ToString() == item.ItemLocationFK || SessionVariables.CurrentLocation.ToString() == "notset")
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemUPC)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemSerialNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemLocationFK)
+                    </td>
+                    <td>
+                        @if (item.isCheckedOut ?? false)
+                        {
+                            @:Yes
+                                }
+                        else
+                        {
+                            @:No
+                                }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservedTo)
+                    </td>
+                    
+                </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+    </div>

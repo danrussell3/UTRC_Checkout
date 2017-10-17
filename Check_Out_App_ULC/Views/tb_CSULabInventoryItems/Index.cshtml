@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSULabInventoryItems>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<center><h2><u>Inventory</u></h2></center>
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:20px"><mark><span>@ViewBag.Message</span></mark></p>
+}
+
+
+<p style="font-size:20px"><u>@Html.ActionLink("Create New", "Create")</u></p>
+<p>
+    @*@using (Html.BeginForm("searchUPC", "tb_CSULabInventoryItems"))
+{
+    @Html.Label("Item UPC")
+    @Html.TextBox("id")
+    <Input type="submit" value="Submit" />
+}*@
+</p>
+<div style="border:12px; border-style:solid; border-color:#cc6600; padding: 1em;">
+    <table     id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-pagination-switch="true"
+               data-page-list="[100, ALL]"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-show-export="true"
+               data-pagination="true"
+               data-filter-control="true"
+               data-click-to-select="true"
+               data-filter-show-clear="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+        <thead>
+            <tr>
+                <th data-field="ItemUPC" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemUPC)</th>
+                <th data-field="ItemDescription" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemDescription)</th>
+                <th data-field="ItemSerialNumber" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemSerialNumber)</th>
+                <th data-field="ItemLocationFK" data-sortable="true" data-filter-control="select">
+                    @Html.DisplayNameFor(model => model.ItemLocationFK)
+                </th>
+                <th data-field="CreatedBy" data-sortable="true" data-filter-control="input">
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </th>
+                <th data-field="CreatedOn" data-sortable="true" data-filter-control="input">
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (SessionVariables.CurrentLocation.ToString() == item.ItemLocationFK || SessionVariables.CurrentLocation.ToString() == "notset")
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemUPC)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemSerialNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemLocationFK)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ItemId }) |
+                        @*@Html.ActionLink("Details", "Details", new { id = item.ItemId })*@
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ItemId })
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+    </div>

@@ -1,0 +1,127 @@
+﻿@model Check_Out_App_ULC.Models.CheckoutDetails
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@if (ViewBag.Message != null)
+{
+    <h2> <mark><span>@ViewBag.Message</span></mark> </h2>
+}
+<div>
+    <center><h4>Check-In Details</h4></center>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("CSU ID")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CSU_IDFK)
+        </dd>
+        <dt>
+            @Html.DisplayName("ENAME")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ENAME)
+        </dd>
+        <dt>
+            @Html.DisplayName("First Name")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FIRST_NAME)
+        </dd>
+        <dt>
+            @Html.DisplayName("Last Name")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LAST_NAME)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemUPCFK)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemUPCFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutLabTech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutLabTech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinLabTech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinLabTech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.isLate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isLate)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.CheckoutLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutLocationFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinLocationFK)
+        </dd>*@
+
+    </dl>
+</div>
+
+<div style="border:3px; border-style:solid; border-color:#ff0000; padding: 2em;">
+    @using (Html.BeginForm("CheckIn", "tb_CSUCheckin", FormMethod.Post))
+
+    {
+        <p style="font-size:20px"<MARK>@Html.Label("Check-In Another Item")</MARK>
+
+        <div>
+            <label for="item"> Item Number </label>
+            @Html.TextBox("item", "")
+        </div>
+        <input type="submit" value="Submit" />
+    }
+</div>
+<br />
+<hr />
+<p>
+    @*@Html.ActionLink("Checkin", "Create", new { id = Model.CheckoutCheckinId } )*@
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+

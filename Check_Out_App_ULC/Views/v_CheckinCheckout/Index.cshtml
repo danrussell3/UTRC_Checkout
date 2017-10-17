@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.v_CheckinCheckout>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckinDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckinLabTech)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckinLocationFK)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckoutDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckoutLabTech)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckoutLocationFK)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isBanned)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckinDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckinLabTech)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckinLocationFK)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckoutDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckoutLabTech)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckoutLocationFK)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isBanned)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.CkVw>
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align: center;" ><h2>Check-Ins</h2></div>
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:20px"><mark><span>@ViewBag.Message</span></mark></p>
+}
+
+    <div class="form-horizontal" style="border:3px; border-style:solid; border-color:#b30000; padding: 2em;">
+    @using (Html.BeginForm("ItemCheckIn", "tb_CSUCheckin", FormMethod.Post))
+
+    {
+        <div style="text-align: center;" >
+            <p style="font-size:20px"><strong><u>Check In an Item</u></strong></p>
+
+            <div>
+                <label for="ItemUPCFK"> Item Number </label>
+                @Html.TextBox("item")
+
+                <input type="submit" value="Submit" onclick="document.forms.valueOf()" />
+            </div>
+        </div>
+
+    }
+</div>
+
+<br />
+<div style="border:12px; border-style:solid; border-color:#b30000; padding: 1em;">
+    @if (Model != null && Model.Any())
+    {
+        <div style="text-align: center;" ><h2>Items currently checked out</h2></div>
+
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-filter-control="true"
+               data-filter-show-clear="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+
+                    <th data-field="CsuId" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CsuId)
+                    </th>
+                    <th data-field="Name" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th data-field="ItemUpc" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.ItemUpc)
+                    </th>
+                    <th data-field="CkOutLoc" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutLoc)
+                    </th>
+                    <th data-field="CkOutLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutLabTech)
+                    </th>
+                    <th data-field="CkOutDt" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutDt)
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (SessionVariables.CurrentLocation.ToString() == item.CkOutLoc || SessionVariables.CurrentLocation.ToString() == "notset")
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CsuId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemUpc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutLoc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutDt)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Check-In", "IdCheckIn", new { id = item.CkOutId })
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    else
+    {<span>There are no Items to Check-In</span>}
+</div>

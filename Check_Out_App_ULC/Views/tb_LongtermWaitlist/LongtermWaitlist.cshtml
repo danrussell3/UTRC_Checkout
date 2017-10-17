@@ -1,0 +1,144 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.LongtermWaitlistView>
+@{
+    ViewBag.Title = "LongtermWaitlistView";
+}
+
+<h2>Longterm Waitlist!</h2>
+
+@{int rowNum = 1;}
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:30px"><mark><strong><span>@ViewBag.Message</span></strong></mark></p>
+}
+
+@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+{
+    @Html.Partial("LongtermWaitlistAdd", new tb_CSUStudent(), new ViewDataDictionary())
+}
+
+<div style="border:12px; border-style:solid; border-color:#00245a; padding: 1em;">
+    @if (Model != null)
+    {
+        <center><h2><u>Students on the Longterm Waitlist</u></h2></center>
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="Waitlisted"
+               data-sort-order="asc"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th data-field="CsuId" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CsuId)
+                    </th>
+                    <th data-field="Ename" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.EName)
+                    </th>
+                    <th data-field="Name" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th data-field="Waitlisted" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Waitlisted)
+                    </th>
+                    <th data-field="WaitlistReason" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.WaitlistReason)
+                    </th>
+                    <th data-field="WaitlistType" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.WaitlistType)
+                    </th>
+                    <th data-field="WaitlistReserved" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.WaitlistReserved)
+                    </th>
+                    <th data-field="WaitlistNotified" data-sortable="false" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.WaitlistNotified)
+                    </th>
+                    <th>
+                        Proceed to Checkout
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @rowNum.ToString()
+                            @{rowNum++;}
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CsuId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Waitlisted)
+                            <a> | </a>
+                            @Html.ActionLink("Remove", "RemoveFromLongtermWaitlist", new { csuId = item.CsuId })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WaitlistReason)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WaitlistType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WaitlistReserved)
+                        </td>
+                        <td>
+                            @if (item.WaitlistNotified != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.WaitlistNotified)
+                            }
+                            else if (item.WaitlistNotified==null)
+                            {
+                                @: Waiting
+                            }
+                            else
+                            {
+                                @: Ready to checkout
+                            }
+                        </td>
+                        <td>
+                            @if (item.WaitlistNotified!=null)
+                            {
+                                using (Html.BeginForm("LongtermWaitlistCheckout", "tb_LongtermWaitlist", FormMethod.Post))
+                                {
+                                    @Html.Hidden("csuId", item.CsuId)
+                                    
+                                    if(item.WaitlistReason=="HP")
+                                    {
+                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsHP, "Choose laptop UPC" )
+                                    }
+                                    else if(item.WaitlistReason=="Mac")
+                                    {
+                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsMac, "Choose laptop UPC" )
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsEither, "Choose laptop UPC" )
+                                    }
+
+                                    @Html.TextBox("upc1", "", new { placeholder = "Charger UPC" })
+                                    <input type="submit" value="Checkout" />
+                                }
+                            }
+</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+</div>

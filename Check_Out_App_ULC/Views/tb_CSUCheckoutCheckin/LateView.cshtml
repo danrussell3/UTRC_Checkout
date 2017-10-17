@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.CkVw>
+
+@{
+    ViewBag.Title = "LateView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">.margin-top-20 { }</style>
+
+<div style="text-align: center;" ><h2>Late Checkins</h2></div>
+@*<p>@Html.ActionLink("View waived fines", "feeWaived")</p>
+<p>@Html.ActionLink("View applied fines", "fineApplied")</p>*@
+
+<div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+    <a href="@Url.Action("FineView", "tb_CSUCheckoutCheckin")" class="btn btn-primary btn-md btn-block">
+        <span class="glyphicon glyphicon-warning-sign"></span> Check for fines
+    </a>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:24px"> <span>@ViewBag.Message</span></p>
+}
+<div class="form-horizontal" style="border:3px; border-style:solid; border-color:#800000; padding: 1em;">
+    @if (Model != null)
+    {
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-show-export="true"
+               data-pagination="true"
+               data-filter-control="true"
+               data-click-to-select="true"
+               data-filter-show-clear="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th data-field="CSU_IDFK" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CsuId)
+                    </th>
+                    <th data-field="EName" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Ename)
+                    </th>
+                    <th data-field="Name" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th data-field="ItemUPCFK" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.ItemUpc)
+                    </th>
+                    <th data-field="CheckoutLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutLabTech)
+                    </th>
+                    <th data-field="CheckoutDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutDt)
+                    </th>
+                    <th data-field="CheckinLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkInLabTech)
+                    </th>
+                    <th data-field="CheckinDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkInDt)
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (SessionVariables.CurrentLocation.ToString() == item.CkOutLoc || SessionVariables.CurrentLocation.ToString() == "notset")
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CsuId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ename)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemUpc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutDt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkInLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkInDt)
+                        </td>
+
+                      
+                        <td>
+                            @Html.ActionLink("Waive Fee", "FeeWaive", new { id = item.CkOutId }) |
+                            @Html.ActionLink("Apply Fine", "ApplyFine", new { id = item.CkOutId })
+                            @*@Html.ActionLink("Details", "Details", new { id=item.CheckoutCheckinId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id=item.CheckoutCheckinId })*@
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    </div>
+

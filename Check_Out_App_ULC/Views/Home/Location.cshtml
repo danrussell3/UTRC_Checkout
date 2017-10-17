@@ -1,0 +1,27 @@
+﻿@using System.Web.Mvc.Html;
+
+@{
+    ViewBag.Title = "Location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Welcome! Please select your location:</h2>
+
+<select id="ddl" name="ddl" onchange="ChangeLocation(this.value);" onmousedown="this.value='';">
+    <option value='BSB'>BSB</option>
+    <option value='LSC'>LSC</option>
+    <option value='TLT'>TLT</option>
+    <option value='notset'>All Locations</option>
+</select>
+
+<script>
+           ChangeLocation = function (value) {
+               $.ajax({
+                   url: "@Url.Action("changeLoc", "Home")",
+                   dataType: 'text',
+                   type: 'POST',
+                   data: { 'value': value },
+                   success: function (data) { window.location.reload(true);}
+               });
+           };
+</script>

@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Checkin_Checkout_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tb_BannedUserTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CSU_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="isBanned" Type="bit" />
+          <Property Name="DateBanned" Type="datetime" />
+          <Property Name="DateUnbanned" Type="datetime" />
+          <Property Name="BannedBy" Type="nvarchar" MaxLength="10" />
+          <Property Name="BanReason" Type="nvarchar" MaxLength="100" />
+          <Property Name="isPermBanned" Type="bit" />
+        </EntityType>
+        <EntityType Name="tb_CSUCheckoutCheckin">
+          <Key>
+            <PropertyRef Name="CheckoutCheckinId" />
+          </Key>
+          <Property Name="CheckoutCheckinId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CSU_IDFK" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="ItemIDFK" Type="int" Nullable="false" />
+          <Property Name="CheckoutLabTech" Type="nvarchar" MaxLength="50" />
+          <Property Name="CheckoutDate" Type="datetime" />
+          <Property Name="CheckinLabTech" Type="nvarchar" MaxLength="50" />
+          <Property Name="CheckinDate" Type="datetime" />
+          <Property Name="CheckoutLocationFK" Type="nvarchar" MaxLength="3" />
+          <Property Name="CheckinLocationFK" Type="nvarchar" MaxLength="3" />
+          <Property Name="ItemUPCFK" Type="nvarchar" MaxLength="25" />
+          <Property Name="isLate" Type="bit" />
+          <Property Name="isFined" Type="bit" />
+          <Property Name="isPaid" Type="bit" />
+          <Property Name="isLongterm" Type="bit" />
+          <Property Name="isHome" Type="bit" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="isWaitlistHP" Type="bit" />
+          <Property Name="isWaitlistMac" Type="bit" />
+        </EntityType>
+        <EntityType Name="tb_CSULabInventoryItems">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemUPC" Type="nvarchar" MaxLength="25" />
+          <Property Name="ItemDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemSerialNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemLocationFK" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="isCheckedOut" Type="bit" />
+          <Property Name="isInRepair" Type="bit" />
+          <Property Name="RepairIds" Type="int" />
+          <Property Name="isWaitlistItem" Type="bit" />
+          <Property Name="ReservedTo" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tb_CSULabLocations">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="LocationNameAcronym" Type="nvarchar" MaxLength="3" />
+          <Property Name="LocactionName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tb_CSULabTechs">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationId" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="First_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Last_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="CSU_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="75" />
+          <Property Name="PHONE" Type="nvarchar" MaxLength="10" />
+          <Property Name="ENAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserRights" Type="bit" Nullable="false" />
+          <Property Name="DisabledDateTime" Type="datetime" />
+          <Property Name="ManagerRights" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="EnabledDateTime" Type="datetime" />
+          <Property Name="EnabledBy" Type="nchar" MaxLength="8" />
+          <Property Name="DisabledBy" Type="nchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="tb_CSUStudent">
+          <Key>
+            <PropertyRef Name="CSUStudentID" />
+          </Key>
+          <Property Name="CSUStudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CSU_ID" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="ENAME" Type="nvarchar" MaxLength="35" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="LAST_NAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="EMAIL_ADDRESS" Type="nvarchar" MaxLength="70" />
+          <Property Name="PHONE" Type="nvarchar" MaxLength="15" />
+          <Property Name="SIGNEDWAIVER" Type="bit" />
+        </EntityType>
+        <EntityType Name="tb_ItemRepair">
+          <Key>
+            <PropertyRef Name="RepairId" />
+          </Key>
+          <Property Name="RepairId" Type="int" Nullable="false" />
+          <Property Name="AssignedTo" Type="nchar" MaxLength="8" />
+          <Property Name="Issue" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="DateIssued" Type="datetime" />
+          <Property Name="DateRepaired" Type="datetime" />
+          <Property Name="RequestedBy" Type="nchar" MaxLength="8" />
+          <Property Name="UnRepairable" Type="bit" />
+          <Property Name="RepairedBy" Type="nchar" MaxLength="8" />
+          <Property Name="ItemUpcFk" Type="nchar" MaxLength="25" />
+          <Property Name="ItemIdFk" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_LongtermWaitlist">
+          <Key>
+            <PropertyRef Name="CSU_ID" />
+          </Key>
+          <Property Name="CSU_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="LAST_NAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="ENAME" Type="nvarchar" MaxLength="35" />
+          <Property Name="WAITLISTED" Type="datetime" />
+          <Property Name="WAITLIST_REASON" Type="nvarchar" MaxLength="255" />
+          <Property Name="WAITLIST_TYPE" Type="nvarchar" MaxLength="7" />
+          <Property Name="WAITLIST_NOTIFIED" Type="datetime" />
+          <Property Name="WAITLIST_RESERVED" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="tb_Reports">
+          <Key>
+            <PropertyRef Name="TimeSubmitted" />
+          </Key>
+          <Property Name="CSU_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="TimeSubmitted" Type="datetime" Nullable="false" />
+          <Property Name="Report" Type="text" />
+        </EntityType>
+        <Function Name="DropIndexesScript" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="utils">
+          <Parameter Name="IncludeDrop" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GenerateIndexesScript" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="utils">
+          <Parameter Name="IncludeFileGroup" Type="bit" Mode="In" />
+          <Parameter Name="IncludeDrop" Type="bit" Mode="In" />
+          <Parameter Name="IncludeFillFactor" Type="bit" Mode="In" />
+        </Function>
+        <EntityContainer Name="Checkin_Checkout_ModelStoreContainer">
+          <EntitySet Name="tb_BannedUserTable" EntityType="Self.tb_BannedUserTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_CSUCheckoutCheckin" EntityType="Self.tb_CSUCheckoutCheckin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_CSULabInventoryItems" EntityType="Self.tb_CSULabInventoryItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_CSULabLocations" EntityType="Self.tb_CSULabLocations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_CSULabTechs" EntityType="Self.tb_CSULabTechs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_CSUStudent" EntityType="Self.tb_CSUStudent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ItemRepair" EntityType="Self.tb_ItemRepair" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_LongtermWaitlist" EntityType="Self.tb_LongtermWaitlist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Reports" EntityType="Self.tb_Reports" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Checkin_Checkout_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Checkin_Checkout_Entities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="DropIndexesScript">
+          <Parameter Name="IncludeDrop" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GenerateIndexesScript">
+            <Parameter Name="IncludeFileGroup" Mode="In" Type="Boolean" />
+            <Parameter Name="IncludeDrop" Mode="In" Type="Boolean" />
+            <Parameter Name="IncludeFillFactor" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <EntitySet Name="tb_BannedUserTable" EntityType="Checkin_Checkout_Model.tb_BannedUserTable" />
+          <EntitySet Name="tb_CSUCheckoutCheckin" EntityType="Checkin_Checkout_Model.tb_CSUCheckoutCheckin" />
+          <EntitySet Name="tb_CSULabInventoryItems" EntityType="Checkin_Checkout_Model.tb_CSULabInventoryItems" />
+          <EntitySet Name="tb_CSULabLocations" EntityType="Checkin_Checkout_Model.tb_CSULabLocations" />
+          <EntitySet Name="tb_CSULabTechs" EntityType="Checkin_Checkout_Model.tb_CSULabTechs" />
+          <EntitySet Name="tb_ItemRepair" EntityType="Checkin_Checkout_Model.tb_ItemRepair" />
+          <EntitySet Name="tb_Reports" EntityType="Checkin_Checkout_Model.tb_Reports" />
+          <EntitySet Name="tb_LongtermWaitlist" EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" />
+          <EntitySet Name="tb_CSUStudent" EntityType="Checkin_Checkout_Model.tb_CSUStudent" />
+          </EntityContainer>
+        <EntityType Name="tb_BannedUserTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CSU_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="isBanned" Type="Boolean" />
+          <Property Name="DateBanned" Type="DateTime" Precision="3" />
+          <Property Name="DateUnbanned" Type="DateTime" Precision="3" />
+          <Property Name="BannedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BanReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="isPermBanned" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tb_CSUCheckoutCheckin">
+          <Key>
+            <PropertyRef Name="CheckoutCheckinId" />
+          </Key>
+          <Property Name="CheckoutCheckinId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CSU_IDFK" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="ItemIDFK" Type="Int32" Nullable="false" />
+          <Property Name="CheckoutLabTech" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CheckoutDate" Type="DateTime" Precision="3" />
+          <Property Name="CheckinLabTech" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CheckinDate" Type="DateTime" Precision="3" />
+          <Property Name="CheckoutLocationFK" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CheckinLocationFK" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ItemUPCFK" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="isLate" Type="Boolean" />
+          <Property Name="isFined" Type="Boolean" />
+          <Property Name="isPaid" Type="Boolean" />
+          <Property Name="isLongterm" Type="Boolean" />
+          <Property Name="isHome" Type="Boolean" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="isWaitlistHP" Type="Boolean" />
+          <Property Name="isWaitlistMac" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tb_CSULabInventoryItems">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemUPC" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="ItemDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemSerialNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemLocationFK" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="isCheckedOut" Type="Boolean" />
+          <Property Name="isInRepair" Type="Boolean" />
+          <Property Name="RepairIds" Type="Int32" />
+          <Property Name="isWaitlistItem" Type="Boolean" />
+          <Property Name="ReservedTo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_CSULabLocations">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="LocationNameAcronym" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="LocactionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_CSULabTechs">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationId" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CSU_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserRights" Type="Boolean" Nullable="false" />
+          <Property Name="DisabledDateTime" Type="DateTime" Precision="3" />
+          <Property Name="ManagerRights" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="EnabledDateTime" Type="DateTime" Precision="3" />
+          <Property Name="EnabledBy" Type="String" MaxLength="8" FixedLength="true" Unicode="true" />
+          <Property Name="DisabledBy" Type="String" MaxLength="8" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_ItemRepair">
+          <Key>
+            <PropertyRef Name="RepairId" />
+          </Key>
+          <Property Name="RepairId" Type="Int32" Nullable="false" />
+          <Property Name="AssignedTo" Type="String" MaxLength="8" FixedLength="true" Unicode="true" />
+          <Property Name="Issue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateIssued" Type="DateTime" Precision="3" />
+          <Property Name="DateRepaired" Type="DateTime" Precision="3" />
+          <Property Name="RequestedBy" Type="String" MaxLength="8" FixedLength="true" Unicode="true" />
+          <Property Name="UnRepairable" Type="Boolean" />
+          <Property Name="RepairedBy" Type="String" MaxLength="8" FixedLength="true" Unicode="true" />
+          <Property Name="ItemUpcFk" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="ItemIdFk" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tb_Reports">
+          <Key>
+            <PropertyRef Name="TimeSubmitted" />
+          </Key>
+          <Property Name="CSU_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TimeSubmitted" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Report" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tb_LongtermWaitlist">
+          <Key>
+            <PropertyRef Name="CSU_ID" />
+          </Key>
+          <Property Name="CSU_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="WAITLISTED" Type="DateTime" Precision="3" />
+          <Property Name="WAITLIST_REASON" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WAITLIST_TYPE" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="WAITLIST_NOTIFIED" Type="DateTime" Precision="3" />
+          <Property Name="WAITLIST_RESERVED" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="ENAME" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_CSUStudent">
+          <Key>
+            <PropertyRef Name="CSUStudentID" />
+          </Key>
+          <Property Name="CSUStudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CSU_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="ENAME" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SIGNEDWAIVER" Type="Boolean" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Checkin_Checkout_ModelStoreContainer" CdmEntityContainer="Checkin_Checkout_Entities">
+          <FunctionImportMapping FunctionImportName="DropIndexesScript" FunctionName="Checkin_Checkout_Model.Store.DropIndexesScript" />
+          <FunctionImportMapping FunctionImportName="GenerateIndexesScript" FunctionName="Checkin_Checkout_Model.Store.GenerateIndexesScript" />
+          <EntitySetMapping Name="tb_BannedUserTable">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_BannedUserTable">
+              <MappingFragment StoreEntitySet="tb_BannedUserTable">
+                <ScalarProperty Name="isPermBanned" ColumnName="isPermBanned" />
+                <ScalarProperty Name="BanReason" ColumnName="BanReason" />
+                <ScalarProperty Name="BannedBy" ColumnName="BannedBy" />
+                <ScalarProperty Name="DateUnbanned" ColumnName="DateUnbanned" />
+                <ScalarProperty Name="DateBanned" ColumnName="DateBanned" />
+                <ScalarProperty Name="isBanned" ColumnName="isBanned" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_CSUCheckoutCheckin">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSUCheckoutCheckin">
+              <MappingFragment StoreEntitySet="tb_CSUCheckoutCheckin">
+                <ScalarProperty Name="isWaitlistMac" ColumnName="isWaitlistMac" />
+                <ScalarProperty Name="isWaitlistHP" ColumnName="isWaitlistHP" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="isHome" ColumnName="isHome" />
+                <ScalarProperty Name="isLongterm" ColumnName="isLongterm" />
+                <ScalarProperty Name="isPaid" ColumnName="isPaid" />
+                <ScalarProperty Name="isFined" ColumnName="isFined" />
+                <ScalarProperty Name="isLate" ColumnName="isLate" />
+                <ScalarProperty Name="ItemUPCFK" ColumnName="ItemUPCFK" />
+                <ScalarProperty Name="CheckinLocationFK" ColumnName="CheckinLocationFK" />
+                <ScalarProperty Name="CheckoutLocationFK" ColumnName="CheckoutLocationFK" />
+                <ScalarProperty Name="CheckinDate" ColumnName="CheckinDate" />
+                <ScalarProperty Name="CheckinLabTech" ColumnName="CheckinLabTech" />
+                <ScalarProperty Name="CheckoutDate" ColumnName="CheckoutDate" />
+                <ScalarProperty Name="CheckoutLabTech" ColumnName="CheckoutLabTech" />
+                <ScalarProperty Name="ItemIDFK" ColumnName="ItemIDFK" />
+                <ScalarProperty Name="CSU_IDFK" ColumnName="CSU_IDFK" />
+                <ScalarProperty Name="CheckoutCheckinId" ColumnName="CheckoutCheckinId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_CSULabInventoryItems">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSULabInventoryItems">
+              <MappingFragment StoreEntitySet="tb_CSULabInventoryItems">
+                <ScalarProperty Name="ReservedTo" ColumnName="ReservedTo" />
+                <ScalarProperty Name="isWaitlistItem" ColumnName="isWaitlistItem" />
+                <ScalarProperty Name="RepairIds" ColumnName="RepairIds" />
+                <ScalarProperty Name="isInRepair" ColumnName="isInRepair" />
+                <ScalarProperty Name="isCheckedOut" ColumnName="isCheckedOut" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ItemLocationFK" ColumnName="ItemLocationFK" />
+                <ScalarProperty Name="ItemSerialNumber" ColumnName="ItemSerialNumber" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+                <ScalarProperty Name="ItemUPC" ColumnName="ItemUPC" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_CSULabLocations">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSULabLocations">
+              <MappingFragment StoreEntitySet="tb_CSULabLocations">
+                <ScalarProperty Name="LocactionName" ColumnName="LocactionName" />
+                <ScalarProperty Name="LocationNameAcronym" ColumnName="LocationNameAcronym" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_CSULabTechs">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSULabTechs">
+              <MappingFragment StoreEntitySet="tb_CSULabTechs">
+                <ScalarProperty Name="DisabledBy" ColumnName="DisabledBy" />
+                <ScalarProperty Name="EnabledBy" ColumnName="EnabledBy" />
+                <ScalarProperty Name="EnabledDateTime" ColumnName="EnabledDateTime" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ManagerRights" ColumnName="ManagerRights" />
+                <ScalarProperty Name="DisabledDateTime" ColumnName="DisabledDateTime" />
+                <ScalarProperty Name="UserRights" ColumnName="UserRights" />
+                <ScalarProperty Name="ENAME" ColumnName="ENAME" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ItemRepair">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_ItemRepair">
+              <MappingFragment StoreEntitySet="tb_ItemRepair">
+                <ScalarProperty Name="ItemIdFk" ColumnName="ItemIdFk" />
+                <ScalarProperty Name="ItemUpcFk" ColumnName="ItemUpcFk" />
+                <ScalarProperty Name="RepairedBy" ColumnName="RepairedBy" />
+                <ScalarProperty Name="UnRepairable" ColumnName="UnRepairable" />
+                <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+                <ScalarProperty Name="DateRepaired" ColumnName="DateRepaired" />
+                <ScalarProperty Name="DateIssued" ColumnName="DateIssued" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Issue" ColumnName="Issue" />
+                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+                <ScalarProperty Name="RepairId" ColumnName="RepairId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Reports">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_Reports">
+              <MappingFragment StoreEntitySet="tb_Reports">
+                <ScalarProperty Name="Report" ColumnName="Report" />
+                <ScalarProperty Name="TimeSubmitted" ColumnName="TimeSubmitted" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_LongtermWaitlist">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_LongtermWaitlist">
+              <MappingFragment StoreEntitySet="tb_LongtermWaitlist">
+                <ScalarProperty Name="ENAME" ColumnName="ENAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="WAITLIST_RESERVED" ColumnName="WAITLIST_RESERVED" />
+                <ScalarProperty Name="WAITLIST_NOTIFIED" ColumnName="WAITLIST_NOTIFIED" />
+                <ScalarProperty Name="WAITLIST_TYPE" ColumnName="WAITLIST_TYPE" />
+                <ScalarProperty Name="WAITLIST_REASON" ColumnName="WAITLIST_REASON" />
+                <ScalarProperty Name="WAITLISTED" ColumnName="WAITLISTED" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_CSUStudent">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSUStudent">
+              <MappingFragment StoreEntitySet="tb_CSUStudent">
+                <ScalarProperty Name="SIGNEDWAIVER" ColumnName="SIGNEDWAIVER" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="ENAME" ColumnName="ENAME" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+                <ScalarProperty Name="CSUStudentID" ColumnName="CSUStudentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

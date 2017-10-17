@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.CkVw>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align: center;" ><h2>Checkouts</h2></div>
+
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:30px"><mark><strong><span>@ViewBag.Message</span></strong></mark></p>
+}
+
+@Html.Partial("_Create", new tb_CSUCheckoutCheckin(), new ViewDataDictionary())
+
+<div style="border:12px; border-style:solid; border-color:#00245a; padding: 1em;">
+    @if (Model != null)
+    {
+        <div style="text-align: center;" ><h2 style="text-underline: black">Items currently checked out</h2></div>
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-filter-control="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                   
+                    <th data-field="CsuId" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CsuId)
+                    </th>
+                    <th data-field="Ename" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Ename)
+                    </th>
+                    <th data-field="Name" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+
+                    <th data-field="ItemUpc" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.ItemUpc)
+                    </th>
+                    <th data-field="CkOutLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutLabTech)
+                    </th>
+                    <th data-field="CkOutDt" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutDt)
+                    </th>
+                    <th data-field="DueDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.DueDate)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (SessionVariables.CurrentLocation.ToString() == item.CkOutLoc || SessionVariables.CurrentLocation.ToString() == "notset")
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CsuId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ename)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemUpc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CkOutDt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DueDate)
+                        </td>
+                 
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    </div>
+
+
+
+
+
+
+

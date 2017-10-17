@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "localLogin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>localLogin</h2>
+
+@ViewData["message"] 
+
+@using (Html.BeginForm("localLogin", "Home",   FormMethod.Post))
+{
+    <div>Who do you want to be?</div>
+    <input type="text" id="ENAME" name="ENAME" />
+    <input type="submit" value="Submit" />
+    
+}
+

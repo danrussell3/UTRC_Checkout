@@ -1,0 +1,385 @@
+﻿@using System.Data.SqlTypes
+@using System.Web.Mvc.Html;
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+</div>
+<h1>UTRC Technology Checkout Program</h1>
+<p class="lead">This Program is brought to you by the Undeclared Technology Resource Center</p>
+@if (SessionVariables.CurrentUser == null)
+{
+    <a href="@Url.Content("~")/shiblogin"> Login </a>
+}
+@if (ViewBag.Message != null)
+{
+    <span>@ViewBag.Message</span>
+}
+
+
+
+
+    @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.UserRights)
+    {
+        <div class="container" style="border: 3px; border-bottom: black">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 colmargin-top-20">
+                    <a href="@Url.Action("Index", "tb_CSUCheckout")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-barcode"></span> CheckOut
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Index", "tb_CSUCheckin")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-check"></span> CheckIN
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Index", "tb_CSUStudent")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-search"></span> Search for CSU ID
+                    </a>
+                </div>
+
+                @*<div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Create", "tb_CSUStudent")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-thumbs-up"></span> Add a Student to the System
+                    </a>
+                </div>*@
+                @*<div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action()" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-thumbs-up"></span> Add a Student to the System
+                    </a>
+                </div>*@
+
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Index", "tb_CSULabInventoryItems")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Items in Inventory
+                    </a>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Index", "tb_CSULabtechs")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-user"></span> Manage Lab Techs
+                    </a>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Index", "tb_CSUCheckoutCheckin")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-transfer"></span> View Checkout Records
+                    </a>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("LateView", "tb_CSUCheckoutCheckin")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-warning-sign"></span> Check for fines
+                    </a>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("upInstruc", "tb_CSULabInventoryItems")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon  glyphicon-book"></span> View Lab Manual
+                    </a>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("LongTermView", "tb_CSUCheckout")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-time"></span> Longterm Checkout
+                    </a>
+                </div>
+                @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                        <a href="@Url.Action("WaitlistStatusCheck", "tb_LongtermWaitlist")" class="btn btn-primary btn-md btn-block">
+                            <span class="glyphicon glyphicon-time"></span> Longterm Waitlist
+                        </a>
+                    </div>
+                }
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("BanView", "tb_CSUStudent")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Ban Users
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Reports", "tb_CSUCheckoutCheckin")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-export"></span> End of Day Report
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                    <a href="@Url.Action("Index", "tb_ItemRepair")" class="btn btn-primary btn-md btn-block">
+                        <span class="glyphicon glyphicon-signal"></span> Request Repairs
+                    </a>
+                </div>
+                @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                        <a href="@Url.Action("TestEmails", "tb_CSUCheckoutCheckin")" class="btn btn-primary btn-md btn-block">
+                            <span class="glyphicon glyphicon-envelope"></span> Test Emails
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+@if (SessionVariables.CurrentUser.ENAME == "russell1")
+{
+    <p style="font-size:14px"><u>@Html.ActionLink("Test Sling Login", "SlingLogin", "Api/Sling")</u></p>
+    
+}
+
+
+
+@*@if (SessionVariables.CurrentUser != null)
+    {
+        <div>
+            
+            @if (SessionVariables.CurrentUser.ENAME.ToString().ToString().ToLower() == "bdelong3")
+            {
+             
+                if (DateTime.Today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    <p>
+                        Hi Bonnie!
+                        <br/>
+                        Thanks for all your hard work, <br/>
+                       <img class="resize" src="~/Content/Images/bonnie.png"/>
+                    </p>
+                }
+                else if (DateTime.Today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    <p>
+                        Monday :(<br/>
+                        <img class="resize "src="http://www.kappit.com/img/pics/201604_0640_fddaa_sm.jpg" />
+                    </p>
+
+                }
+                else if (DateTime.Today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+
+                    <p>
+                        Bonnie!<br />
+                        It's tuesday, so here's a happy panda<br />
+                        <img class="resize" src="~/Content/Images/BonniePanda.jpg" />                                     
+                    </p>
+                }
+                else if (DateTime.Today.DayOfWeek == DayOfWeek.Thursday)
+                {
+
+                    <div>Bonnie it's thursday, <br/>
+                        Get ready for the weekend!<br/>
+
+                        <img class="resize" src="http://s.quickmeme.com/img/e1/e140877733fbb2173e0f0adf06025d2e6b8ae751486eafea07424f9adfb11a2f.jpg" />
+                    </div>
+                }
+                else if (DateTime.Today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    <div>Bonnie, its finally friday!
+                        <br/>
+
+            </div>
+                }
+                else
+                {
+                    <p>Bonnie,<br/>
+            What are you doing working on a weekend??!?!?</p>
+                }
+
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "cawahler")
+            {
+                <p>
+                    Hi Cheryl!<br />
+                    You're so awesome, and your happiness is contagious.
+                    <br />
+                    You make this whole thing go!
+                    <br />
+                    <img src="~/Content/Images/Cherly.png" />
+                </p>
+            }
+
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "agrafton")
+            {
+                <p>
+                    Hi Alexa!!!
+                    <br />
+                    Thanks for all the hard work you do! You're awesome!
+                    <br />
+                    Life is going to suck when you leave :(
+                    <br />
+                    <img class="resize" src="~/Content/Images/maxresdefault.png" />
+                </p>
+
+
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "crkava")
+            {
+                if (DateTime.Today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    <p>
+                        Courtney! <br/>
+                        You're super badass, thanks for everything!<br/>
+                        <img class="resize" src="~/Content/Images/Courtney.png"/>
+                    </p>
+                }
+                else
+                {
+                    <div>
+                        
+                    </div>
+                }
+            }
+
+
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "zluff")
+            {
+                <div>
+                    @if (DateTime.Today.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        <div>
+                            Hey Zach! <br/>
+                            Try not to lose your shit but it's Friday.
+                        </div>
+
+                        <img class="resize" src="http://weknowmemes.com/wp-content/uploads/2013/06/fuck-everything-its-friday.jpg"/>
+                            }
+                            else
+                            {
+                        <div>
+                            Zach! <br/>
+                            <img class="resize" src="~/Content/Images/zackfriday.jpg"/>
+                        </div>
+                    }</div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "wilbanks")
+            {
+                <div>
+                    @if (DateTime.Today.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        <div>
+                        <img class="resize" src = "~/Content/Images/Monday.jpg"/>
+                     </div>
+                    }
+                    else if ( DateTime.Today.DayOfWeek == DayOfWeek.Tuesday)
+                    {
+                        <div>
+
+                            <img class="resize" src="~/Content/Images/Watching.jpg" />
+                        </div>
+                    }
+                    else if (DateTime.Today.DayOfWeek == DayOfWeek.Wednesday)
+                    {
+                        <div>
+                            <img class="resize" src="~/Content/Images/MeganWednesday.jpg"/>
+ 
+                        </div>
+
+                    }
+                    else if (DateTime.Today.DayOfWeek == DayOfWeek.Thursday)
+                    {
+                        <div>
+                            <p>Megan<br/>
+                                Thank you for being an exemplary employee, <br/>
+                            </p>
+                            <img class="resize" src="~/Content/Images/megan.png"/>
+                        </div>
+                    }
+                    else if (DateTime.Today.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        <div>
+                            <img class="resize" src="~/Content/Images/Tuesday.jpg" />
+
+                        </div>
+                    }
+                    else if (DateTime.Today.DayOfWeek == DayOfWeek.Saturday || DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        <p> Jeez Megan, I know your dedicated, but what are you doing working on a weekend?</p>
+                    }
+                </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "charbert")
+            {
+                <div>
+                    <p> Hey Christian!</p>
+                    <img class="resize" src="~/Content/Images/Christian.jpg"/>
+                </div>
+
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "hannahnh")
+            {
+                <div>
+                    <p>Hannah!<br/>
+                    We're glad your working for us!</p>
+                    <img class="resize" src="~/Content/Images/Hannah.jpg"/>
+                </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "bzewdu")
+            {
+                <div><p>Blaine!<br/>
+                    Keep up the hard work!</p>
+                    <img class="resize" src="~/Content/Images/Blaine.jpg" />
+                </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "natee95")
+            {
+                if (DateTime.Today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    <div>Natee!<br/>
+                        <img class="resize" src="http://img.memecdn.com/inspirational_o_1964801.jpg"/>
+
+                    </div>
+                }
+                else if (DateTime.Today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    <img class="resize" src="http://jokideo.com/wp-content/uploads/2015/12/Todays-inspirational-quote-700x700.jpg"/>
+                }
+                else
+                {
+                    <img class="resize" src="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiWyIK1uKTSAhUH2oMKHU-SCGAQjRwIBw&url=http%3A%2F%2Fkeywordsuggest.org%2Fgallery%2F154914.html&bvm=bv.147448319,d.amc&psig=AFQjCNGWxIJaNqvsdwXY3wPggU8SDD7KdQ&ust=1487877766558637"/>
+                }
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "abarber5")
+            {
+                <div>Aquaila!<br/>
+            You're doing fantastic, thanks for everything!!!
+                    <img class="resize" src="~/Content/Images/Aquila.jpg" />
+                </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "nrhine")
+            {
+                <div>Nate! <br/>
+                    <img class="resize" src="https://media.makeameme.org/created/nathan-truly-is.jpg" /></div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "lbaggs")
+            {
+                <div>
+                    Luke!<br/>
+                    <img class="resize"src="https://s-media-cache-ak0.pinimg.com/736x/b9/79/6e/b9796ecd0f64da53ad486b3680457418.jpg"/>
+
+                </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "kuceraar")
+            {
+                <div>Welcome Aboard Alexa! <br/>
+                    We're glad to have you. <br/>
+            <img class="resize" src="http://www.mememaker.net/static/images/memes/4260000.jpg"/>
+            </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "tatianaj")
+            {
+                <div>Tatiana! <br/>
+                    We're glad to have you on the team!<br/>
+            <img class="resize" src="http://s3.amazonaws.com/citybuzz/2015/01/dc-explain/31-Things-Explain-Washington-DC-8.jpg"/>
+            </div>
+            }
+            else if (SessionVariables.CurrentUser.ENAME.ToString().ToLower() == "jdruss")
+            {
+                <div>
+                    Hey, YOU SHOULDN'T BE SEEING THIS!!!! <br/>
+                    <br/>
+                    <img class="resize" src="~/Content/Images/JohnR.jpg"/>
+                </div>
+            }
+
+        </div>
+            }*@

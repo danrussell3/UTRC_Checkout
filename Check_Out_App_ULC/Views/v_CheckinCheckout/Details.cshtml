@@ -1,0 +1,75 @@
+﻿@model Check_Out_App_ULC.Models.v_CheckinCheckout
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>v_CheckinCheckout</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinLabTech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinLabTech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckinLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckinLocationFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutLabTech)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutLabTech)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckoutLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckoutLocationFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isBanned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isBanned)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "LoadDBview";
+}829444575
+
+<h2>LoadDBview</h2>
+
+<p>Are you sure you want to do this?</p>
+<p>Did Mike Brake, John Russell, or a Manager ask you to do this?</p>
+
+<div class="col-md-6 margin-top-20">
+    <a href="@Url.Action("LoadDB", "tb_CSUStudent")" class="btn btn-primary btn-large btn-block">
+        <span class="glyphicon
+      glyphicon-cloud-download"></span> LoadDataBase
+    </a>
+</div>
+
+<p>Ok, press the button and prepare to wait an hour, a success message will show on the bottom of the screen when complete. Please keep the computer awake, and the browser open.</p>
+@if (ViewBag != null)
+{
+    <span>@ViewBag.Message</span>
+}
+
+

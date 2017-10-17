@@ -1,0 +1,31 @@
+﻿@model Check_Out_App_ULC.Models.tb_CSUStudent
+@{
+    ViewBag.Title = "LongtermWaitlistAdd";
+}
+
+@using (Html.BeginForm("AddToLongtermWaitlist", "tb_LongtermWaitlist", FormMethod.Post))
+{
+    <div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
+        <center>
+            <p style="font-size:22px"><strong><u>Add a student to the Longterm Waitlist</u></strong></p>
+        </center>
+        <hr />
+        <center>
+            @Html.TextBox("csuId", "", new { maxlength = 10, placeholder = "CSU ID" })
+            <br /><br />
+            @Html.TextArea("reason", "", new { maxlength = 255, placeholder = "Reason" })
+            <br />Type:
+            @Html.DropDownList("type", new List<SelectListItem>
+                {
+                new SelectListItem{ Text = "Either", Value = "Either" },
+                new SelectListItem{ Text = "HP", Value = "HP" },
+                new SelectListItem{ Text = "Macbook", Value = "Macbook" }
+                }, new { onchange = "getAlldata()" })
+            <br /><br />
+                <input type="submit" value="Submit" />
+        </center>
+
+        <p style="font-size:14px"><u>@Html.ActionLink("View Status of Waitlist Items", "WaitlistItems", "tb_CSULabInventoryItems")</u></p>
+
+    </div>
+}

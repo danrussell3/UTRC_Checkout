@@ -1,0 +1,686 @@
+﻿@{
+    ViewBag.Title = "upInstruc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a name="backtotop"></a>
+
+<h1>FAQs</h1>
+<P>1.) I'm getting an error trying to check an item in/out?
+    <br />
+    Duplicate records without a checkin date are a common reason for a checkin or checkout error.
+    <br />
+    <a href="#duplicate">How to delete a duplicate record</a> 
+    <br/>
+    <br/>
+    2.) How do I Log Out?
+<br /> 
+Unfortunately, there is no logout button. You have to close the entire browser to end the session.
+    <br />
+    <br />
+3.) What do I do if I missed a clock-in or out?
+<br />
+Please email John, at jdruss@colostate.edu. 
+<br/>
+the email should be formated as such:
+<pre>
+Hi John,
+    I missed my punch out 01/24/17.
+my timesheet should say  01/24/17  6:00pm - 8:00pm.
+
+Thanks!
+Your Name
+</pre>
+</p>
+<h1>Using the Checkout System</h1>
+<p><a href="#checkout">Checkout</a></p>
+<p><a href="#checkin">Checkin</a></p>
+<p><a href="#student">Working with Students</a></p>
+<p><a href="#fines">Working with Fines</a></p>
+<p><a href="#records">Working with Records</a></p>
+
+<h1>Tech Training</h1>
+<p><a href="#pcupdate">Update a PC</a></p>
+<p><a href="#UpdateMac">Update Mac</a></p>
+<p><a href="#lscprint">Map a Printer at the LSC on Mac</a></p>
+<p><a href="#bsbprint">Map a Printer at the BSB on Mac</a></p>
+<p><a href="#hp">Troubleshoot a PC</a></p>
+<p><a href="#mac">Troubleshoot a Mac</a></p>
+
+<div>
+    <h1>
+        Important Credentials
+    </h1>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Use
+        </th>
+        <th>
+            User Name
+        </th>
+        <th>
+            Password
+        </th>
+    </tr>
+
+    <tr>
+        <td>
+            LSC & BSB Admin
+        </td>
+        <td>
+            Labadmin
+        </td>
+        <td>
+            <password>goramsgogorams</password>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Tilt Admin
+        </td>
+        <td>
+            Casaadmin
+        </td>
+        <td>
+            <password>proudtobeacsuram</password>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            CSU-eID Wifi
+        </td>
+        <td>
+            transc
+        </td>
+        <td>
+            <password>letme1n!!!!letme1n!!!!</password>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            CASA Domain credentials
+        </td>
+        <td>
+            ecave
+        </td>
+        <td>
+            <password>letme1n!</password>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            AppleID
+        </td>
+        <td>
+            casa_help_desk@mail.colostate.edu
+        </td>
+        <td>
+            <password>Ki!!Bi!!1</password>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Smart Waiver Login
+        </td>
+        <td>
+            CASA Laptop Checkout
+        </td>
+        <td>
+            <password>letme1n!</password>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Google Login
+        </td>
+        <td>
+            casahelpdesk@gmail.com
+        </td>
+        <td>
+            <password>letme1n!!letme1n!!</password>
+        </td>
+    </tr>
+</table>
+
+<a name="checkout"></a>
+<center><u><h2><b>Checkouts</b></h2></u></center>
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+
+    <p style="font-size:20px">
+        Located on each item is a UPC Barcode that can be entered into the system in combination with a CSU ID # to create a checkout record.
+        To get to the checkout screen, follow the main menu.
+        <br>
+        <center><img class="resize" src="~/Content/Images/Checkout.PNG" /></center>
+        <br>
+    <p style="font-size:20px">
+        From the checkout screen, scan or key in the CSU ID# and UPC code located on the front of the laptop. (i.e. BSBMACBOOKPRO9)
+        <br>
+        <center><img class="resize" src="~/Content/Images/Checkout3.PNG" /></center>
+        <br>
+    <p style="font-size:20px">
+        If this is the first time the CSU ID# has been used to checkout an item, a message will display about signing the waiver
+        Select "Signed Waiver" on the right hand side of the record after the user has completed the waiver.
+        <br>
+        <center><img class="resize" src="~/Content/Images/Waiver.PNG" /></center>
+        <br>
+    <p style="font-size:20px">
+        After the item(s) have been successfully checkout, a message will display across the top of the screen.
+        <br>
+        <center><img class="resize" src="~/Content/Images/Checkout4.PNG" /></center>
+        <br>
+    <p style="font-size:20px">
+        You can continue to checkout items after the message has displayed
+        <br>
+        <br>
+    </p>
+</div>
+
+<a name="checkin"></a>
+<CENTER><u><h2>Checkins</h2></u></CENTER>
+<<div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+
+    <p style="font-size:20px">
+        First Select the Checkin Screen from the main menu, or the top menu.
+    </p>
+    <br />
+    <center><img class="resize" src="~/Content/Images/Checkin.PNG" /></center>
+    <br />
+    <p style="font-size:20px">
+        Here scan or key in the UPC code located on the front of the laptop. (i.e. BSBMACBOOKPRO9)
+        The Checkin function on the side of the record can be used to checkin items that won't work thru the normal method.
+    </p>
+    <br />
+    <center><img class="resize" src="~/Content/Images/Checkin2.PNG" /></center>
+    <br />
+    <p style="font-size:20px">
+        Once the item has been scanned, a message stating the details of the checkout record will be displayed.
+        If the item was returned more than 6 hours after checkout the late fee will show as true.
+    </p>
+    <br />
+    <center><img class="resize" src="~/Content/Images/Checkin3.PNG" /></center>
+    <br />
+    <p style="font-size:20px">
+        From here you can check-in additional items using the box at the bottom.
+    </p>
+    <br />
+</div>
+<p><a href="#backtotop">Back to Top</a></p>
+<a name="student"></a>
+
+<center><u><h2>Students</h2></u></center>
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+    <p style="font-size:20px">
+        To search students select the Search Students button from the homescreen.
+
+        <center><img class="resize" src="~/Content/Images/Search Students.PNG" /></center>
+        <br />
+    <p style="font-size:20px">
+        From here you can search by CSU ID#, ENAME, First and Last name, or just Last Name.
+
+        <center><img class="resize" src="~/Content/Images/Search Students1.PNG" /></center>
+        <br />
+    <p style="font-size:20px">
+        The search results will show on the next screen
+
+        <center><img class="resize" src="~/Content/Images/Search Students2.PNG" /></center>
+        <br />
+    <p style="font-size:20px">
+        If the Student isn't showing in the search, and is unable to checkout items, you can add them to the system
+
+        <center><img class="resize" src="~/Content/Images/AddStudent.PNG" /></center>
+        <br />
+    <p style="font-size:20px">
+        Enter all the information shown, the student will then be able to checkout
+
+        <center><img class="resize" src="~/Content/Images/AddStudent1.PNG" /></center>
+        <br />
+    </p>
+</div>
+<p><a href="#backtotop">Back to Top</a></p>
+<a name="fines"></a>
+
+
+    <center><u><h2> Working with Fines </h2></u></center>
+
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+    <p style="font-size:20px">
+        Select “Check for Fines” from the homescreen of the Checkout App
+        <br />
+        <center><img class="resize" src="~/Content/Images/Fines1.PNG" /></center>
+        <br />
+    <p style="font-size:20px">
+        Find the Checkout Record on the next screen, and on the right hand side select “Change Fines”
+        <br />
+        <center><img class="resize" src="~/Content/Images/Fines2.PNG" /></center>
+        <br />
+    <p style="font-size:20px">
+        The next screen shows the details of the checkout record, to waive the Fine use the drop down menu to set “Late Charge” to “False”
+        <br />
+        To indicate the record should result in a fine, set Fine Applied to True.
+        <br />
+        <center><img class="resize" src="~/Content/Images/Fine3.PNG" /></center>
+        <br />
+    </p>
+</div>
+<p><a href="#backtotop">Back to Top</a></p>
+
+<a name="records"></a>
+
+<center><u><h2>Working with Records</h2></u></center>
+
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+    <p style="font-size:20px">
+        If a record needs to be edited or deleted, you can do so from the View Checkout Records screen
+        <br />
+        <center>
+            <img class="resize" src="~/Content/Images/Records.PNG" />
+        </center>
+            <br />
+<p style="font-size:20px">
+        Then you can search for a record by CSU ID or ItemUPC
+    <br />
+    <center>
+        <img class="resize" src="~/Content/Images/Records1.PNG" />
+    </center>
+        <br />
+<p style="font-size:20px">
+        The results of the search can then be edited or deleted. This should only be done after notifying a Manager.
+    <br />    
+    <center>
+        <img class="resize" src="~/Content/Images/Records3.PNG" />
+    </center>
+        <br />
+<p style="font-size:20px">
+        It can be useful to delete a previous items checkout record if your unable to checkout the item to a new patron. Search for a record with a checkout date, but no checkin date.
+    </p>
+    </div>
+    <p><a href="#backtotop">Back to Top</a></p>
+<a name="duplicate"></a>
+
+<center><u><h2>Deleting a duplicate record</h2></u></center>
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+    <p style="font-size:20px">
+    1. The first step is to determine if there is a duplicate checkout. 
+    <br />
+    Copy the item barcode and search available records from the "View Checkout Records"
+    </p></div>
+    <a name="pcupdate"></a>
+    <center><u><h2> PC Updates </h2></u></center>
+
+<pre style="font-size:14px">    
+Admin Account:
+Username: labadmin  (.\labadmin if logging into the computer account)
+Password: goramsgogorams
+Auto-Logon Account (student account):
+Username: labuser
+Password: letme1n!
+Wireless credentials:
+Username: transc
+Password: letme1n!!!letme1n!!!
+Network access to \\casafile2.casa.colostate.edu\lab OR \\casafile2.casa.colostate.edu\installation (OR printing issue with Mac or HP)
+Username: casa\ecave
+Password: letme1n!
+Google documentation
+Username: casahelpdesk@gmail.com
+Password: Ki!!Bi!!
+<U>General:</U>
+    Start Menu → Search “Check for Updates”→ Review required/optional updates → Install Updates → Restart if needed
+<U>Google Chrome</U>
+    Settings → About → Will Update Automatically
+    Also delete browsing history (cmd + shift + del).
+<u>Mozilla Firefox</u>
+    Firefox → About Firefox → Will automatically check/install updates → Re-launch browser when prompted.
+    Also delete browsing history (cmd + shift + del).
+    Extras
+<U>Microsoft Security Essentials</U>
+    
+    Start Menu → Microsoft Security Essentials → Scan Options (right side) → Quick → Scan Now
+    Do this process only if needed, ie. If an orange bar is at the top of the window.
+    Empty the recycle bin on the desktop (Right click on trash icon → Empty Trash) or [(cmd + shift + del) from the desktop].
+    Update Assistive Technology:
+    See Assistive Technology Document on Google Drive or in the green binder.  Also has information about the different programs if needed.
+    Uninstall Programs
+    Start Menu → Control Panel → Uninstall a program → Remove any toolbars found (Google, Bing or Ask).
+    Empty the Recycle Bin
+    Right click on the Recycle Bin found on the desktop → choose “Empty Recycle Bin” (or ctrl + shift + del)
+    Internet Options
+    Start Menu → Control Panel → Network and Internet → Internet Options → Security Tab → Trusted Sites (green check mark) → Sites → Remove all sites except for \\casa-file-1 and *.colostate.edu
+    If these are not present uncheck the box “Require server verification…” then type these two locations into the top bar and press Add.
+    &
+<h style="font-size:16px"><mark> Please clean all laptop using monitor wipes.</mark></h>
+</pre>
+    <p><a href="#backtotop">Back to Top</a></p>
+    <center><u><h2> Mac Updates </h2></u></center>
+    <a name="UpdateMac"></a>
+<pre style="font-size:14px">
+    Admin Account
+    Username: labadmin
+    Password: goramsgogorams
+    App store login
+    casa_help_desk@mail.colostate.edu
+    Ki!!Bi!!1
+<u>General Updates</u>
+    Click on the apple in upper left corner → Software Update → Enter in Admin Account Credentials if Needed → Install Updates → Restart if needed.
+    OR
+    Click on the apple in upper left corner → About this Mac → Software Update
+<u>Update Flash Player</u>
+    Click on the apple in the upper left corner → System Preferences → Flash Player → Updates → 
+    Install any available updates.
+<u>Update Java</u>
+    Click on the apple in the upper left corner → System Preferences → Java → In the Java Control Panel click “Update” at the top of the window → Install any available updates.
+<u>Update Microsoft Office</u>
+    Open office to the general page → Help → Check for Updates.
+<u>Google Chrome</u>
+    File → About google chrome → Will automatically check/install updates → Re-launch browser when prompted.
+    Also delete browsing history.
+<u>Mozilla Firefox</u>
+    Firefox → About Firefox → Will automatically check/install updates → Re-launch browser when prompted.
+    Also delete browsing history.
+<u>Remove Student Files</u>
+    Click on the Finder in the dock (Square person looking icon on far left) → Click on Documents → Click on first file, then scroll down → 
+    Holding the shift button select the last file → Control + Click → Move to Trash.
+    Repeat for Downloads.
+    Empty the trash after you have removed all student files (Right click on trash icon → Empty Trash).
+    Check Wifi Networks, move CSU-EID to the top network preference
+    Top right hand corner, click on the wifi symbol > Open Network preferences > bottom right corner unlock to make changes > Advanced > Delete any non CSU networks
+</pre>
+    <p><a href="#backtotop">Back to Top</a></p>
+    <center><u><h2>Install Papercut</h2></u></center>
+    <a name="installpapercut"></a>
+    <div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+        <p style="font-size:20px">
+            <strong> Intsall Papercut</strong>
+            From LabAdmin user on the laptop:
+        <p style="font-size:20px">
+            1. Open the finder, in the task bar at the top select Go > Connect to Server. Server address is//casafile2.casa.colostate.edu
+            <br />
+            <center><img class="resize" src="~/Content/Images/Connect to Server.PNG" /></center>
+            <br />
+        <p style="font-size:20px">
+            2. Authenticate into the CASA system as a "registered user" using your CSU eID, if that doesnt work let John know, and use un/pw : ecave / letme1n!
+            <br />
+            <center><img class="resize" src="~/Content/Images/ServerAuth.png" /></center>
+            <br />
+        <p style="font-size:20px">
+            3. Select the "Installation Volume"
+            <br />
+            <center><img class="resize" src="~/Content/Images/SelectInstallation.png" /></center>
+            <br />
+        <p style="font-size:20px">
+            4. Locate the Apple-Mac Folder, and then the Papercut Folder. Copy the papercut folder to the desktop.
+            <br />
+            <center><img class="resize" src="~/Content/Images/Apple-Mac Stuff.png" /></center>
+            <br />
+            <center><img class="resize" src="~/Content/Images/Papercut.png" /></center>
+            <br />
+        <p style="font-size:20px">
+            5. Run the install script "client-local-install" from the new folder on the desktop. (If you are not logged into the laptop as LabAdmin it will fail.)
+            <br />
+            <center><img class="resize" src="~/Content/Images/PapercutScript.png" /></center>
+            <br />
+            <center><img class="resize" src="~/Content/Images/PapercutAuth.png" /></center>
+            <br />
+        <p style="font-size:20px">
+            6. Drag the Papercut Icon from the Applications folder to the Dock.
+        </p>
+    </div>
+
+    <center><u><h2>Map a Printer on Mac at the LSC</h2></u></center>
+    <a name="lscprint"></a>
+    <div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+
+        <p style="font-size:20px">
+            <strong> Map the Printers</strong>
+        <p style="font-size:20px">
+            1. We add the printer by clicking on the apple Icon in the top right, select System Preferences > Printer
+            <br />
+            <center><img class="resize" src="~/Content/Images/AppleSystemPref.png" /></center>
+            <br />
+        <p style="font-size:20px">
+            2. Add a new printer by selecting the + icon, located at the bottom left of the white box.
+            <br />
+            <center><img class="resize" src="~/Content/Images/AddPrinter.PNG" /></center>
+            <br />
+        <p style="font-size:20px">
+            3. Right click (2 finger click) on the new printer task bar, select customize toolbar, here you can drag the "Advance" option onto the task bar. Select ok after adding.
+            <br />
+            <center><img class="resize" src="~/Content/Images/CustomizeToolbar.PNG" /></center>
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/DragAdvanced.PNG" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            4. From the advance tab, the options should be --
+            Type: Windows printer via spoolss
+            URL: smb://acnspapercut.colostate.edu/lsc-papercut
+            Use: Generic Postscript Printer
+            then select Add.
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/LSCPrintConfig.PNG" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            5. The printer should show in the Printers & Scanners window, double click on the printer and from the top task bar select Printer > Print test page. If configured properly and Mac OS like window should prompt you for the login to the printer, here the student will enter eID credentials.
+            <br />
+            <u>DO NOT</u> check remeber in keychain!
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/PrintPref.png" />
+            </center>
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/PrintTestPage.PNG" />
+            </center>
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/PrintAuth.PNG" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            6. If the print job was successful a message will indicate it is in the print que, it can now be printed from the LSC station.
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/PapercutQue.png" />
+            </center>
+            <br />
+        </p>
+    </div>
+    <p><a href="#backtotop">Back to Top</a></p>
+    <center><u><h2>Map a Printer on Mac at the BSB</h2></u></center>
+    <a name="bsbprint"></a>
+    <div style="border:3px; border-style:solid; border-color:#00245a; padding: 1em;">
+
+        <p style="font-size:20px">
+            From Setup user on the laptop:
+            <br />
+            <strong> Intsall Papercut</strong>
+            <br />
+        <p style="font-size:20px">
+            1. We add the printer by clicking on the apple Icon in the top right, select System Preferences > Printers & Scanners.
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/AppleSystemPref.png" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            2. Add a new printer by selecting the + icon, located at the bottom left of the white box.
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/AddPrinter.PNG" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            3. Right click (2 finger click) on the new printer task bar, select customize toolbar, here you can drag the "Advance" option onto the task bar. Select ok after adding.
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/CustomizeToolbar.PNG" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            4. From the advance tab, the options should be --
+            <br />
+            <u>Black and White</u>
+            <br />
+            Type: Windows printer via spoolss
+            <br />
+            URL: smb://casa-printing.casa.colostate.edu/BSB_black_n_white
+            <br />
+            Use: Generic PCL Printer
+            <br />
+            then select Add.
+            <br />
+            <center>
+                <img class="resize" src="~/Content/Images/BSB BW Setup.PNG" />
+            </center>
+            <br />
+        <p style="font-size:20px">
+            <u>Color</u>
+            <br />
+            Type: Windows printer via spoolss
+            <br />
+            URL: smb://casa-printing.casa.colostate.edu/BSBColor
+            <br />
+            Use: Generic PostScript Printer
+            <br />
+            then select Add.
+            <br />
+        </p>
+        <p style="font-size:20px">
+            8. The printer should show in the Printers & Scanners window, double click on the printer and from the top task bar select Printer > Print test page.
+            <br />
+            If configured properly and Mac OS like window should prompt you for the login to the printer, here you enter ecave/letme1n!, and check remember in keychain, and it will print on the selected printer
+            <br />
+        </p>
+    </div>
+    <p><a href="#backtotop">Back to Top</a></p>
+    <center><u><h2> Troubleshooting HP Laptops</h2></u></center>
+    <a name="hp"></a>
+<pre>
+Map a Network Drive
+Open the File Explorer → click Computer → Click “Map network drive” on the top of window → type: \\casafile2.casa.colostate.edu\installation → To authenticate type in your CASA username and password.
+Computer does not logon automatically.
+Logon to labadmin account directly.
+Make sure account is still on the machine
+Control Panel → User Accounts → User Accounts → Manage User Accounts → Advanced (top) → Advanced → Users  → Look for labuser account.
+If found, proceed to next step.  If not found, add the account right click in the white space → New User → Use above credentials for the labuser account.  Uncheck box “User must change password at next logon, check boxes for “User cannot change password” and “Password never expires”.
+If found, open Start menu → type ‘gpedit.msc’ then hit Enter → User Configuration → Administrative Templates → System → Double click ‘Prevent access to registry editing tools’ → Disabled → Apply → Ok
+Keep this window open, you need to re-enable this feature later.
+Click Start → type ‘regedit’ then hit enter → Open folders in the following order →  HKEY_LOCAL MACHINE →  SOFTWARE → Microsoft →  Windows NT → CurrentVersion → Winlogon.
+Go to File → Import → In the new window find \\casa-file-1.casa.colostate.edu\Lab under Computer in the left pane, click to open → Open the folder “Registry Keys” → Select “Labkeys” → Then click open.
+Check to make sure the following values are now found in the registry.
+Name:				Data:
+DefaultUsername		labuser
+DefaultPassword		letme1n!
+DefaultDomainName		.
+AutoAdminLogon		1
+If present, delete AutoLogonCount (found in the larger window pane) and AutoLogonChecked (found in the left window pane), by right clicking them and choose delete.
+AFTER THE KEYS ARE ADDED/REMOVED FROM THE REGISTRY RETURN TO THE “GPEDIT.MSC” WINDOW AND RE-ENABLE “PREVENT ACCESS TO REGISTRY EDITING TOOLS”, HIT APPLY AND THEN OK.
+   
+<strong>No Internet Connection</strong>
+Make sure Wireless is turned On, on the laptop ().  This is a “soft” button on above the keyboard (3rd button to the right of the power button).  If the icon is orange, press and internet should start working.  If the icon is blue and the internet is still not working proceed to the next step.
+Open Network and Sharing Center (right click internet connection icon in bottom right corner) → Manage Wireless Networks → Double click csu-eid, csu-net and/or csu-net5 → Security → Advanced Settings → Make sure the box for “Enable single sign on for the network” is unchecked → Replace (or Save) Credentials
+Username: transc
+Password: letme1n!!!letme1n!!!
+If this doesn’t work, check Internet Options to reset.  See above for directions.
+If internet still does not work, try removing csu-net in the “Network and Sharing Center” then re-add it.
+follow the steps at this website (http://www.acns.colostate.edu/Help/CSUNET-Win7), except for the following:
+Under the 802.1X settings tab in Advanced Settings, Specify for User Authentication.
+Save credentials
+username: transc
+password: letme1n!!!letme1n!!!
+Do NOT check the box “Enable single sign on for this network”
+skip any steps following this that are related to this selection
+Do NOT check the box under 802.11 settings for pre-authentication
+<strong>Can’t Print</strong>
+Run Printing Script:
+Start Menu → All Programs → Scroll down to “Startup” folder and open → Double click “MapPrintersBSB”
+If a security warning, open the file. A login window will pop up for papercut. The student will enter their eID username and password.
+If the scripts are not on the computer, download them at:\\casafile2\
+Make sure printers are mapped after running this program.
+Start Menu → Devices and Printers → BSB_black_n_white and BSBColor on casa-printing.casa.colostate.edu printers should both be seen and BSB_black_n_white should be default.
+If “MapPrintersBSB” is not found it must be re-added to the computer.
+Connect to the Lab drive (See Above) → double click the Scripts folder.  Right click the “MapPrintersBSB” Windows Batch File (has 2 gears as the icon) → paste the script to the desktop.  Once on the desktop navigate to the “Startup” folder in the Start menu → right click the folder and choose “Open All Users” → drag and drop the script from the desktop into the “Startup” folder window.
+if any type of warning pops up follow these steps
+Start Menu → type gpedit.msc → right click program → choose “Run as Administrator”  → type your CASA account credentials
+Navigate to Local Computer Policy → User Configuration → Administrative Templates → Windows Components → Attachment Manager (all in left side panel)
+In the right pane, double click “Inclusion list for low file types”
+Click “Enabled”
+In the “Options” box below type: .exe;.bat;.reg;.vbs (must match exactly)
+Click Apply, then ok
+Restart Computer
+Credential Manager
+This is used to save credentials in order to allow the scripts for printing to work properly after connected to the internet.  If the above steps do not work to fix the issue, try resetting the stored credentials. This step needs to be done on the labuser account.
+Open the Credential Manager:
+A script can be run from the Lab drive, double click “Credential Manager” (has 2 gears as the icon).  This will bring you to the correct window.
+Start Menu → Control Panel → User Accounts → Credential Manager
+Once the Credential Manager is open, you will need to edit all 4 “Windows Credentials”
+Internet or Network address:
+acnspapercut.colostate.edu
+casafile2.casa.colostate.edu
+casa-printing.casa.colostate.edu 
+Check the spelling of each. If the spelling is incorrect for any, click it and choose “Remove from Vault” and re-add the whole credential. If spelling is correct, click on each one and click edit and type the credentials below as is.
+Username:  colostate\transc
+Password:  letme1n!!!letme1n!!!
+</pre>
+    <p><a href="#backtotop">Back to Top</a></p>
+    <center><u><h2> Troubleshoot Mac Laptops</h2></u></center>
+    <a name="mac"></a>
+<pre>
+Map Network Drive
+Finder → Go → Connect to Server → type smb://casafile2.casa.colostate.edu → Connect → if asked, enter your CASA credentials as a registered user.
+For printing, connect to smb://acnspapercut/pcclient → connect → enter transc credentials. (the computer must be connected to the CASA domain, see below)
+    
+Internet Settings (Auto-connect)
+System Preferences → Network → Unlock if needed by clicking the padlock in the bottom left of window → Click Wi-Fi in the right panel → Click “Advanced..” in the bottom right corner of window → if csu-net is there, click it and hit the (-) button under the white box → click the (+) button
+Network name: csu-eid
+Security: WPA2 Enterprise
+Username: transc
+Password: letme1n!!!letme1n!!!
+Date and Time
+Click on the clock in top right corner → Date & Time Preferences →  Unlock (bottom left corner of window) with the labadmin user credentials → Check the box ‘ Set date and time automatically’ and type ‘ntp.colostate.edu’ → Click the lock to lock the window.
+If won’t logon/turn on forever (if Mac dies completely)
+Charge over night
+turn on and let run for a few hours
+If nothing happens after that point follow steps below to reset SMC and PRAM
+SMC RESET
+Shut down the computer.
+Plug in the MagSafe power adapter to a power source, connecting it to the Mac if its not already connected.
+On the built-in keyboard, press the (left side) Shift-Control-Option keys and the power button at the same time.
+Release all the keys and the power button at the same time.
+Press the power button to turn on the computer. 
+PRAM RESET
+Shut down the computer.
+Locate the following keys on the keyboard: Command, Option, P, and R. You will need to hold these keys down simultaneously in step
+Turn on the computer.
+Press and hold the Command-Option-P-R keys. You must press this key combination before the gray screen appears.
+Hold the keys down until the computer restarts and you hear the startup sound for the second time.
+Release the keys.
+If these steps don’t work (may take a few hours - a day) let the Help Desk know to reset the computer.
+Connect to the Domain:
+Search for (cmd + space) Directory Utility → unlock the pane → click the pencil for Active Directory (first choice on menu)
+Active Directory Domain: casa.colostate.edu
+Computer ID: 'Whats on the Barcode' i.e. (BSBMacpro12)
+Click Bind (above)
+use your CASA login credentials to authenticate, leave both boxes in the window checked
+Boot into Safe Mode
+for your information, mostly likely won’t need to do this yourself (CASA Help Desk will)
+http://support.apple.com/kb/HT1455?viewlocale=en_US
+Java
+if Java is not working follow the steps on the website
+everything must be typed as is from the webpage (it won’t work otherwise)
+http://support.apple.com/kb/HT5559
+Check-out Computer
+Outlook Email
+Open Microsoft Outlook
+Select Yes (You want to configure an E-mail account)
+Select the box Manually configure server settings or additional server types
+Select Microsoft Exchange as the E-mail service
+Type outlook.colostate.edu for the Microsoft Exchange server, deselect the Use Cached Exchange Mode, type casa_laptop_checkout@mail.colostate.edu, and push the button Check Name. Then click next.
+Type colostate\yourE-ID for the username and your E-ID password when it prompts for a username/password.
+More Information: help.mail.colostate.edu
+</pre>
+    <p><a href="#backtotop">Back to Top</a></p>

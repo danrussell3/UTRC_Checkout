@@ -1,0 +1,65 @@
+﻿@model Check_Out_App_ULC.Models.tb_TimeClock
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tb_TimeClock</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserIDFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserIDFK)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClockIn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClockIn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClockOut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClockOut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoursWorked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoursWorked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Edited)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Edited)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

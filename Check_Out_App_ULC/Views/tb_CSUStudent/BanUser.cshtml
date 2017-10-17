@@ -1,0 +1,25 @@
+﻿@model Check_Out_App_ULC.Models.tb_BannedUserTable
+@{
+    ViewBag.Title = "BanUser";
+}
+
+@using (Html.BeginForm("BanUser", "tb_CSUStudent", FormMethod.Post))
+{
+    <div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
+        <center>
+            <p style="font-size:22px"><strong><u>Ban a User</u></strong></p>
+        </center>
+        <hr />
+        <center>
+            @Html.TextBox("csuID", "", new { maxlength = 10, placeholder = "CSU ID" })
+            <br />
+            @Html.TextArea("reason", "", new { placeholder = "Reason" })
+            
+            <br />
+            <label><input id="isPermBan" name="isPermBan" value="true" type="checkbox"/> Check here to permanently ban user</label>
+            
+            <br />
+            <input type="submit" value="Submit" />
+        </center>
+</div>
+}

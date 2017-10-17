@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSULabTechs>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<center><h2><u>UTRC Employees</u></h2></center>
+<div>
+    @if (ViewBag.Message != null)
+{
+    <p style="font-size:22px"><mark><strong><span>@ViewBag.Message</span></strong></mark></p>
+}
+</div>
+<div>
+    @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+    {
+        <div class="form-horizontal">
+            @using (Html.BeginForm("Manager", "tb_CSULabTechs", FormMethod.Post))
+            {
+                <div class="form-group">
+                    <u>@Html.Label("Add an Manager to the system")</u>
+                </div>
+
+                <div class="form-group">
+                 
+                    @Html.TextBox("id", "", new { placeholder = "ENAME" })
+                    
+
+                    <Input type="submit" value="Submit" />
+                </div>
+            }
+            </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    @using (Html.BeginForm("newLabTech", "tb_CSULabTechs", FormMethod.Post))
+    {   <div class="form-group">
+            <u>@Html.Label("Add an employee to the system (and select their default location)")</u>
+        </div>
+
+        <div class="form-group">
+        
+            @Html.TextBox("ename", "", new {placeholder="ENAME"})
+
+            @Html.DropDownList("loc", new List<SelectListItem>
+                {
+                  new SelectListItem{ Text = "BSB", Value = "BSB" },
+                  new SelectListItem{ Text = "LSC", Value = "LSC" },
+                  new SelectListItem{ Text = "TLT", Value = "TLT" }
+                }, new { onchange = "getAlldata()" })
+
+            <Input type="submit" value="Submit" />
+        </div>
+    }
+
+
+</div>
+
+
+
+<div style="border:12px; border-style:solid; border-color:#008000; padding: 1em;">
+    <center><h2>Current Employees</h2></center>
+    <table id="table"
+           data-toggle="table"
+           data-sort-name="name"
+           data-sort-order="desc"
+           data-search="true"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-multi-sort="true"
+           data-show-export="true"
+           data-filter-control="true"
+           data-click-to-select="true"
+           data-filter-show-clear="true"
+           data-response-handler="responseHandler"
+           data-toolbar="#toolbar">
+        <thead>
+
+            <tr>
+                <th data-field="First_Name" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.First_Name)
+                </th>
+                <th data-field="Last_Name" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.Last_Name)
+                </th>
+                <th data-field="CSU_ID" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.CSU_ID)
+                </th>
+                <th data-field="LOCATION" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.LocationId)
+                </th>
+                <th data-field="EMAIL" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.EMAIL)
+                </th>
+                <th data-field="PHONE" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.PHONE)
+                </th>
+                <th data-field="ENAME" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.ENAME)
+                </th>
+                <th data-field="UserRights" data-sortable="true" data-visible="false">
+                    @Html.DisplayNameFor(model => model.UserRights)
+                </th>
+@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+{
+    <th data-field="ManagerRights" data-sortable="true">
+        @Html.DisplayNameFor(model => model.ManagerRights)
+    </th>
+}
+                <th>Actions</th>
+                <!--
+                <th data-field="LOCATION" data-sortable="true">
+                    @Html.DisplayNameFor(model => model.LocationId)
+                </th>
+                -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (SessionVariables.CurrentLocation.ToString() == item.LocationId || SessionVariables.CurrentLocation.ToString() == "notset"
+                    || (SessionVariables.CurrentLocation.ToString() == "BSB" || SessionVariables.CurrentLocation.ToString() == "LSC") && 
+                    (item.LocationId == "BSB" || item.LocationId == "LSC")   )
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.First_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Last_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CSU_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EMAIL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PHONE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ENAME)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserRights)
+                    </td>
+@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+{
+    <td>
+        @Html.DisplayFor(modelItem => item.ManagerRights)
+    </td>
+}
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) 
+                    <a> || </a>
+                        @Html.ActionLink("Disable", "Disable", new { id = item.ENAME })
+                   </td>
+                    <!--
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationId)
+                    </td>
+                    -->
+                </tr>
+                }
+
+            }
+    </table>
+    </div>

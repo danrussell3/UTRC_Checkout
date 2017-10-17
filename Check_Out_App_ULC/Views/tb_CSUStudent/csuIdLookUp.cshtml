@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSUStudent>
+
+@{
+    ViewBag.Title = "csuIdLookUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>csuIdLookUp</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CSU_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ENAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FIRST_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LAST_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMAIL_ADDRESS)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PHONE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SIGNEDWAIVER)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CSU_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ENAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FIRST_NAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LAST_NAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMAIL_ADDRESS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PHONE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SIGNEDWAIVER)
+        </td>
+        <td>
+           @* @Html.ActionLink("Edit", "Edit", new { id=item.ENAME }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ENAME }) |
+    @Html.ActionLink("Delete", "Delete", new { id=item.ENAME })
+        *@</td>
+    </tr>
+}
+
+</table>

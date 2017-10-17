@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "StudentsLookup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>StudentsLookup</h2>
+
+@if (ViewBag.Message != null)
+{
+    <mark><span>@ViewBag.Message</span></mark>
+}
+
+@{ 
+        if (Model != null)
+        {
+            <h1>Possible Matches</h1>
+            <table class="table" cellspacing="1" cellpadding="1">
+                <tr>
+                    <th>@Html.Display("CSU ID")</th>
+                    <th>@Html.Display("First Name")</th> 
+                    <th>@Html.Display("Last Name")</th>
+                    <th>@Html.Display("EName")</th>
+                </tr>
+                @foreach (var person in Model)
+                {
+                    <tr>
+                        <td>@person.CSU_ID</td>
+                        <td>@person.FIRST_NAME </td>
+                        <td>@person.LAST_NAME </td>
+                        <td>@person.ENAME</td>
+                 
+                        <td>
+                          @*  @Html.ActionLink("Edit", "Edit", new { id = person.CSU_ID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ENAME }) |
+    @Html.ActionLink("Delete", "Delete", new { id=item.ENAME })
+                        *@</td>
+</tr>
+                }
+            </table>
+        }
+}
+
+

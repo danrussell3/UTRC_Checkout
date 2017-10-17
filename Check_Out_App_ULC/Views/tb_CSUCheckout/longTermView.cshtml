@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.CkVw>
+
+@{
+    ViewBag.Title = "longTermView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Longterm Checkout</h2>
+
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:30px"><mark><strong><span>@ViewBag.Message</span></strong></mark></p>
+}
+
+@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ManagerRights.HasValue)
+{
+    using (Html.BeginForm("LongtermCheckout", "tb_CSUCheckout", FormMethod.Post))
+    {
+
+
+
+        <div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
+            <center>
+                <p style="font-size:22px"><strong><u>Check Out an Item</u></strong></p>
+            </center>
+            <hr />
+
+            @Html.TextBox("csuID", "", new { maxlength = 10, placeholder = "CSU ID" })
+            <br />
+            @Html.TextBox("upc", "", new { placeholder = "Item #1" })
+
+            @Html.TextBox("upc1", "", new { placeholder = "Item #2" })
+
+            @Html.TextBox("upc2", "", new { placeholder = "Item #3" })
+            <br />
+            Due date:
+            <input name="duedate" type="date" >
+
+            <br />
+
+            <input type="submit" value="Submit"/>
+
+        </div>
+
+    }
+
+}
+
+
+<br />
+<h3>Items currently in Longterm Checkout</h3>
+<div style="border:12px; border-style:solid; border-color:#00245a; padding: 1em;">
+    @if (Model != null)
+            {
+        <center><h2><u>Items currently checked out in Longterm</u></h2></center>
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th data-field="CsuId" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.CsuId)
+                    </th>
+                    <th data-field="Name" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th data-field="ItemUpc" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.ItemUpc)
+                    </th>
+                    <th data-field="CkOutLabTech" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.CkOutLabTech)
+                    </th>
+                    <th data-field="CkOutDt" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.CkOutDt)
+                    </th>
+                    <th data-field="Longterm Checkout" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.LongTerm)
+                    </th>
+                    <th data-sortable="true">
+                        Waitlist Checkout?
+                    </th>
+                    <th data-field="DueDate" data-sortable="true">
+                        @Html.DisplayNameFor(model => model.DueDate)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                    {
+                        if(SessionVariables.CurrentLocation.ToString() == item.CkOutLoc || SessionVariables.CurrentLocation.ToString() == "notset"){
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CsuId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemUpc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CkOutLabTech)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CkOutDt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LongTerm)
+                            </td>
+                            <td>
+                                @if ((item.WaitlistHP ?? false) || (item.WaitlistMac ?? false))
+                                {
+                                    @:Yes
+                                }
+                                else
+                                {
+                                    @:No
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DueDate)
+                            </td>
+                        </tr>
+                        }
+                    }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "tb_CSUCheckoutCheckin")
+</div>

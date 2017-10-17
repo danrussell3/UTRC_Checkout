@@ -1,0 +1,35 @@
+﻿@model Check_Out_App_ULC.Models.tb_CSULabLocations
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_CSULabLocations</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationNameAcronym)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocationNameAcronym)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocactionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocactionName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LocationId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

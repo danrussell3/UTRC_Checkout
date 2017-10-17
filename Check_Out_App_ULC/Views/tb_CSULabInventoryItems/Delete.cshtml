@@ -1,0 +1,57 @@
+﻿@model Check_Out_App_ULC.Models.tb_CSULabInventoryItems
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tb_CSULabInventoryItems</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemUPC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemUPC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemSerialNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemSerialNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemLocationFK)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemLocationFK)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

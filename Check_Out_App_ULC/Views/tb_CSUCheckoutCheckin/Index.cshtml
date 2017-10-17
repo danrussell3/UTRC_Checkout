@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSUCheckoutCheckin>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<center>
+    <h2><u>
+    Checkout Records
+</u>
+    </h2>
+</center>
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:24px"> <span>@ViewBag.Message</span></p>
+}
+   
+<div style="border:12px; border-style:solid; border-color:#002db3; padding: 1em;">
+    @if (Model != null)
+    {
+        <table id="table"
+               data-toggle="table"
+               data-sort-name="name"
+               data-sort-date="date"
+               data-sort-order="desc"
+               data-search="true"
+               data-show-pagination-switch="true"
+               data-page-list="[50, 100, 200, 500, 1000, ALL]"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-multi-sort="true"
+               data-show-export="true"
+               data-pagination="true"
+               data-filter-control="true"
+               data-click-to-select="true"
+               data-filter-show-clear="true"
+               data-response-handler="responseHandler"
+               data-toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th data-field="CheckoutCheckinId" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(Model => Model.CheckoutCheckinId)
+                    </th>
+                    <th data-field="CSU_IDFK" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CSU_IDFK)
+                    </th>
+                    <th data-field="ItemUPCFK" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.ItemUPCFK)
+                    </th>
+                    <th data-field="CheckoutLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckoutLabTech)
+                    </th>
+                    <th data-field="CheckoutDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckoutDate)
+                    </th>
+                    <th data-field="CheckinLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckinLabTech)
+                    </th>
+                    <th data-field="CheckinDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CheckinDate)
+                    </th>
+                    @*<th>Actions</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (SessionVariables.CurrentLocation.ToString() == item.CheckoutLocationFK || SessionVariables.CurrentLocation.ToString() == "notset")
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckoutCheckinId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CSU_IDFK)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemUPCFK)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckoutLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckoutDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckinLabTech)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckinDate)
+                        </td>
+                        @*<td>
+                          @Html.ActionLink("Edit", "Edit", new { id = item.CheckoutCheckinId }) |
+    @Html.ActionLink("Details", "Details", new { id = item.CheckoutCheckinId }) |
+    @Html.ActionLink("Delete", "Delete", new { id = item.CheckoutCheckinId })
+                         </td>*@
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    }
+    </div>

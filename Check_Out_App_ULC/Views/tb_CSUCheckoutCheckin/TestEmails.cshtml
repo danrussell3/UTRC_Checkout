@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSUCheckoutCheckin>
+@{
+    ViewBag.Title = "TestEmails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align: center;" >
+    <h2>Test System Emails</h2>
+
+</div>
+@if (ViewBag.Message != null)
+{
+    <p style="font-size:24px"> <span>@ViewBag.Message</span></p>
+}
+
+
+
+<div style="border:12px; border-style:solid; border-color:#002db3; padding: 1em;">
+    <h3>Use the buttons below to send a test email to <em>your</em> email address:</h3>
+    <br />
+    Checkouts:&nbsp;
+    <input type='button' onclick='testCheckoutEmail()' value='Test Checkout Email'>
+    <br /><br />
+    Due Reminders:&nbsp;
+    <input type='button' onclick='testLateEmail()' value='Test Late Email'>
+    <input type='button' onclick='testOverdueItemEmail()' value='Test Overdue Item Email'>
+    <input type='button' onclick='testLongtermDue()' value='Test Longterm Due Email'>
+    <br /><br />
+    Checkins:&nbsp;
+    <input type='button' onclick='testCheckinEmail()' value='Test Checkin Email (Normal)'>
+    <input type='button' onclick='testCheckinEmailLate()' value='Test Checkin Email (Late, no Fine)'>
+    <input type='button' onclick='testCheckinEmailLateFine()' value='Test Checkin Email (Late, with Fine)'>
+    <br /><br />
+    Bans:&nbsp;
+    <input type='button' onclick='testBanEmailTemp()' value='Test Ban Email (Temporary)'>
+    <input type='button' onclick='testBanEmailPerm()' value='Test Ban Email (Permanent)'>
+    <br /><br />
+    Waivers:&nbsp;
+    <input type='button' onclick='testWaiverEmail()' value='Test Waiver Email'>
+    <br /><br />
+    Reports:&nbsp;
+    <input type='button' onclick='testEndOfDayReport()' value='Test End Of Day Report Email'>
+</div>
+
+<script>
+    testCheckoutEmail = function () {
+        $.ajax({ url: "@Url.Action("testCheckoutEmail", "Email")", });
+    };
+</script>
+
+<script>
+    testLateEmail = function () {
+        $.ajax({ url: "@Url.Action("testLateEmail", "Email")", });
+    };
+</script>
+
+<script>
+    testOverdueItemEmail = function () {
+        $.ajax({ url: "@Url.Action("testOverdueItemEmail", "Email")", });
+    };
+</script>
+
+<script>
+    testLongtermDue = function () {
+        $.ajax({ url: "@Url.Action("testLongtermDue", "Email")", });
+    };
+</script>
+
+<script>
+    testCheckinEmail = function () {
+        $.ajax({ url: "@Url.Action("testCheckinEmail", "Email")", });
+    };
+</script>
+
+<script>
+    testCheckinEmailLate = function () {
+        $.ajax({ url: "@Url.Action("testCheckinEmailLate", "Email")", });
+    };
+</script>
+
+<script>
+    testCheckinEmailLateFine = function () {
+        $.ajax({ url: "@Url.Action("testCheckinEmailLateFine", "Email")", });
+    };
+</script>
+
+<script>
+    testBanEmailTemp = function () {
+        $.ajax({ url: "@Url.Action("testBanEmailTemp", "Email")", });
+    };
+</script>
+
+<script>
+    testBanEmailPerm = function () {
+        $.ajax({ url: "@Url.Action("testBanEmailPerm", "Email")", });
+    };
+</script>
+
+<script>
+    testWaiverEmail = function () {
+        $.ajax({ url: "@Url.Action("testWaiverEmail", "Email")", });
+    };
+</script>
+
+<script>
+    testEndOfDayReport = function () {
+        var notes = "teststring";
+        $.ajax({
+            url: "@Url.Action("EndOfDayReport", "Report")",
+            dataType: 'text',
+            type: 'POST',
+            data: { 'notes': notes },
+        });
+    };
+</script>
