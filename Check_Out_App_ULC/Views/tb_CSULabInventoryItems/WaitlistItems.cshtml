@@ -44,9 +44,6 @@
                 <th data-field="CreatedBy" data-sortable="true" data-filter-control="input">
                     @Html.DisplayNameFor(model => model.isCheckedOut)
                 </th>
-                <th data-field="CreatedOn" data-sortable="true" data-filter-control="input">
-                    @Html.DisplayNameFor(model => model.ReservedTo)
-                </th>
                 
             </tr>
         </thead>
@@ -77,9 +74,6 @@
                         {
                             @:No
                                 }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReservedTo)
                     </td>
                     
                 </tr>

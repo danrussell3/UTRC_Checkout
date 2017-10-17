@@ -53,14 +53,8 @@ namespace Check_Out_App_ULC.Controllers
                 var isMac = false;
                 if (upc.ToLower().Contains("lt-pro")) { isMac = true; }
                 else if (upc.ToLower().Contains("lt-hp")) { isHP = true; }
-                if (isHP)
-                {
-                    upcsHP.Add(upc);
-                }
-                if (isMac)
-                {
-                    upcsMac.Add(upc);
-                }
+                if (isHP) { upcsHP.Add(upc); }
+                if (isMac) { upcsMac.Add(upc); }
             }
 
             ViewBag.upcsHP = new SelectList(upcsHP);
@@ -99,7 +93,6 @@ namespace Check_Out_App_ULC.Controllers
                 waitlistEntry.WAITLIST_REASON = reason;
                 waitlistEntry.WAITLIST_TYPE = type;
                 waitlistEntry.WAITLIST_NOTIFIED = null;
-                waitlistEntry.WAITLIST_RESERVED = null;
                 waitlistEntry.CSU_ID = stuToWaitlist.CSU_ID;
                 waitlistEntry.ENAME = stuToWaitlist.ENAME;
                 waitlistEntry.FIRST_NAME = stuToWaitlist.FIRST_NAME;
@@ -108,7 +101,7 @@ namespace Check_Out_App_ULC.Controllers
                 db.SaveChanges();
 
                 // generate an email notice to the user that they've been added to the waitlist
-                //email.WaitlistAddEmail(stuToWaitlist);
+                email.WaitlistAddEmail(stuToWaitlist);
 
                 TempData["Message"] = "User " + csuId + " added to the waitlist";
                 return RedirectToAction("WaitlistStatusCheck");
@@ -131,14 +124,6 @@ namespace Check_Out_App_ULC.Controllers
             }
             else
             {
-                // if HasReserved is set, null it and set associated ReservedTo to null also
-                if (stuToRemove.WAITLIST_RESERVED != null)
-                {
-                    var itemupc = stuToRemove.WAITLIST_RESERVED;
-                    var item = db.tb_CSULabInventoryItems.FirstOrDefault(s => s.ItemUPC == itemupc);
-                    item.ReservedTo = null;
-                }
-
                 db.tb_LongtermWaitlist.Remove(stuToRemove);
                 db.SaveChanges();
                 
@@ -164,16 +149,8 @@ namespace Check_Out_App_ULC.Controllers
                     expiration = expiration.AddHours(2);
                     if (DateTime.Now > expiration)
                     {
-                        // reservation has expired, so remove from waitlist and notify student
-                        // if WAITLIST_RESERVED is set, null it and set associated ReservedTo to null also
-                        if (student.WAITLIST_RESERVED != null)
-                        {
-                            var itemupc = student.WAITLIST_RESERVED;
-                            var item = db.tb_CSULabInventoryItems.FirstOrDefault(s => s.ItemUPC == itemupc);
-                            item.ReservedTo = null;
-                        }
                         var stuDetails = db.tb_CSUStudent.FirstOrDefault(e => e.CSU_ID == student.CSU_ID);
-                        //email.WaitlistRemoveAfter48HoursEmail(stuDetails);
+                        email.WaitlistRemoveAfter48HoursEmail(stuDetails);
                         db.tb_LongtermWaitlist.Remove(student);
                         db.SaveChanges();
                     }
@@ -182,27 +159,6 @@ namespace Check_Out_App_ULC.Controllers
 
             // get updated waitlist
             waitlist = db.tb_LongtermWaitlist.Where(m => m.WAITLISTED != null).OrderBy(m => m.WAITLISTED).ToList();
-
-            
-            // CAN LIKELY REMOVE THIS CHECK, or change it to double-check that a notification wasn't made in error
-            // check in case a student had a reservation but the item that was subsequently taken out of circulation
-            // if so, remove reserved status so the student goes back to the top of the waitlist
-            foreach (var student in waitlist)
-            {        
-                if (student.WAITLIST_RESERVED != null)
-                {
-                    var reservedItem = db.tb_CSULabInventoryItems.FirstOrDefault(e => e.ItemUPC == student.WAITLIST_RESERVED);
-                    if (reservedItem.ReservedTo!=student.CSU_ID)
-                    {
-                        reservedItem.ReservedTo = null;
-                        student.WAITLIST_RESERVED = null;
-                        student.WAITLIST_NOTIFIED = null;
-                        var stuDetails = db.tb_CSUStudent.FirstOrDefault(e => e.CSU_ID == student.CSU_ID);
-                        //email.WaitlistReservationProblemEmail(stuDetails, reservedItem);
-                    }
-                    db.SaveChanges();
-                }
-            }
 
             var available = db.tb_CSULabInventoryItems.Where(m => (m.isWaitlistItem == true) && m.isCheckedOut != true && m.ReservedTo == null).ToList();
             var numAvailableHPs = 0;
@@ -215,45 +171,64 @@ namespace Check_Out_App_ULC.Controllers
                 else if (item.ItemUPC.ToLower().Contains("lt-hp")) { numAvailableHPs++; }
             }
 
-            // iterate through list of available items, notify students as needed that an item is available
-            foreach (var item in available)
+            // TO DO
+            // notify students of availability based on tally of available laptops
+            foreach (var student in waitlist)
             {
-                var isHP = false;
-                var isMac = false;
-                if (item.ItemUPC.ToLower().Contains("lt-pro")) { isMac = true; }
-                else if (item.ItemUPC.ToLower().Contains("lt-hp")) { isHP = true; }
-                else
-                {
-                    TempData["InventoryMessage"] = "Item " + item.ItemUPC + " doesn't match recognized UPC codes. UPC for HP's" +
-                        "should contain 'LT-HP', and UPC for Macbook Pro's should contain 'LT-PRO'.";
-                    return RedirectToAction("LongtermWaitlist");
-                }
+                var notify = false;
 
-                // TO DO
-                // notify students of availability based on tally of available laptops
-                foreach (var student in waitlist)
+                if (student.WAITLIST_NOTIFIED != null && student.WAITLIST_TYPE == "HP")
                 {
-                    if ((student.WAITLIST_NOTIFIED==null && student.WAITLIST_RESERVED==null) &&
-                        (student.WAITLIST_TYPE=="Either" || 
-                        (student.WAITLIST_TYPE=="HP" && isHP==true) ||
-                        (student.WAITLIST_TYPE=="Macbook" && isMac==true)))
+                    numAvailableHPs--;
+                }
+                else if (student.WAITLIST_NOTIFIED != null && student.WAITLIST_TYPE == "Mac")
+                {
+                    numAvailableMacs--;
+                }
+                else if (student.WAITLIST_NOTIFIED != null && student.WAITLIST_TYPE == "Either")
+                {
+                    numAvailableHPs--;
+                    numAvailableMacs--;
+                }
+                else if (student.WAITLIST_NOTIFIED == null && student.WAITLIST_TYPE == "HP")
+                {
+                    if (numAvailableHPs > 0)
                     {
-                        /*
-                        // match between student need and available item, so reserve item to student and student to item
-                        var itemToReserve = db.tb_CSULabInventoryItems.FirstOrDefault(e => e.ItemUPC == item.ItemUPC);
-                        itemToReserve.ReservedTo = student.CSU_ID;
-                        item.ReservedTo = student.CSU_ID; // so next student can't also be assigned to item
-                        */
-                        
-                        // now notify student, record notification time
-                        var stuToNotify = db.tb_LongtermWaitlist.FirstOrDefault(e => e.CSU_ID == student.CSU_ID);
-                        var stuDetails = db.tb_CSUStudent.FirstOrDefault(e => e.CSU_ID == student.CSU_ID);
-                        //email.WaitlistItemReadyEmail(stuDetails);
-                        stuToNotify.WAITLIST_NOTIFIED = DateTime.Now;
-                        db.SaveChanges();
+                        notify = true;
                     }
+                    numAvailableHPs--;
+                }
+                else if (student.WAITLIST_NOTIFIED == null && student.WAITLIST_TYPE == "Mac")
+                {
+                    if (numAvailableMacs > 0)
+                    {
+                        notify = true;
+                    }
+                    numAvailableMacs--;
+                }
+                else if (student.WAITLIST_NOTIFIED == null && student.WAITLIST_TYPE == "Either")
+                {
+                    if (numAvailableHPs > 0 || numAvailableMacs > 0)
+                    {
+                        notify = true;
+                    }
+                    numAvailableHPs--;
+                    numAvailableMacs--;
+                }
+                
+                if (notify)
+                { 
+                    // now notify student, record notification time
+                    var stuDetails = db.tb_CSUStudent.FirstOrDefault(e => e.CSU_ID == student.CSU_ID);
+                    email.WaitlistItemReadyEmail(stuDetails);
+
+                    var stuToNotify = db.tb_LongtermWaitlist.FirstOrDefault(e => e.CSU_ID == student.CSU_ID);
+                    stuToNotify.WAITLIST_NOTIFIED = DateTime.Now;
+                    db.SaveChanges();
                 }
             }
+
+           
             return RedirectToAction("LongtermWaitlist");
         }
 

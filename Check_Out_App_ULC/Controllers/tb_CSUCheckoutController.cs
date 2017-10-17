@@ -362,7 +362,7 @@ namespace Check_Out_App_ULC.Controllers
                         }
                         db.tb_CSUCheckoutCheckin.Add(checkoutRecord);
                         db.SaveChanges();
-                        //email.CheckoutEmail(csuStudent, checkoutRecord);
+                        email.CheckoutEmail(csuStudent, checkoutRecord);
                     }
                 }
                 catch

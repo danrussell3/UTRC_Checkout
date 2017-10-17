@@ -54,9 +54,6 @@
                     <th data-field="WaitlistType" data-sortable="false" data-filter-control="input">
                         @Html.DisplayNameFor(model => model.WaitlistType)
                     </th>
-                    <th data-field="WaitlistReserved" data-sortable="false" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.WaitlistReserved)
-                    </th>
                     <th data-field="WaitlistNotified" data-sortable="false" data-filter-control="input">
                         @Html.DisplayNameFor(model => model.WaitlistNotified)
                     </th>
@@ -92,9 +89,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.WaitlistType)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.WaitlistReserved)
                         </td>
                         <td>
                             @if (item.WaitlistNotified != null)
