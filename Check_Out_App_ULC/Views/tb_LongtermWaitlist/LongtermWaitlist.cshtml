@@ -119,15 +119,15 @@
                                     
                                     if(item.WaitlistReason=="HP")
                                     {
-                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsHP, "Choose laptop UPC" )
+                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsHP, "Choose UPC" )
                                     }
                                     else if(item.WaitlistReason=="Mac")
                                     {
-                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsMac, "Choose laptop UPC" )
+                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsMac, "Choose UPC" )
                                     }
                                     else
                                     {
-                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsEither, "Choose laptop UPC" )
+                                        @Html.DropDownList("upc", (IEnumerable<SelectListItem>)ViewBag.upcsEither, "Choose UPC" )
                                     }
 
                                     @Html.TextBox("upc1", "", new { placeholder = "Charger UPC" })
