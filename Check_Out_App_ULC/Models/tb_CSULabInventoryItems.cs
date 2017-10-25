@@ -27,6 +27,5 @@ namespace Check_Out_App_ULC.Models
         public Nullable<bool> isInRepair { get; set; }
         public Nullable<int> RepairIds { get; set; }
         public Nullable<bool> isWaitlistItem { get; set; }
-        public string ReservedTo { get; set; }
     }
 }

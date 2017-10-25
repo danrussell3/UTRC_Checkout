@@ -93,6 +93,12 @@ namespace Check_Out_App_ULC.Controllers
             return View(db.tb_CSULabTechs.Where(s => s.UserRights == true).ToList());
         }
 
+        public ActionResult TestSling()
+        {
+            ViewBag.Message = TempData["Message"];
+            return View("TestSling");
+        }
+
         // GET: tb_CSULabTechs/Details/5
         public ActionResult Details(int? id)
         {

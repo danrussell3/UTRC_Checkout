@@ -37,7 +37,6 @@ namespace Check_Out_App_ULC.Controllers
                  WaitlistReason = waitlistedUsers.WAITLIST_REASON,
                  WaitlistType = waitlistedUsers.WAITLIST_TYPE,
                  WaitlistNotified = waitlistedUsers.WAITLIST_NOTIFIED,
-                 WaitlistReserved = waitlistedUsers.WAITLIST_RESERVED,
              });
 
             // grab list of available waitlist UPCs
@@ -160,7 +159,7 @@ namespace Check_Out_App_ULC.Controllers
             // get updated waitlist
             waitlist = db.tb_LongtermWaitlist.Where(m => m.WAITLISTED != null).OrderBy(m => m.WAITLISTED).ToList();
 
-            var available = db.tb_CSULabInventoryItems.Where(m => (m.isWaitlistItem == true) && m.isCheckedOut != true && m.ReservedTo == null).ToList();
+            var available = db.tb_CSULabInventoryItems.Where(m => (m.isWaitlistItem == true) && m.isCheckedOut != true).ToList();
             var numAvailableHPs = 0;
             var numAvailableMacs = 0;
 
@@ -181,7 +180,7 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     numAvailableHPs--;
                 }
-                else if (student.WAITLIST_NOTIFIED != null && student.WAITLIST_TYPE == "Mac")
+                else if (student.WAITLIST_NOTIFIED != null && student.WAITLIST_TYPE == "Macbook")
                 {
                     numAvailableMacs--;
                 }
@@ -198,7 +197,7 @@ namespace Check_Out_App_ULC.Controllers
                     }
                     numAvailableHPs--;
                 }
-                else if (student.WAITLIST_NOTIFIED == null && student.WAITLIST_TYPE == "Mac")
+                else if (student.WAITLIST_NOTIFIED == null && student.WAITLIST_TYPE == "Macbook")
                 {
                     if (numAvailableMacs > 0)
                     {

@@ -118,6 +118,14 @@
                         </a>
                     </div>
                 }
+                @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ENAME == "russell1")
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
+                        <a href="@Url.Action("TestSling", "tb_CSULabTechs")" class="btn btn-primary btn-md btn-block">
+                            <span class="glyphicon glyphicon-envelope"></span> Test Sling API
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     }

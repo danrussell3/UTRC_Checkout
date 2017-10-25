@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\danru\Documents\CASA\UTRC_Checkout\Check_Out_App_ULC\Models\Checkin_Checkout.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\danru\Documents\Repos\UTRC_Checkout\Check_Out_App_ULC\Models\Checkin_Checkout.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

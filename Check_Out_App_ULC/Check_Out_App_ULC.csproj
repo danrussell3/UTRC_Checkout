@@ -486,7 +486,6 @@
     <Content Include="Views\tb_CSUCheckout\LongtermCheckout.cshtml" />
     <Content Include="Views\tb_CSUCheckout\_Create.cshtml" />
     <Content Include="Views\tb_CSUCheckoutCheckin\Reports.cshtml" />
-    <Content Include="Views\tb_CSUCheckoutCheckin\SlackTest.cshtml" />
     <Content Include="Views\tb_ItemRepair\Create.cshtml" />
     <Content Include="Views\tb_ItemRepair\Delete.cshtml" />
     <Content Include="Views\tb_ItemRepair\Details.cshtml" />
@@ -497,6 +496,7 @@
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\tb_CSULabInventoryItems\WaitlistItems.cshtml" />
+    <Content Include="Views\tb_CSULabTechs\TestSling.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Report\" />

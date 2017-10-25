@@ -15,13 +15,12 @@ namespace Check_Out_App_ULC.Models
     public partial class tb_LongtermWaitlist
     {
         public string CSU_ID { get; set; }
+        public string FIRST_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string ENAME { get; set; }
         public Nullable<System.DateTime> WAITLISTED { get; set; }
         public string WAITLIST_REASON { get; set; }
         public string WAITLIST_TYPE { get; set; }
         public Nullable<System.DateTime> WAITLIST_NOTIFIED { get; set; }
-        public string WAITLIST_RESERVED { get; set; }
-        public string FIRST_NAME { get; set; }
-        public string LAST_NAME { get; set; }
-        public string ENAME { get; set; }
     }
 }

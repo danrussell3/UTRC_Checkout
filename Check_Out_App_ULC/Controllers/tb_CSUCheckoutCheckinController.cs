@@ -24,7 +24,11 @@ namespace Check_Out_App_ULC.Controllers
 
         public ActionResult Index()
         {
-            var view = db.tb_CSUCheckoutCheckin.Take(1000);
+            var view = db.tb_CSUCheckoutCheckin.OrderByDescending(s => s.CheckoutDate).Take(1000);
+            if(SessionVariables.CurrentLocation.ToString() != "notset" && SessionVariables.CurrentLocation.ToString() != null)
+            {
+                view = db.tb_CSUCheckoutCheckin.Where(s => s.CheckoutLocationFK == SessionVariables.CurrentLocation.ToString()).OrderByDescending(s => s.CheckoutDate).Take(1000);
+            }
             return View("Index", view);
         }
         // GET: tb_CSUCheckoutCheckin

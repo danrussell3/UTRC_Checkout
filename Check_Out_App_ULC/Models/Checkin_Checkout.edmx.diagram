@@ -12,8 +12,8 @@
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSULabTechs" Width="1.5" PointX="0.75" PointY="5.375" />
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_ItemRepair" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_Reports" Width="1.5" PointX="5.375" PointY="5.75" />
-        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" Width="1.5" PointX="3.375" PointY="8.75" />
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSUStudent" Width="1.5" PointX="7.375" PointY="4.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" Width="1.5" PointX="3.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

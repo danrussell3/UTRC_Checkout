@@ -58,7 +58,6 @@
           <Property Name="isInRepair" Type="bit" />
           <Property Name="RepairIds" Type="int" />
           <Property Name="isWaitlistItem" Type="bit" />
-          <Property Name="ReservedTo" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="tb_CSULabLocations">
           <Key>
@@ -129,7 +128,6 @@
           <Property Name="WAITLIST_REASON" Type="nvarchar" MaxLength="255" />
           <Property Name="WAITLIST_TYPE" Type="nvarchar" MaxLength="7" />
           <Property Name="WAITLIST_NOTIFIED" Type="datetime" />
-          <Property Name="WAITLIST_RESERVED" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="tb_Reports">
           <Key>
@@ -178,8 +176,8 @@
           <EntitySet Name="tb_CSULabTechs" EntityType="Checkin_Checkout_Model.tb_CSULabTechs" />
           <EntitySet Name="tb_ItemRepair" EntityType="Checkin_Checkout_Model.tb_ItemRepair" />
           <EntitySet Name="tb_Reports" EntityType="Checkin_Checkout_Model.tb_Reports" />
-          <EntitySet Name="tb_LongtermWaitlist" EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" />
           <EntitySet Name="tb_CSUStudent" EntityType="Checkin_Checkout_Model.tb_CSUStudent" />
+          <EntitySet Name="tb_LongtermWaitlist" EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" />
           </EntityContainer>
         <EntityType Name="tb_BannedUserTable">
           <Key>
@@ -234,7 +232,6 @@
           <Property Name="isInRepair" Type="Boolean" />
           <Property Name="RepairIds" Type="Int32" />
           <Property Name="isWaitlistItem" Type="Boolean" />
-          <Property Name="ReservedTo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tb_CSULabLocations">
           <Key>
@@ -288,20 +285,6 @@
           <Property Name="TimeSubmitted" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Report" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="tb_LongtermWaitlist">
-          <Key>
-            <PropertyRef Name="CSU_ID" />
-          </Key>
-          <Property Name="CSU_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="WAITLISTED" Type="DateTime" Precision="3" />
-          <Property Name="WAITLIST_REASON" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="WAITLIST_TYPE" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Name="WAITLIST_NOTIFIED" Type="DateTime" Precision="3" />
-          <Property Name="WAITLIST_RESERVED" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="FIRST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-          <Property Name="LAST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-          <Property Name="ENAME" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tb_CSUStudent">
           <Key>
             <PropertyRef Name="CSUStudentID" />
@@ -314,6 +297,19 @@
           <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="SIGNEDWAIVER" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tb_LongtermWaitlist">
+          <Key>
+            <PropertyRef Name="CSU_ID" />
+          </Key>
+          <Property Name="CSU_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="ENAME" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="WAITLISTED" Type="DateTime" Precision="3" />
+          <Property Name="WAITLIST_REASON" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WAITLIST_TYPE" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="WAITLIST_NOTIFIED" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -364,7 +360,6 @@
           <EntitySetMapping Name="tb_CSULabInventoryItems">
             <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSULabInventoryItems">
               <MappingFragment StoreEntitySet="tb_CSULabInventoryItems">
-                <ScalarProperty Name="ReservedTo" ColumnName="ReservedTo" />
                 <ScalarProperty Name="isWaitlistItem" ColumnName="isWaitlistItem" />
                 <ScalarProperty Name="RepairIds" ColumnName="RepairIds" />
                 <ScalarProperty Name="isInRepair" ColumnName="isInRepair" />
@@ -437,21 +432,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tb_LongtermWaitlist">
-            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_LongtermWaitlist">
-              <MappingFragment StoreEntitySet="tb_LongtermWaitlist">
-                <ScalarProperty Name="ENAME" ColumnName="ENAME" />
-                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
-                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
-                <ScalarProperty Name="WAITLIST_RESERVED" ColumnName="WAITLIST_RESERVED" />
-                <ScalarProperty Name="WAITLIST_NOTIFIED" ColumnName="WAITLIST_NOTIFIED" />
-                <ScalarProperty Name="WAITLIST_TYPE" ColumnName="WAITLIST_TYPE" />
-                <ScalarProperty Name="WAITLIST_REASON" ColumnName="WAITLIST_REASON" />
-                <ScalarProperty Name="WAITLISTED" ColumnName="WAITLISTED" />
-                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tb_CSUStudent">
             <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSUStudent">
               <MappingFragment StoreEntitySet="tb_CSUStudent">
@@ -463,6 +443,20 @@
                 <ScalarProperty Name="ENAME" ColumnName="ENAME" />
                 <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
                 <ScalarProperty Name="CSUStudentID" ColumnName="CSUStudentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_LongtermWaitlist">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_LongtermWaitlist">
+              <MappingFragment StoreEntitySet="tb_LongtermWaitlist">
+                <ScalarProperty Name="WAITLIST_NOTIFIED" ColumnName="WAITLIST_NOTIFIED" />
+                <ScalarProperty Name="WAITLIST_TYPE" ColumnName="WAITLIST_TYPE" />
+                <ScalarProperty Name="WAITLIST_REASON" ColumnName="WAITLIST_REASON" />
+                <ScalarProperty Name="WAITLISTED" ColumnName="WAITLISTED" />
+                <ScalarProperty Name="ENAME" ColumnName="ENAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

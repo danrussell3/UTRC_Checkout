@@ -113,8 +113,6 @@ namespace Check_Out_App_ULC.Models
             public string WaitlistType { get; set; }
             [Display(Name = "Notified", Prompt = "Notified", Description = "Notified")]
             public DateTime? WaitlistNotified { get; set; }
-            [Display(Name = "Reserved", Prompt = "Reserved", Description = "Reserved")]
-            public string WaitlistReserved { get; set; }
             #endregion
         }
 
