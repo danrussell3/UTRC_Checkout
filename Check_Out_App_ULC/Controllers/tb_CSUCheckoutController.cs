@@ -78,8 +78,9 @@ namespace Check_Out_App_ULC.Controllers
                     ViewBag.Message = "That user has been banned from checkout!" + csuId;
                     return View("Index");
                 }
-
+             
                 // Checks for Student record
+
                 var csuStudent = GetOrMigrateStudent(csuId);
 
                 //Checks for signed Waiver
@@ -491,27 +492,30 @@ namespace Check_Out_App_ULC.Controllers
         {
             var findStudent = db.tb_CSUStudent.FirstOrDefault(s => s.CSU_ID == csuId);
 
-            if (findStudent != null) return findStudent;
+            if (findStudent != null)
+            {
+                return findStudent;
+            }
 
             //The student hasn't checked out before, attempt to gather info from CSU Main Database
             try
             {
                 var dbHera = new HeraStudents_Entities();
-                var bsh =
+                var noDupesForCheckout =
                     dbHera.v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout
                         .FirstOrDefault(s => s.CSU_ID == csuId);
 
-                if (bsh != null)
+                if (noDupesForCheckout != null)
                 {
                     //creates student record if its found
                     var csuStudent = new tb_CSUStudent
                     {
-                        CSU_ID = bsh.CSU_ID,
-                        EMAIL_ADDRESS = bsh.EMAIL_ADDRESS,
-                        ENAME = bsh.ENAME,
-                        FIRST_NAME = bsh.FIRST_NAME,
-                        LAST_NAME = bsh.LAST_NAME,
-                        PHONE = bsh.LAST_NAME,
+                        CSU_ID = noDupesForCheckout.CSU_ID,
+                        EMAIL_ADDRESS = noDupesForCheckout.EMAIL_ADDRESS,
+                        ENAME = noDupesForCheckout.ENAME,
+                        FIRST_NAME = noDupesForCheckout.FIRST_NAME,
+                        LAST_NAME = noDupesForCheckout.LAST_NAME,
+                        PHONE = noDupesForCheckout.LAST_NAME,
                         SIGNEDWAIVER = null
                     };
                     db.tb_CSUStudent.Add(csuStudent);
