@@ -4,11 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Check_Out_App_ULC.Models;
+using Check_Out_App_ULC.Controllers.Api;
 
 namespace Check_Out_App_ULC.Controllers
 {
     public class HomeController : Controller
     {
+        SlingController sling = new SlingController();
+        
         #region Public Functions
 
         public ActionResult Index()
@@ -19,7 +22,20 @@ namespace Check_Out_App_ULC.Controllers
             }
             else
             {
-                return View();
+                // pull Sling articles for view
+                var s = sling.SlingGetArticles();
+
+                /*var slingView = new ViewModels.SlingArticlesView()
+                {
+                    slingView.content = s.content,
+                    slingView.posted = s.posted,
+                    slingView.userid = s.userid,
+                    slingView.id = s.id
+                });
+                */
+                
+
+                return View(s);
             }
         }
 

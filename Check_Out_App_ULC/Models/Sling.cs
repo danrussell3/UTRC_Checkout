@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Helpers;
+using Check_Out_App_ULC.Models;
 
 namespace Check_Out_App_ULC.Models
 {
@@ -36,9 +37,13 @@ namespace Check_Out_App_ULC.Models
             public string name { get; set; }
         }
 
-        public class SlingAnnouncements
+        public class SlingArticle
         {
-            public string announcements { get; set; }
+            public string content { get; set; }
+            public DateTime posted { get; set; }
+            public string id { get; set; }
+            //public string commentlist { get; set; }
+            public string userid { get; set; }
         }
         
         public static SlingUser Login(string e, string pw, string snsP, string snsT)
@@ -116,7 +121,7 @@ namespace Check_Out_App_ULC.Models
             else throw new Exception("No response was received from the Sling API");
         }
 
-        public static JArray GetArticles()
+        public static List<SlingArticle> GetArticles()
         {
             string apiUrl = "https://api.sling.is/v1/channels/0/articles",
                 resultString = "";
@@ -133,10 +138,31 @@ namespace Check_Out_App_ULC.Models
 
             if (!String.IsNullOrEmpty(resultString))
             {
-                //resultString = resultString.TrimStart(new char[] { '[' }).TrimEnd(new char[] { ']' });
                 var result = JArray.Parse(resultString);
 
-                return result;
+                List<SlingArticle> articles = new List<SlingArticle>();//
+
+                //ViewModels.SlingArticlesView view = new ViewModels.SlingArticlesView();
+
+                foreach(var a in result)
+                {
+                    SlingArticle article = new SlingArticle();
+                    article.content = a["content"].ToString();
+                    article.posted = Convert.ToDateTime(a["posted"].ToString());
+                    article.id = a["id"].ToString();
+                    article.userid = a["user"]["id"].ToString();
+                    //article.commentlist = a["commentlist"].ToString();
+                    articles.Add(article);
+                    
+                }
+
+                // get commentlist and append
+
+
+                // match userid to username and append
+
+
+                return articles;
             }
             else throw new Exception("No response was received from the Sling API");
         }

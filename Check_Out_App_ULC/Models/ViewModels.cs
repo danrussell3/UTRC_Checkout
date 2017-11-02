@@ -116,6 +116,20 @@ namespace Check_Out_App_ULC.Models
             #endregion
         }
 
+        public class SlingArticlesView
+        {
+            #region Members
+            [Display(Name = "Content", Prompt = "Content", Description = "Content")]
+            public string content { get; set; }
+            [Display(Name = "Posted", Prompt = "Posted", Description = "Posted")]
+            public DateTime posted { get; set; }
+            [Display(Name = "User ID", Prompt = "User ID", Description = "User ID")]
+            public string userid { get; set; }
+            [Display(Name = "ID", Prompt = "ID", Description = "ID")]
+            public string id { get; set; }
+            #endregion
+        }
+
         #region Public Functions
         public bool IsValidUser(string id)
         {

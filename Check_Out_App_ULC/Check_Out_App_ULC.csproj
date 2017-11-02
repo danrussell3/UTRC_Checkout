@@ -498,6 +498,7 @@
     <Content Include="Views\tb_CSULabInventoryItems\WaitlistItems.cshtml" />
     <Content Include="Views\tb_CSULabTechs\TestSling.cshtml" />
     <Content Include="Views\tb_CSUCheckoutCheckin\UsageReports.cshtml" />
+    <Content Include="Views\Home\_SlingArticles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Report\" />

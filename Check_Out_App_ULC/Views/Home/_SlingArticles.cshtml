@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Sling.SlingArticle>
+
+@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ENAME == "russell1")
+{
+    <h2>Sling Articles:</h2>
+    <div style="border:12px; border-style:solid; border-color:#cc6600; padding: 1em;">
+        @if (Model != null)
+        {
+            <table id="table"
+                   data-toggle="table"
+                   data-sort-name="name"
+                   data-sort-order="desc"
+                   data-search="true"
+                   data-show-pagination-switch="true"
+                   data-page-list="[100, ALL]"
+                   data-show-refresh="true"
+                   data-show-toggle="true"
+                   data-show-columns="true"
+                   data-show-multi-sort="true"
+                   data-show-export="true"
+                   data-pagination="true"
+                   data-filter-control="true"
+                   data-click-to-select="true"
+                   data-filter-show-clear="true"
+                   data-response-handler="responseHandler"
+                   data-toolbar="#toolbar">
+                <thead>
+                    <tr>
+                        <th data-field="Content" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.content)</th>
+                        <th data-field="Posted" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.posted)</th>
+                        <th data-field="User ID" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.userid)</th>
+                        <th data-field="ID" data-sortable="true" data-filter-control="select">@Html.DisplayNameFor(model => model.id)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (SessionVariables.CurrentLocation.ToString() == "LSC" || SessionVariables.CurrentLocation.ToString() == "BSB" || SessionVariables.CurrentLocation.ToString() == "notset")
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.content)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.posted)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.userid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.id)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+        }
+    </div>
+}
+
