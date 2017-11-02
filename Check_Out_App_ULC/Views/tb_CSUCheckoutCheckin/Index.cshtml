@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_CSUCheckoutCheckin>
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.CkVw>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,26 +38,26 @@
                data-toolbar="#toolbar">
             <thead>
                 <tr>
-                    <th data-field="CheckoutCheckinId" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(Model => Model.CheckoutCheckinId)
+                    <th data-field="CsuId" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(Model => Model.CsuId)
                     </th>
-                    <th data-field="CSU_IDFK" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.CSU_IDFK)
+                    <th data-field="Ename" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Ename)
                     </th>
-                    <th data-field="ItemUPCFK" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.ItemUPCFK)
+                    <th data-field="Name" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.Name)
                     </th>
-                    <th data-field="CheckoutLabTech" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.CheckoutLabTech)
+                    <th data-field="ItemUpc" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.ItemUpc)
                     </th>
-                    <th data-field="CheckoutDate" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.CheckoutDate)
+                    <th data-field="CkOutLabTech" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutLabTech)
                     </th>
-                    <th data-field="CheckinLabTech" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.CheckinLabTech)
+                    <th data-field="CkOutDt" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.CkOutDt)
                     </th>
-                    <th data-field="CheckinDate" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.CheckinDate)
+                    <th data-field="DueDate" data-sortable="true" data-filter-control="input">
+                        @Html.DisplayNameFor(model => model.DueDate)
                     </th>
                     @*<th>Actions</th>*@
                 </tr>
@@ -65,29 +65,29 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    if (SessionVariables.CurrentLocation.ToString() == item.CheckoutLocationFK || SessionVariables.CurrentLocation.ToString() == "notset")
+                    if (SessionVariables.CurrentLocation.ToString() == item.CkOutLoc || SessionVariables.CurrentLocation.ToString() == "notset")
                     {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CheckoutCheckinId)
+                            @Html.DisplayFor(modelItem => item.CsuId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CSU_IDFK)
+                            @Html.DisplayFor(modelItem => item.Ename)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ItemUPCFK)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CheckoutLabTech)
+                            @Html.DisplayFor(modelItem => item.ItemUpc)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CheckoutDate)
+                            @Html.DisplayFor(modelItem => item.CkOutLabTech)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CheckinLabTech)
+                            @Html.DisplayFor(modelItem => item.CkOutDt)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CheckinDate)
+                            @Html.DisplayFor(modelItem => item.DueDate)
                         </td>
                         @*<td>
                           @Html.ActionLink("Edit", "Edit", new { id = item.CheckoutCheckinId }) |

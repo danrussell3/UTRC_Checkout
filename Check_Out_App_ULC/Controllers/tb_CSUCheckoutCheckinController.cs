@@ -24,12 +24,24 @@ namespace Check_Out_App_ULC.Controllers
 
         public ActionResult Index()
         {
-            var view = db.tb_CSUCheckoutCheckin.OrderByDescending(s => s.CheckoutDate).Take(1000);
-            if(SessionVariables.CurrentLocation.ToString() != "notset" && SessionVariables.CurrentLocation.ToString() != null)
-            {
-                view = db.tb_CSUCheckoutCheckin.Where(s => s.CheckoutLocationFK == SessionVariables.CurrentLocation.ToString()).OrderByDescending(s => s.CheckoutDate).Take(1000);
-            }
-            return View("Index", view);
+            var checkoutView =
+            (from checkInCheckout in db.tb_CSUCheckoutCheckin
+             join csuStudents in db.tb_CSUStudent on checkInCheckout.CSU_IDFK equals csuStudents.CSU_ID orderby checkInCheckout.CheckoutDate descending
+             select new ViewModels.CkVw()
+             {
+                 CsuId = checkInCheckout.CSU_IDFK,
+                 Ename = csuStudents.ENAME,
+                 Name = csuStudents.FIRST_NAME + " " + csuStudents.LAST_NAME,
+                 ItemUpc = checkInCheckout.ItemUPCFK,
+                 CkOutLabTech = checkInCheckout.CheckoutLabTech,
+                 CkOutDt = checkInCheckout.CheckoutDate.Value,
+                 CkOutLoc = checkInCheckout.CheckoutLocationFK,
+                 DueDate = checkInCheckout.DueDate,
+                 LongTerm = checkInCheckout.isLongterm.Value
+             });
+
+            return View("Index", checkoutView);
+
         }
         // GET: tb_CSUCheckoutCheckin
         
@@ -134,6 +146,11 @@ namespace Check_Out_App_ULC.Controllers
 
             ViewBag.Message = TempData["Message"];
             return View("Reports", view);
+        }
+
+        public ActionResult UsageReports()
+        {
+            return View("UsageReports");
         }
 
         public ActionResult TestEmails()

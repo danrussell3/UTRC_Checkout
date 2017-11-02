@@ -497,6 +497,7 @@
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\tb_CSULabInventoryItems\WaitlistItems.cshtml" />
     <Content Include="Views\tb_CSULabTechs\TestSling.cshtml" />
+    <Content Include="Views\tb_CSUCheckoutCheckin\UsageReports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Report\" />

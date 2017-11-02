@@ -13,7 +13,7 @@ namespace Check_Out_App_ULC.Models
 {
     public class Sling
     {
-        public static readonly string apiKey = "edd54f74a1006c597ebd575713582ac5";
+        public static readonly string apiKey = "e98f0ab7fac452dded22f6c01d493e73";
 
         public class AccountLoginObject
         {
@@ -82,10 +82,6 @@ namespace Check_Out_App_ULC.Models
 
                 string status = result["user"]["status"].ToString();
 
-                // 200 - OK : Continue parsing
-                //if (status.Contains("200"))
-                //return result["result"]["id"].ToString();
-
                 if (user.status == "verified")
                     return user;
 
@@ -95,33 +91,15 @@ namespace Check_Out_App_ULC.Models
             else throw new Exception("No response was received from the Sling API");
         }
 
-        public static SlingAnnouncements GetAnnouncements()
+        public static JArray GetAnnouncements()
         {
             string apiUrl = "https://api.sling.is/v1/announcements",
                 resultString = "";
 
-            GetAnnouncementsObject getObject = new GetAnnouncementsObject()
-            {
-                //before = b,
-                //since = s,
-                //pagesize = ps
-            };
-
-            string debug = JsonConvert.SerializeObject(getObject);
-            //Stringify the data and convert to byte
-            byte[] postData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(getObject));
-
             HttpWebRequest request = WebRequest.Create(apiUrl) as HttpWebRequest;
-            request.Method = "POST";
-            request.Timeout = 60000;
-            request.KeepAlive = false;
-            request.ContentLength = postData.Length;
-            request.ContentType = "application/json";
-            request.Headers.Add("X-API-TOKEN", apiKey);
-            request.CookieContainer = new CookieContainer();
-
-            using (Stream stream = request.GetRequestStream())
-                stream.Write(postData, 0, postData.Length);
+            request.Method = "GET";
+            request.Headers.Add("Authorization", apiKey);
+            request.Accept = "application/json";
 
             using (WebResponse webResponse = request.GetResponse())
             using (Stream stream = webResponse.GetResponseStream())
@@ -130,20 +108,35 @@ namespace Check_Out_App_ULC.Models
 
             if (!String.IsNullOrEmpty(resultString))
             {
-                var result = JObject.Parse(resultString);
-                var ann = result["announcements"].ToObject<SlingAnnouncements>();
+                //resultString = resultString.TrimStart(new char[] { '[' }).TrimEnd(new char[] { ']' });
+                var result = JArray.Parse(resultString);
 
-                //string status = result["user"]["status"].ToString();
+                return result;
+            }
+            else throw new Exception("No response was received from the Sling API");
+        }
 
-                // 200 - OK : Continue parsing
-                //if (status.Contains("200"))
-                //return result["result"]["id"].ToString();
+        public static JArray GetArticles()
+        {
+            string apiUrl = "https://api.sling.is/v1/channels/0/articles",
+                resultString = "";
 
-                if (ann.announcements != null)
-                    return ann;
+            HttpWebRequest request = WebRequest.Create(apiUrl) as HttpWebRequest;
+            request.Method = "GET";
+            request.Headers.Add("Authorization", apiKey);
+            request.Accept = "application/json";
 
-                // An error occured
-                else throw new Exception("Sling returned no announcements");
+            using (WebResponse webResponse = request.GetResponse())
+            using (Stream stream = webResponse.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                resultString = reader.ReadToEnd();
+
+            if (!String.IsNullOrEmpty(resultString))
+            {
+                //resultString = resultString.TrimStart(new char[] { '[' }).TrimEnd(new char[] { ']' });
+                var result = JArray.Parse(resultString);
+
+                return result;
             }
             else throw new Exception("No response was received from the Sling API");
         }

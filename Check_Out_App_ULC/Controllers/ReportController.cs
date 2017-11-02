@@ -22,8 +22,6 @@ namespace Check_Out_App_ULC.Controllers
 
         #region Public Functions
 
-
-
         public ActionResult Index()
         {
 
