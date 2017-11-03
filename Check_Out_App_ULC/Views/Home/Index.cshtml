@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<ViewModels.SlingArticlesView>
 @using System.Data.SqlTypes
 @using System.Web.Mvc.Html;
 
@@ -122,14 +122,6 @@
                 @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ENAME == "russell1")
                 {
                     <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
-                        <a href="@Url.Action("TestSling", "tb_CSULabTechs")" class="btn btn-primary btn-md btn-block">
-                            <span class="glyphicon glyphicon-envelope"></span> Test Sling API
-                        </a>
-                    </div>
-                }
-                @if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ENAME == "russell1")
-                {
-                    <div class="col-sm-6 col-md-4 col-lg-3 margin-top-20">
                         <a href="@Url.Action("UsageReports", "tb_CSUCheckoutCheckin")" class="btn btn-primary btn-md btn-block">
                             <span class="glyphicon glyphicon-export"></span> Usage Reports
                         </a>
@@ -139,9 +131,10 @@
         </div>
     }
 
-
-@Html.Partial("_SlingArticles", new Sling.SlingArticle(), new ViewDataDictionary())
-
+@if (SessionVariables.CurrentLocation.ToString() == "LSC" || SessionVariables.CurrentLocation.ToString() == "BSB" || SessionVariables.CurrentLocation.ToString() == "notset")
+{
+    @Html.Partial("_SlingArticles", Model, new ViewDataDictionary())
+}
 
 
 

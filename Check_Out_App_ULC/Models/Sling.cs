@@ -9,9 +9,11 @@ using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using Check_Out_App_ULC.Models;
+using Check_Out_App_ULC.Controllers.Api;
 
 namespace Check_Out_App_ULC.Models
 {
+
     public class Sling
     {
         public static readonly string apiKey = "e98f0ab7fac452dded22f6c01d493e73";
@@ -24,26 +26,17 @@ namespace Check_Out_App_ULC.Models
             public string snsToken;
         }
 
-        public class GetAnnouncementsObject
-        {
-            public int before;
-            public int since;
-            public int pagesize;
-        }
-
         public class SlingUser
         {
             public string status { get; set; }
             public string name { get; set; }
         }
 
-        public class SlingArticle
+        public class SlingArticleComments
         {
-            public string content { get; set; }
-            public DateTime posted { get; set; }
-            public string id { get; set; }
-            //public string commentlist { get; set; }
-            public string userid { get; set; }
+            public string commentContent { get; set; }
+            public string commenterName { get; set; }
+            public DateTime commentTime { get; set; }
         }
         
         public static SlingUser Login(string e, string pw, string snsP, string snsT)
@@ -96,9 +89,9 @@ namespace Check_Out_App_ULC.Models
             else throw new Exception("No response was received from the Sling API");
         }
 
-        public static JArray GetAnnouncements()
+        public static List<ViewModels.SlingArticlesView> GetArticles(string channel)
         {
-            string apiUrl = "https://api.sling.is/v1/announcements",
+            string apiUrl = "https://api.sling.is/v1/channels/" + channel + "/articles",
                 resultString = "";
 
             HttpWebRequest request = WebRequest.Create(apiUrl) as HttpWebRequest;
@@ -113,17 +106,32 @@ namespace Check_Out_App_ULC.Models
 
             if (!String.IsNullOrEmpty(resultString))
             {
-                //resultString = resultString.TrimStart(new char[] { '[' }).TrimEnd(new char[] { ']' });
                 var result = JArray.Parse(resultString);
 
-                return result;
+                List<ViewModels.SlingArticlesView> articles = new List<ViewModels.SlingArticlesView>();
+
+                foreach(var a in result)
+                {
+                    ViewModels.SlingArticlesView article = new ViewModels.SlingArticlesView();
+                    article.PostContent = a["content"].ToString();
+                    article.Posted = Convert.ToDateTime(a["posted"].ToString());
+                    article.PostId = a["id"].ToString();
+                    article.UserId = a["user"]["id"].ToString();
+                    article.PostedBy = GetUserName(article.UserId);
+
+                    // get commentlist and append
+                    article.PostComments = GetPostComments(article.PostId, channel);
+
+                    articles.Add(article);
+                }
+                return articles;
             }
             else throw new Exception("No response was received from the Sling API");
         }
 
-        public static List<SlingArticle> GetArticles()
+        public static string GetUserName(string userid)
         {
-            string apiUrl = "https://api.sling.is/v1/channels/0/articles",
+            string apiUrl = "https://api.sling.is/v1/users?ids=" + userid,
                 resultString = "";
 
             HttpWebRequest request = WebRequest.Create(apiUrl) as HttpWebRequest;
@@ -139,30 +147,43 @@ namespace Check_Out_App_ULC.Models
             if (!String.IsNullOrEmpty(resultString))
             {
                 var result = JArray.Parse(resultString);
+                var user = result[0];
+                string name = user["name"].ToString() + " " + user["lastname"].ToString();
 
-                List<SlingArticle> articles = new List<SlingArticle>();//
+                return name;
+            }
+            else throw new Exception("No response was received from the Sling API");
+        }
 
-                //ViewModels.SlingArticlesView view = new ViewModels.SlingArticlesView();
+        public static List<Sling.SlingArticleComments> GetPostComments(string postId, string channel)
+        {
+            string apiUrl = "https://api.sling.is/v1/channels/" + channel + "/articles/" + postId + "/comments",
+                resultString = "";
 
-                foreach(var a in result)
+            HttpWebRequest request = WebRequest.Create(apiUrl) as HttpWebRequest;
+            request.Method = "GET";
+            request.Headers.Add("Authorization", apiKey);
+            request.Accept = "application/json";
+
+            using (WebResponse webResponse = request.GetResponse())
+            using (Stream stream = webResponse.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                resultString = reader.ReadToEnd();
+
+            if (!String.IsNullOrEmpty(resultString))
+            {
+                var result = JArray.Parse(resultString);
+                List<Sling.SlingArticleComments> comments = new List<SlingArticleComments>();
+
+                foreach (var c in result)
                 {
-                    SlingArticle article = new SlingArticle();
-                    article.content = a["content"].ToString();
-                    article.posted = Convert.ToDateTime(a["posted"].ToString());
-                    article.id = a["id"].ToString();
-                    article.userid = a["user"]["id"].ToString();
-                    //article.commentlist = a["commentlist"].ToString();
-                    articles.Add(article);
-                    
+                    Sling.SlingArticleComments comment = new Sling.SlingArticleComments();
+                    comment.commentContent = c["content"].ToString();
+                    comment.commentTime = Convert.ToDateTime(c["posted"].ToString());
+                    comment.commenterName = GetUserName(c["user"]["id"].ToString());
+                    comments.Add(comment);
                 }
-
-                // get commentlist and append
-
-
-                // match userid to username and append
-
-
-                return articles;
+                return comments;
             }
             else throw new Exception("No response was received from the Sling API");
         }

@@ -15,26 +15,17 @@ namespace Check_Out_App_ULC.Controllers.Api
         [System.Web.Mvc.HttpPost]
         public IHttpActionResult SlingLogin()
         {
-            var result = Sling.Login("russell1@colostate.edu", "denali", "", "");
-            return Ok(result);
-        }
-
-        [System.Web.Http.Route("Api/Sling/SlingGetAnnouncements")]
-        [System.Web.Http.AcceptVerbs("GET")]
-        [System.Web.Mvc.HttpGet]
-        public IHttpActionResult SlingGetAnnouncements()
-        {
-            var result = Sling.GetAnnouncements();
+            var result = Sling.Login("", "", "", "");
             return Ok(result);
         }
 
         [System.Web.Http.Route("Api/Sling/SlingGetArticles")]
         [System.Web.Http.AcceptVerbs("GET")]
         [System.Web.Mvc.HttpGet]
-        public IHttpActionResult SlingGetArticles()
+        public List<ViewModels.SlingArticlesView> SlingGetArticles(string channel)
         {
-            var result = Sling.GetArticles();
-            return Ok(result);
+            var result = Sling.GetArticles(channel);
+            return result;
         }
     }
 }

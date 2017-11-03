@@ -119,14 +119,19 @@ namespace Check_Out_App_ULC.Models
         public class SlingArticlesView
         {
             #region Members
-            [Display(Name = "Content", Prompt = "Content", Description = "Content")]
-            public string content { get; set; }
+            [Display(Name = "Post Content", Prompt = "Post Content", Description = "Post Content")]
+            public string PostContent { get; set; }
             [Display(Name = "Posted", Prompt = "Posted", Description = "Posted")]
-            public DateTime posted { get; set; }
+            public DateTime Posted { get; set; }
             [Display(Name = "User ID", Prompt = "User ID", Description = "User ID")]
-            public string userid { get; set; }
-            [Display(Name = "ID", Prompt = "ID", Description = "ID")]
-            public string id { get; set; }
+            public string UserId { get; set; }
+            [Display(Name = "Posted By", Prompt = "Posted By", Description = "Posted By")]
+            public string PostedBy { get; set; }
+            [Display(Name = "Post ID", Prompt = "Post ID", Description = "Post ID")]
+            public string PostId { get; set; }
+            [Display(Name = "Comments", Prompt = "Comments", Description = "Comments")]
+            public List<Sling.SlingArticleComments> PostComments { get; set; }
+
             #endregion
         }
 

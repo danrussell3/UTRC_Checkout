@@ -22,18 +22,8 @@ namespace Check_Out_App_ULC.Controllers
             }
             else
             {
-                // pull Sling articles for view
-                var s = sling.SlingGetArticles();
-
-                /*var slingView = new ViewModels.SlingArticlesView()
-                {
-                    slingView.content = s.content,
-                    slingView.posted = s.posted,
-                    slingView.userid = s.userid,
-                    slingView.id = s.id
-                });
-                */
-                
+                string channel = "0"; // 0 is the newsfeed channel visible to all users
+                var s = sling.SlingGetArticles(channel);
 
                 return View(s);
             }

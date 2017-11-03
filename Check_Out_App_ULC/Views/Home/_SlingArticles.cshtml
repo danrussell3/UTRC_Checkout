@@ -1,22 +1,23 @@
-﻿@model IEnumerable<Sling.SlingArticle>
+﻿@model IEnumerable<ViewModels.SlingArticlesView>
 
-@if (SessionVariables.CurrentUser != null && SessionVariables.CurrentUser.ENAME == "russell1")
+@if (SessionVariables.CurrentUser != null && (SessionVariables.CurrentUser.ENAME == "russell1" || SessionVariables.CurrentUser.ENAME == "jdruss"))
 {
-    <h2>Sling Articles:</h2>
-    <div style="border:12px; border-style:solid; border-color:#cc6600; padding: 1em;">
+    <br/>
+    <h3>Here's the latest from Sling:</h3>
+    <div style="border:4px; border-style:solid; border-color:#018a13; padding: 1em;">
         @if (Model != null)
         {
             <table id="table"
                    data-toggle="table"
                    data-sort-name="name"
                    data-sort-order="desc"
-                   data-search="true"
+                   data-search="false"
                    data-show-pagination-switch="true"
                    data-page-list="[100, ALL]"
                    data-show-refresh="true"
                    data-show-toggle="true"
                    data-show-columns="true"
-                   data-show-multi-sort="true"
+                   data-show-multi-sort="false"
                    data-show-export="true"
                    data-pagination="true"
                    data-filter-control="true"
@@ -26,32 +27,43 @@
                    data-toolbar="#toolbar">
                 <thead>
                     <tr>
-                        <th data-field="Content" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.content)</th>
-                        <th data-field="Posted" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.posted)</th>
-                        <th data-field="User ID" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.userid)</th>
-                        <th data-field="ID" data-sortable="true" data-filter-control="select">@Html.DisplayNameFor(model => model.id)</th>
+                        <th data-field="PostedBy" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th data-field="Posted" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.Posted)</th>
+                        <th data-field="Content" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.PostContent)</th>
+                        <th data-field="Comments" data-sortable="false" data-filter-control="input">@Html.DisplayNameFor(model => model.PostComments)</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        if (SessionVariables.CurrentLocation.ToString() == "LSC" || SessionVariables.CurrentLocation.ToString() == "BSB" || SessionVariables.CurrentLocation.ToString() == "notset")
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.content)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.posted)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.userid)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.id)
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PostedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Posted)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PostContent)
+                            </td>
+                            <td>
+                                @if (item.PostComments.FirstOrDefault() != null)
+                                {
+                                    foreach(var comment in item.PostComments)
+                                    {
+                                        @Html.DisplayFor(modelItem => comment.commentContent)
+                                        <br/>
+                                        @: -
+                                        @Html.DisplayFor(modelItem => comment.commenterName)
+                                        <br/><br/>
+                                    }
+                                }
+                                else
+                                {
+                                    @: None
+                                }
+                            </td>
+                        </tr>
                     }
                 </tbody>
 
