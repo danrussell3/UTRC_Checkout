@@ -135,6 +135,7 @@ namespace Check_Out_App_ULC.Models
             #endregion
         }
 
+        
         #region Public Functions
         public bool IsValidUser(string id)
         {

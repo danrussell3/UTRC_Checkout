@@ -336,26 +336,7 @@ namespace Check_Out_App_ULC.Controllers
                                     return RedirectToAction("LongtermWaitlist", "tb_LongtermWaitlist");
                                 }
 
-                                /*if (itemCheckout.ReservedTo==null || csuId!=itemCheckout.ReservedTo)
-                                {
-                                    TempData["Message"] = "UPC " + itemCheckout.ItemUPC + " is not assigned to this " +
-                                        "student. User " + csuId + " has been assigned item with UPC " + waitlistStudent.WAITLIST_RESERVED
-                                        + ".";
-                                    return RedirectToAction("LongtermWaitlist", "tb_LongtermWaitlist");
-                                }
-                                else if (itemCheckout.ReservedTo==csuId && waitlistStudent.WAITLIST_RESERVED==itemCheckout.ItemUPC) // proceed
-                                {
-                                    if (isHP) { checkoutRecord.isWaitlistHP = true; }
-                                    else if (isMac) { checkoutRecord.isWaitlistMac = true; }
-
-                                    itemCheckout.isCheckedOut = true;
-                                }
-                                else
-                                {
-                                    TempData["Message"] = "The checkout could not be completed. The reservation does not match.";
-                                    return RedirectToAction("LongtermWaitlist", "tb_LongtermWaitlist");
-                                }
-                                */
+                                
                                 if (isHP) { checkoutRecord.isWaitlistHP = true; }
                                 else if (isMac) { checkoutRecord.isWaitlistMac = true; }
                                 itemCheckout.isCheckedOut = true;
@@ -423,6 +404,7 @@ namespace Check_Out_App_ULC.Controllers
         {
             return tbs.SIGNEDWAIVER;
         }
+
         //alter record for waiver signed
         public ActionResult WaiverSign(string id)
         {

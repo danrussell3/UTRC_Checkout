@@ -244,6 +244,7 @@
       <DependentUpon>Checkin_Checkout.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\CheckoutDetails.cs" />
+    <Compile Include="Models\SmartWaiver.cs" />
     <Compile Include="Models\Sling.cs" />
     <Compile Include="Models\CSUCheckinCheckoutContext.cs" />
     <Compile Include="Models\HeraStudents.Context.cs">
@@ -496,7 +497,7 @@
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\tb_CSULabInventoryItems\WaitlistItems.cshtml" />
-    <Content Include="Views\tb_CSULabTechs\TestSling.cshtml" />
+    <Content Include="Views\tb_CSULabTechs\TestSmartWaiver.cshtml" />
     <Content Include="Views\tb_CSUCheckoutCheckin\UsageReports.cshtml" />
     <Content Include="Views\Home\_SlingArticles.cshtml" />
   </ItemGroup>

@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Check_Out_App_ULC.Models;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 /*	
     Label
@@ -30,10 +32,38 @@ namespace Check_Out_App_ULC.Controllers.Api
 {
     public class SmartWaiverController : ApiController
     {
-        //private static string smartKey = "1358f518a45966dfca6484341e46b346";
-
         
 
+        [System.Web.Http.Route("Api/SmartWaiver/GetPingPong")]
+        [System.Web.Http.AcceptVerbs("GET")]
+        [System.Web.Mvc.HttpGet]
+        public string GetPingPong (string s = "ping")
+        {
+            var result = SmartWaiver.GetPingPong(s);
+            return result;
+        }
+
+        [System.Web.Http.Route("Api/SmartWaiver/SearchRequest")]
+        [System.Web.Http.AcceptVerbs("GET")]
+        [System.Web.Mvc.HttpGet]
+        public SmartWaiver.SearchRequestData SearchRequest ()
+        {
+            var result = SmartWaiver.SearchRequest();
+            return result;
+        }
+
+        [System.Web.Http.Route("Api/SmartWaiver/GetSignedWaivers")]
+        [System.Web.Http.AcceptVerbs("GET")]
+        [System.Web.Mvc.HttpGet]
+        public List<SmartWaiver.Waiver> GetSignedWaivers()
+        {
+            var result = SmartWaiver.GetSignedWaivers();
+            return result;
+        }
+
+
+
+        /*
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -53,13 +83,14 @@ namespace Check_Out_App_ULC.Controllers.Api
             // Load SmartWaiver receiver
             
         }
+        */
 
         //public IEnumerable<SmartWaiver> GetAllWaivers()
         //{
         //    return waivers;
         //}
 
-   
+
         //public IHttpActionResult GetWaiver(int id)
         //{
         //    var waiver = waivers.FirstOrDefault((p) => p.Id == id);

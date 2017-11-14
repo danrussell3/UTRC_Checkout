@@ -93,10 +93,10 @@ namespace Check_Out_App_ULC.Controllers
             return View(db.tb_CSULabTechs.Where(s => s.UserRights == true).ToList());
         }
 
-        public ActionResult TestSling()
+        public ActionResult TestSmartWaiver()
         {
             ViewBag.Message = TempData["Message"];
-            return View("TestSling");
+            return View("TestSmartWaiver");
         }
 
         // GET: tb_CSULabTechs/Details/5
