@@ -36,6 +36,7 @@ namespace Check_Out_App_ULC.Models
         public virtual DbSet<tb_Reports> tb_Reports { get; set; }
         public virtual DbSet<tb_CSUStudent> tb_CSUStudent { get; set; }
         public virtual DbSet<tb_LongtermWaitlist> tb_LongtermWaitlist { get; set; }
+        public virtual DbSet<tb_SlingCache> tb_SlingCache { get; set; }
     
         public virtual int DropIndexesScript(Nullable<bool> includeDrop)
         {

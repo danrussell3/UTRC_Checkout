@@ -14,6 +14,7 @@
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_Reports" Width="1.5" PointX="5.375" PointY="5.75" />
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_CSUStudent" Width="1.5" PointX="7.375" PointY="4.75" />
         <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" Width="1.5" PointX="3.375" PointY="8.75" />
+        <EntityTypeShape EntityType="Checkin_Checkout_Model.tb_SlingCache" Width="1.5" PointX="5.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

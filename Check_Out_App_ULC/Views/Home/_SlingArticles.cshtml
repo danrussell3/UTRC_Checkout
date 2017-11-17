@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ViewModels.SlingArticlesView>
+﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_SlingCache>
 
 @if (SessionVariables.CurrentUser != null)
 {
@@ -47,16 +47,9 @@
                                 @Html.DisplayFor(modelItem => item.PostContent)
                             </td>
                             <td>
-                                @if (item.PostComments.FirstOrDefault() != null)
+                                @if (item.PostComments != null)
                                 {
-                                    foreach(var comment in item.PostComments)
-                                    {
-                                        @Html.DisplayFor(modelItem => comment.commentContent)
-                                        <br/>
-                                        @: -
-                                        @Html.DisplayFor(modelItem => comment.commenterName)
-                                        <br/><br/>
-                                    }
+                                    @Html.Raw(item.PostComments)
                                 }
                                 else
                                 {

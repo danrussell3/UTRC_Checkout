@@ -11,6 +11,7 @@ using System.Web.Services.Description;
 using Check_Out_App_ULC.Models;
 using Microsoft.Ajax.Utilities;
 using WebGrease.Css.Extensions;
+using Check_Out_App_ULC.Controllers.Api;
 
 namespace Check_Out_App_ULC.Controllers
 {
@@ -20,7 +21,8 @@ namespace Check_Out_App_ULC.Controllers
 
         private readonly Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
         readonly EmailController email = new EmailController();
-        // GET: tb_CSUCheckout
+        SmartWaiverController smartwaiver = new SmartWaiverController();
+        
         #endregion
 
         #region Public Functions
@@ -402,6 +404,30 @@ namespace Check_Out_App_ULC.Controllers
 
         public bool? WaiverCheck(tb_CSUStudent tbs)
         {
+            /*
+            // TEST
+            // ping SmartWaiver API to verify signed waiver before continuing
+            var sw = smartwaiver.GetSignedWaivers(tbs.LAST_NAME);
+            foreach (var s in sw)
+            {
+                var pic = s.photos.ElementAt(0).photo;
+                var p = pic;
+                // check tags in each returned waiver for match with student id
+                foreach (var t in s.tags)
+                {
+                    if (t == tbs.CSU_ID)
+                    {
+                        if (s.photos.Count() > 0)
+                        {
+                            tbs.PHOTO = s.photos.ElementAt(0).ToString();
+                        }
+                        return true;
+                    }
+                }
+            }
+            // END TEST
+            */
+
             return tbs.SIGNEDWAIVER;
         }
 
@@ -414,22 +440,43 @@ namespace Check_Out_App_ULC.Controllers
                 TempData["message"] = "there was an error signing the waiver, please try again";
                 return Index();
             }
-            v.SIGNEDWAIVER = true;
-            email.WaiverEmail(v);
-            db.Entry(v).State = EntityState.Modified;
-            db.SaveChanges();
-            ViewBag.Message = "Waiver Recorded, and Checkout Complete!";
-            if(SessionVariables.isLongterm == true)
+
+            // ping SmartWaiver API to verify signed waiver before continuing
+            var sw = smartwaiver.GetSignedWaivers(v.LAST_NAME);
+            foreach (var s in sw)
             {
-                var dueDateToPass = SessionVariables.longtermDueDate;
-                SessionVariables.isLongterm = false;
-                SessionVariables.longtermDueDate = null;
-                return LongtermCheckout(SessionVariables.waiverCSUId, SessionVariables.waiverUPC, SessionVariables.waiverUPC1, SessionVariables.waiverUPC2, dueDateToPass);
+                // check tags in each returned waiver for match with student id
+                foreach (var t in s.tags)
+                {
+                    if (t == id)
+                    {
+                        // grab first photo in s.photos and cache in db
+                        if (s.photos.Count() > 0)
+                        {
+                            v.PHOTO = s.photos.ElementAt(0).photo;
+                        }
+                        v.SIGNEDWAIVER = true;
+                        email.WaiverEmail(v);
+                        db.Entry(v).State = EntityState.Modified;
+                        db.SaveChanges();
+                        ViewBag.Message = "Waiver Recorded, and Checkout Complete!";
+                        if (SessionVariables.isLongterm == true)
+                        {
+                            var dueDateToPass = SessionVariables.longtermDueDate;
+                            SessionVariables.isLongterm = false;
+                            SessionVariables.longtermDueDate = null;
+                            return LongtermCheckout(SessionVariables.waiverCSUId, SessionVariables.waiverUPC, SessionVariables.waiverUPC1, SessionVariables.waiverUPC2, dueDateToPass);
+                        }
+                        else
+                        {
+                            return Create(SessionVariables.waiverCSUId, SessionVariables.waiverUPC, SessionVariables.waiverUPC1, SessionVariables.waiverUPC2);
+                        }
+                    }
+                }
             }
-            else
-            {
-                return Create(SessionVariables.waiverCSUId, SessionVariables.waiverUPC, SessionVariables.waiverUPC1, SessionVariables.waiverUPC2);
-            }
+            
+            TempData["message"] = "Student " + id + " could not be found in the SmartWaiver database. Please try again.";
+            return Index();
         }
 
         public List<string> GetValidUpcs(params string[] upcs)

@@ -295,6 +295,9 @@
     <Compile Include="Models\tb_Reports.cs">
       <DependentUpon>Checkin_Checkout.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tb_SlingCache.cs">
+      <DependentUpon>Checkin_Checkout.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TimeClock.MetaData.cs" />
     <Compile Include="Models\ViewModels.cs" />
     <Compile Include="Models\v_CSUG_DIRECTORY_ALL_LOCAL_No_Dupes_forCheckinCheckout.cs">

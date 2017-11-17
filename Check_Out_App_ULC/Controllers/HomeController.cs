@@ -11,7 +11,9 @@ namespace Check_Out_App_ULC.Controllers
     public class HomeController : Controller
     {
         SlingController sling = new SlingController();
-        
+        private readonly Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
+        // public tb_SlingCache slingCache = new tb_SlingCache();
+
         #region Public Functions
 
         public ActionResult Index()
@@ -22,12 +24,37 @@ namespace Check_Out_App_ULC.Controllers
             }
             else
             {
-                string channel = "0"; // 0 is the newsfeed channel visible to all users
-                var s = sling.SlingGetArticles(channel);
-
-                return View(s);
+                var cache = db.tb_SlingCache.OrderByDescending(x => x.Posted);
+                return View(cache);
             }
         }
+
+        /*
+        public void GetSlingCache()
+        {
+            //Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
+                //public tb_SlingCache slingCache = new tb_SlingCache();
+
+
+
+            // reset the cache
+            db.Database.ExecuteSqlCommand("TRUNCATE TABLE [tb_SlingCache]");
+
+            foreach (var item in s)
+            {
+                // store report, timestamp, and tech id to db for later compilation
+                var slingEntry = new tb_SlingCache();
+                slingEntry.PostId = item.PostId;
+                slingEntry.UserId = item.UserId;
+                slingEntry.PostContent = item.PostContent;
+                slingEntry.PostedBy = item.PostedBy;
+                slingEntry.PostComments = item.PostComments;
+                slingEntry.Posted = item.Posted;
+                db.tb_SlingCache.Add(slingEntry);
+                db.SaveChanges();
+            }
+        }
+        */
 
         public ActionResult About()
         {

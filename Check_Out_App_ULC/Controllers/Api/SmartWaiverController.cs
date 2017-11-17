@@ -55,9 +55,9 @@ namespace Check_Out_App_ULC.Controllers.Api
         [System.Web.Http.Route("Api/SmartWaiver/GetSignedWaivers")]
         [System.Web.Http.AcceptVerbs("GET")]
         [System.Web.Mvc.HttpGet]
-        public List<SmartWaiver.Waiver> GetSignedWaivers()
+        public List<SmartWaiver.Waiver> GetSignedWaivers(string lname = null)
         {
-            var result = SmartWaiver.GetSignedWaivers();
+            var result = SmartWaiver.GetSignedWaivers(lname);
             return result;
         }
 

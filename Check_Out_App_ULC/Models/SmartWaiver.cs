@@ -160,10 +160,14 @@ namespace Check_Out_App_ULC.Models
             else throw new Exception("No response was received from the SmartWaiver API");
         }
 
-        public static List<Waiver> GetSignedWaivers ()
+        public static List<Waiver> GetSignedWaivers (string lname = null)
         {
             string apiUrl = "https://api.smartwaiver.com/v4/waivers",
                 resultString = "";
+            if (lname != null)
+            {
+                apiUrl += "?lastName=" + lname;
+            }
 
             HttpWebRequest request = WebRequest.Create(apiUrl) as HttpWebRequest;
             request.Method = "GET";

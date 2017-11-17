@@ -130,7 +130,7 @@ namespace Check_Out_App_ULC.Models
             [Display(Name = "Post ID", Prompt = "Post ID", Description = "Post ID")]
             public string PostId { get; set; }
             [Display(Name = "Comments", Prompt = "Comments", Description = "Comments")]
-            public List<Sling.SlingArticleComments> PostComments { get; set; }
+            public string PostComments { get; set; }
 
             #endregion
         }

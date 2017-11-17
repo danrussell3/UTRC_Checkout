@@ -99,6 +99,7 @@
           <Property Name="EMAIL_ADDRESS" Type="nvarchar" MaxLength="70" />
           <Property Name="PHONE" Type="nvarchar" MaxLength="15" />
           <Property Name="SIGNEDWAIVER" Type="bit" />
+          <Property Name="PHOTO" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tb_ItemRepair">
           <Key>
@@ -137,6 +138,17 @@
           <Property Name="TimeSubmitted" Type="datetime" Nullable="false" />
           <Property Name="Report" Type="text" />
         </EntityType>
+        <EntityType Name="tb_SlingCache">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Name="PostId" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="10" />
+          <Property Name="PostContent" Type="nvarchar(max)" />
+          <Property Name="PostedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="PostComments" Type="nvarchar(max)" />
+          <Property Name="Posted" Type="datetime" />
+        </EntityType>
         <Function Name="DropIndexesScript" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="utils">
           <Parameter Name="IncludeDrop" Type="bit" Mode="In" />
         </Function>
@@ -155,6 +167,7 @@
           <EntitySet Name="tb_ItemRepair" EntityType="Self.tb_ItemRepair" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_LongtermWaitlist" EntityType="Self.tb_LongtermWaitlist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Reports" EntityType="Self.tb_Reports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_SlingCache" EntityType="Self.tb_SlingCache" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -178,6 +191,7 @@
           <EntitySet Name="tb_Reports" EntityType="Checkin_Checkout_Model.tb_Reports" />
           <EntitySet Name="tb_CSUStudent" EntityType="Checkin_Checkout_Model.tb_CSUStudent" />
           <EntitySet Name="tb_LongtermWaitlist" EntityType="Checkin_Checkout_Model.tb_LongtermWaitlist" />
+          <EntitySet Name="tb_SlingCache" EntityType="Checkin_Checkout_Model.tb_SlingCache" />
           </EntityContainer>
         <EntityType Name="tb_BannedUserTable">
           <Key>
@@ -297,6 +311,7 @@
           <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="SIGNEDWAIVER" Type="Boolean" />
+          <Property Name="PHOTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tb_LongtermWaitlist">
           <Key>
@@ -310,6 +325,17 @@
           <Property Name="WAITLIST_REASON" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="WAITLIST_TYPE" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
           <Property Name="WAITLIST_NOTIFIED" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tb_SlingCache">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Name="PostId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PostContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Posted" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -435,6 +461,7 @@
           <EntitySetMapping Name="tb_CSUStudent">
             <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_CSUStudent">
               <MappingFragment StoreEntitySet="tb_CSUStudent">
+                <ScalarProperty Name="PHOTO" ColumnName="PHOTO" />
                 <ScalarProperty Name="SIGNEDWAIVER" ColumnName="SIGNEDWAIVER" />
                 <ScalarProperty Name="PHONE" ColumnName="PHONE" />
                 <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
@@ -457,6 +484,18 @@
                 <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
                 <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
                 <ScalarProperty Name="CSU_ID" ColumnName="CSU_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_SlingCache">
+            <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_SlingCache">
+              <MappingFragment StoreEntitySet="tb_SlingCache">
+                <ScalarProperty Name="Posted" ColumnName="Posted" />
+                <ScalarProperty Name="PostComments" ColumnName="PostComments" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -32,12 +32,14 @@ namespace Check_Out_App_ULC.Models
             public string name { get; set; }
         }
 
+        /*
         public class SlingArticleComments
         {
             public string commentContent { get; set; }
             public string commenterName { get; set; }
             public DateTime commentTime { get; set; }
         }
+        */
         
         public static SlingUser Login(string e, string pw, string snsP, string snsT)
         {
@@ -124,8 +126,11 @@ namespace Check_Out_App_ULC.Models
 
                     articles.Add(article);
                 }
+
+                
+
                 return articles;
-            }
+}
             else throw new Exception("No response was received from the Sling API");
         }
 
@@ -155,7 +160,7 @@ namespace Check_Out_App_ULC.Models
             else throw new Exception("No response was received from the Sling API");
         }
 
-        public static List<Sling.SlingArticleComments> GetPostComments(string postId, string channel)
+        public static string GetPostComments(string postId, string channel)
         {
             string apiUrl = "https://api.sling.is/v1/channels/" + channel + "/articles/" + postId + "/comments",
                 resultString = "";
@@ -173,8 +178,9 @@ namespace Check_Out_App_ULC.Models
             if (!String.IsNullOrEmpty(resultString))
             {
                 var result = JArray.Parse(resultString);
-                List<Sling.SlingArticleComments> comments = new List<SlingArticleComments>();
 
+                /*
+                List<Sling.SlingArticleComments> comments = new List<SlingArticleComments>();
                 foreach (var c in result)
                 {
                     Sling.SlingArticleComments comment = new Sling.SlingArticleComments();
@@ -183,6 +189,25 @@ namespace Check_Out_App_ULC.Models
                     comment.commenterName = GetUserName(c["user"]["id"].ToString());
                     comments.Add(comment);
                 }
+                */
+                
+                StringBuilder Sb = new StringBuilder();
+                for (int i = 0; i<result.Count; i++)
+                {
+                    var c = result.ElementAt(i);
+                    var content = c["content"].ToString();
+                    //var time = Convert.ToDateTime(c["posted"].ToString());
+                    var name = GetUserName(c["user"]["id"].ToString());
+
+                    Sb.Append(content + "<br/>" + "- " + name);
+
+                    if (i < result.Count-1) // not the last item
+                    {
+                        Sb.Append("<br/><br/>");
+                    }
+                }
+
+                var comments = Sb.ToString();
                 return comments;
             }
             else throw new Exception("No response was received from the Sling API");
