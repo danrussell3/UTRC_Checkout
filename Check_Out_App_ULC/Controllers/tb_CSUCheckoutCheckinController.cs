@@ -148,9 +148,10 @@ namespace Check_Out_App_ULC.Controllers
             return View("Reports", view);
         }
 
-        public ActionResult UsageReports()
+        public ActionResult UsageReports(List<ViewModels.QueryCheckoutsView> view = null)
         {
-            return View("UsageReports");
+            
+            return View("UsageReports", view);
         }
 
         public ActionResult TestEmails()
@@ -284,13 +285,87 @@ namespace Check_Out_App_ULC.Controllers
             return RedirectToAction("LateView");
         }
     
+        // returns db query of checkouts by date and location
+        public ActionResult QueryCheckoutsByDate(DateTime startDate, DateTime endDate, string location)
+        {
+            // get contents of tb_CSUCheckoutCheckin with date/loc parameters
+            var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
 
+            // tally checkouts by date and location into the view model
+            List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
 
-    #endregion
+            foreach (var c in checkouts)
+            {
+                if (location=="All Locations" || location==c.CheckoutLocationFK)
+                {
+                    bool containsDateAlready = results.Any(item => Convert.ToDateTime(item.CheckoutDate).Date == Convert.ToDateTime(c.CheckoutDate).Date);
+                    if (containsDateAlready)
+                    {
+                        // increment date tally
+                        foreach (var r in results)
+                        {
+                            if (Convert.ToDateTime(r.CheckoutDate).Date == Convert.ToDateTime(c.CheckoutDate).Date)
+                            {
+                                r.NumCheckouts++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // add date to list and set the tally to 1
+                        ViewModels.QueryCheckoutsView entry = new ViewModels.QueryCheckoutsView();
+                        entry.CheckoutDate = Convert.ToDateTime(c.CheckoutDate);
+                        entry.NumCheckouts = 1;
+                        results.Add(entry);
+                    }
+                }
+            }
+            return View("UsageReports", results);
+        }
 
-    #region Private Functions
+        // returns db query of checkouts by hour and location
+        public ActionResult QueryCheckoutsByHour(DateTime startDate, DateTime endDate, string location)
+        {
+            // get contents of tb_CSUCheckoutCheckin with date/loc parameters
+            var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
 
-    private IQueryable<ViewModels.CkVw> GetLateView()
+            // tally checkouts by date and location into the view model
+            List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
+
+            foreach (var c in checkouts)
+            {
+                if (location == "All Locations" || location == c.CheckoutLocationFK)
+                {
+                    bool containsHourAlready = results.Any(item => item.CheckoutHour == Convert.ToDateTime(c.CheckoutDate).Hour);
+                    if (containsHourAlready)
+                    {
+                        // increment hour tally
+                        foreach (var r in results)
+                        {
+                            if (r.CheckoutHour == Convert.ToDateTime(c.CheckoutDate).Hour)
+                            {
+                                r.NumCheckouts++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // add hour to list and set the tally to 1
+                        ViewModels.QueryCheckoutsView entry = new ViewModels.QueryCheckoutsView();
+                        entry.CheckoutHour = Convert.ToDateTime(c.CheckoutDate).Hour;
+                        entry.NumCheckouts = 1;
+                        results.Add(entry);
+                    }
+                }
+            }
+            return View("UsageReports", results);
+        }
+
+        #endregion
+
+        #region Private Functions
+
+        private IQueryable<ViewModels.CkVw> GetLateView()
         {
             return (from checkInCheckout in db.tb_CSUCheckoutCheckin.Where(s => s.isLate == true)
                 join csuStudents in db.tb_CSUStudent on checkInCheckout.CSU_IDFK equals csuStudents.CSU_ID

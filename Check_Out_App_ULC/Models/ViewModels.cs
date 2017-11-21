@@ -99,6 +99,7 @@ namespace Check_Out_App_ULC.Models
         public class LongtermWaitlistView
         {
             #region Members
+
             [Display(Name = "CSU ID", Prompt = "CSU ID", Description = "CSU ID")]
             public string CsuId { get; set; }
             [Display(Name = "EName", Prompt = "EName", Description = "EName")]
@@ -119,6 +120,7 @@ namespace Check_Out_App_ULC.Models
         public class SlingArticlesView
         {
             #region Members
+
             [Display(Name = "Post Content", Prompt = "Post Content", Description = "Post Content")]
             public string PostContent { get; set; }
             [Display(Name = "Posted", Prompt = "Posted", Description = "Posted")]
@@ -131,11 +133,30 @@ namespace Check_Out_App_ULC.Models
             public string PostId { get; set; }
             [Display(Name = "Comments", Prompt = "Comments", Description = "Comments")]
             public string PostComments { get; set; }
+            [Display(Name = "Retrieved", Prompt = "Retrieved", Description = "Retrieved")]
+            public DateTime Retrieved { get; set; }
 
             #endregion
         }
 
-        
+        public class QueryCheckoutsView
+        {
+            #region Members
+
+            [Display(Name = "Checkout Date", Prompt = "Checkout Date", Description = "Checkout Date")]
+            [DataType(DataType.Date)]
+            public DateTime? CheckoutDate { get; set; }
+            [Display(Name = "Checkout Hour", Prompt = "Checkout Hour", Description = "Checkout Hour")]
+            public int? CheckoutHour { get; set; }
+            [Display(Name = "Checkout Location", Prompt = "Checkout Location", Description = "Checkout Location")]
+            public string CheckoutLocation { get; set; }
+            [Display(Name = "Number of Checkouts", Prompt = "Number of Checkouts", Description = "Number of Checkouts")]
+            public int NumCheckouts { get; set; }
+
+            #endregion
+        }
+
+
         #region Public Functions
         public bool IsValidUser(string id)
         {

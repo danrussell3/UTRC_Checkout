@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ViewModels.QueryCheckoutsView>
+
+@if (Model != null)
+{
+    <br />
+        <h3>Query Results:</h3>
+        <div style="border:4px; border-style:solid; border-color:#018a13; padding: 1em;">
+
+            <table id="table"
+                   data-toggle="table"
+                   data-sort-name="name"
+                   data-sort-order="desc"
+                   data-search="false"
+                   data-show-pagination-switch="true"
+                   data-page-list="[100, ALL]"
+                   data-show-refresh="true"
+                   data-show-toggle="true"
+                   data-show-columns="true"
+                   data-show-multi-sort="false"
+                   data-show-export="true"
+                   data-pagination="false"
+                   data-filter-control="true"
+                   data-click-to-select="true"
+                   data-filter-show-clear="true"
+                   data-response-handler="responseHandler"
+                   data-toolbar="#toolbar">
+                <thead>
+                    <tr>
+                        <th data-field="CheckoutHour" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.CheckoutHour)</th>
+                        <th data-field="NumCheckouts" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.NumCheckouts)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CheckoutHour)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumCheckouts)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+}

@@ -48,6 +48,7 @@ namespace Check_Out_App_ULC.App_Start
                 slingEntry.PostedBy = item.PostedBy;
                 slingEntry.PostComments = item.PostComments;
                 slingEntry.Posted = item.Posted;
+                slingEntry.Retrieved = item.Retrieved;
                 db.tb_SlingCache.Add(slingEntry);
                 db.SaveChanges();
             }

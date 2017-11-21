@@ -503,6 +503,8 @@
     <Content Include="Views\tb_CSULabTechs\TestSmartWaiver.cshtml" />
     <Content Include="Views\tb_CSUCheckoutCheckin\UsageReports.cshtml" />
     <Content Include="Views\Home\_SlingArticles.cshtml" />
+    <Content Include="Views\tb_CSUCheckoutCheckin\_QueryCheckoutsByDateResults.cshtml" />
+    <Content Include="Views\tb_CSUCheckoutCheckin\_QueryCheckoutsByHourResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Report\" />

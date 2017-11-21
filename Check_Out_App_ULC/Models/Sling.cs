@@ -120,6 +120,7 @@ namespace Check_Out_App_ULC.Models
                     article.PostId = a["id"].ToString();
                     article.UserId = a["user"]["id"].ToString();
                     article.PostedBy = GetUserName(article.UserId);
+                    article.Retrieved = DateTime.Now;
 
                     // get commentlist and append
                     article.PostComments = GetPostComments(article.PostId, channel);

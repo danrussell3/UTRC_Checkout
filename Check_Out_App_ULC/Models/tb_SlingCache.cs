@@ -20,5 +20,6 @@ namespace Check_Out_App_ULC.Models
         public string PostedBy { get; set; }
         public string PostComments { get; set; }
         public Nullable<System.DateTime> Posted { get; set; }
+        public Nullable<System.DateTime> Retrieved { get; set; }
     }
 }

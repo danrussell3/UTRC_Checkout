@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<ViewModels.QueryCheckoutsView>
+
 @{
     ViewBag.Title = "UsageReports";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +7,85 @@
 
 <h2>Usage Reports</h2>
 
+<div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
+
+    @using (Html.BeginForm("QueryCheckoutsByDate", "tb_CSUCheckoutCheckin", FormMethod.Post))
+    {
+
+        <center>
+            <p style="font-size:20px"><strong><u>Query Checkouts by Date:</u></strong></p>
+        </center>
+        <center>
+            Start Date: <input name="startDate" type="date">
+            &nbsp &nbsp
+            End Date: <input name="endDate" type="date">
+            &nbsp &nbsp Location(s):
+            @Html.DropDownList("location", new List<SelectListItem>
+                {
+                new SelectListItem{ Text = "BSB", Value = "BSB" },
+                new SelectListItem{ Text = "LSC", Value = "LSC" },
+                new SelectListItem{ Text = "TLT", Value = "TLT" },
+                new SelectListItem{ Text = "All Locations", Value = "All Locations" }
+                }, new { onchange = "getAlldata()" })
+            &nbsp &nbsp &nbsp &nbsp
+            <input type="submit" value="Submit" />
+        </center>
+
+    }
+
+    <br />
+
+    @using (Html.BeginForm("QueryCheckoutsByHour", "tb_CSUCheckoutCheckin", FormMethod.Post))
+    {
+
+        <center>
+            <p style="font-size:20px"><strong><u>Query Checkouts by Hour:</u></strong></p>
+        </center>
+        <center>
+            Start Date: <input name="startDate" type="date">
+            &nbsp &nbsp
+            End Date: <input name="endDate" type="date">
+            &nbsp &nbsp Location(s):
+            @Html.DropDownList("location", new List<SelectListItem>
+                {
+                new SelectListItem{ Text = "BSB", Value = "BSB" },
+                new SelectListItem{ Text = "LSC", Value = "LSC" },
+                new SelectListItem{ Text = "TLT", Value = "TLT" },
+                new SelectListItem{ Text = "All Locations", Value = "All Locations" }
+                }, new { onchange = "getAlldata()" })
+            &nbsp &nbsp &nbsp &nbsp
+            <input type="submit" value="Submit" />
+        </center>
+
+    }
+</div>
+
+
+@if(Model != null)
+{
+    var date = false;
+    var hour = false;
+    foreach (var d in Model)
+    {
+        if (d.CheckoutDate != null)
+        {
+            date = true;
+        }
+        if (d.CheckoutHour != null)
+        {
+            hour = true;
+        }
+        break;
+    }
+    if (date)
+    {
+        @Html.Partial("_QueryCheckoutsByDateResults", Model, new ViewDataDictionary())
+    }
+
+    if (hour)
+    {
+        @Html.Partial("_QueryCheckoutsByHourResults", Model, new ViewDataDictionary())
+    }
+
+
+}

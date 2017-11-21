@@ -148,6 +148,7 @@
           <Property Name="PostedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="PostComments" Type="nvarchar(max)" />
           <Property Name="Posted" Type="datetime" />
+          <Property Name="Retrieved" Type="datetime" />
         </EntityType>
         <Function Name="DropIndexesScript" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="utils">
           <Parameter Name="IncludeDrop" Type="bit" Mode="In" />
@@ -336,6 +337,7 @@
           <Property Name="PostedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PostComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Posted" Type="DateTime" Precision="3" />
+          <Property Name="Retrieved" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -490,6 +492,7 @@
           <EntitySetMapping Name="tb_SlingCache">
             <EntityTypeMapping TypeName="Checkin_Checkout_Model.tb_SlingCache">
               <MappingFragment StoreEntitySet="tb_SlingCache">
+                <ScalarProperty Name="Retrieved" ColumnName="Retrieved" />
                 <ScalarProperty Name="Posted" ColumnName="Posted" />
                 <ScalarProperty Name="PostComments" ColumnName="PostComments" />
                 <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />

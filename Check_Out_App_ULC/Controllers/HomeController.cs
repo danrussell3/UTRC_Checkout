@@ -29,33 +29,6 @@ namespace Check_Out_App_ULC.Controllers
             }
         }
 
-        /*
-        public void GetSlingCache()
-        {
-            //Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
-                //public tb_SlingCache slingCache = new tb_SlingCache();
-
-
-
-            // reset the cache
-            db.Database.ExecuteSqlCommand("TRUNCATE TABLE [tb_SlingCache]");
-
-            foreach (var item in s)
-            {
-                // store report, timestamp, and tech id to db for later compilation
-                var slingEntry = new tb_SlingCache();
-                slingEntry.PostId = item.PostId;
-                slingEntry.UserId = item.UserId;
-                slingEntry.PostContent = item.PostContent;
-                slingEntry.PostedBy = item.PostedBy;
-                slingEntry.PostComments = item.PostComments;
-                slingEntry.Posted = item.Posted;
-                db.tb_SlingCache.Add(slingEntry);
-                db.SaveChanges();
-            }
-        }
-        */
-
         public ActionResult About()
         {
             ViewBag.Message = "This program is dedicated towards improving the functionality of the Laptop Checkout team, by providing the resources necessary to perform the job exceptionally.";
