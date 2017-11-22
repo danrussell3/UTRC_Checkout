@@ -244,6 +244,7 @@
       <DependentUpon>Checkin_Checkout.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\CheckoutDetails.cs" />
+    <Compile Include="Models\ExportModels.cs" />
     <Compile Include="Models\SmartWaiver.cs" />
     <Compile Include="Models\Sling.cs" />
     <Compile Include="Models\CSUCheckinCheckoutContext.cs" />

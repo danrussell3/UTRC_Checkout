@@ -25,12 +25,17 @@
                 new SelectListItem{ Text = "BSB", Value = "BSB" },
                 new SelectListItem{ Text = "LSC", Value = "LSC" },
                 new SelectListItem{ Text = "TLT", Value = "TLT" },
-                new SelectListItem{ Text = "All Locations", Value = "All Locations" }
+                new SelectListItem{ Text = "All Locations", Value = "All" }
+                }, new { onchange = "getAlldata()" })
+            &nbsp &nbsp Options:
+            @Html.DropDownList("action", new List<SelectListItem>
+                {
+                new SelectListItem{ Text = "Display Results", Value = "display" },
+                new SelectListItem{ Text = "Export to Excel", Value = "excel" }
                 }, new { onchange = "getAlldata()" })
             &nbsp &nbsp &nbsp &nbsp
             <input type="submit" value="Submit" />
         </center>
-
     }
 
     <br />
@@ -51,12 +56,17 @@
                 new SelectListItem{ Text = "BSB", Value = "BSB" },
                 new SelectListItem{ Text = "LSC", Value = "LSC" },
                 new SelectListItem{ Text = "TLT", Value = "TLT" },
-                new SelectListItem{ Text = "All Locations", Value = "All Locations" }
+                new SelectListItem{ Text = "All Locations", Value = "All" }
+                }, new { onchange = "getAlldata()" })
+            &nbsp &nbsp Options:
+            @Html.DropDownList("action", new List<SelectListItem>
+                {
+                new SelectListItem{ Text = "Display Results", Value = "display" },
+                new SelectListItem{ Text = "Export to Excel", Value = "excel" }
                 }, new { onchange = "getAlldata()" })
             &nbsp &nbsp &nbsp &nbsp
             <input type="submit" value="Submit" />
         </center>
-
     }
 </div>
 
