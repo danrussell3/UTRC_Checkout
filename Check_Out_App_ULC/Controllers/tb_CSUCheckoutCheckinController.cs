@@ -416,7 +416,7 @@ namespace Check_Out_App_ULC.Controllers
                 }
             }
 
-            var sortedResults = results.OrderBy(a => a.NumCheckouts).ToList();
+            var sortedResults = results.OrderByDescending(a => a.NumCheckouts).ToList();
 
             if (action == "excel")
             {
