@@ -17,9 +17,21 @@ namespace Check_Out_App_ULC.Models
             public int NumberOfCheckouts { get; set; }
         }
 
+        public class ExportCheckoutsByDayOfWeek
+        {
+            public string CheckoutDayOfWeek { get; set; }
+            public int NumberOfCheckouts { get; set; }
+        }
+
         public class ExportCheckoutsByHour
         {
             public string CheckoutHour { get; set; }
+            public int NumberOfCheckouts { get; set; }
+        }
+
+        public class ExportCheckoutsByItem
+        {
+            public string ItemUpc { get; set; }
             public int NumberOfCheckouts { get; set; }
         }
     }

@@ -146,10 +146,14 @@ namespace Check_Out_App_ULC.Models
             [Display(Name = "Checkout Date", Prompt = "Checkout Date", Description = "Checkout Date")]
             [DataType(DataType.Date)]
             public DateTime? CheckoutDate { get; set; }
+            [Display(Name = "Checkout Day Of Week", Prompt = "Checkout Day Of Week", Description = "Checkout Day Of Week")]
+            public string CheckoutDayOfWeek { get; set; }
             [Display(Name = "Checkout Hour", Prompt = "Checkout Hour", Description = "Checkout Hour")]
             public int? CheckoutHour { get; set; }
             [Display(Name = "Checkout Location", Prompt = "Checkout Location", Description = "Checkout Location")]
             public string CheckoutLocation { get; set; }
+            [Display(Name = "Item UPC", Prompt = "Item UPC", Description = "Item UPC")]
+            public string ItemUpc { get; set; }
             [Display(Name = "Number of Checkouts", Prompt = "Number of Checkouts", Description = "Number of Checkouts")]
             public int NumCheckouts { get; set; }
 

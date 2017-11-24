@@ -286,9 +286,34 @@ namespace Check_Out_App_ULC.Controllers
             TempData["Message"] = s + " " + sfn + " checkout of " + sa + " Fine Applied!";
             return RedirectToAction("LateView");
         }
-    
-        // returns db query of checkouts by date and location
-        public ActionResult QueryCheckoutsByDate(DateTime startDate, DateTime endDate, string location, string action)
+
+        public ActionResult QueryCheckouts(DateTime startDate, DateTime endDate, string location, string action, string queryType)
+        {
+            List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
+
+            if (queryType == "date")
+            {
+                results = QueryCheckoutsByDate(startDate, endDate, location, action);
+            }
+            else if (queryType == "dayofweek")
+            {
+                results = QueryCheckoutsByDayOfWeek(startDate, endDate, location, action);
+            }
+            else if (queryType == "hour")
+            {
+                results = QueryCheckoutsByHour(startDate, endDate, location, action);
+            }
+            else if (queryType == "item")
+            {
+                results = QueryCheckoutsByItem(startDate, endDate, location, action);
+            }
+
+            return View("UsageReports", results);
+        }
+
+        // queries # of checkouts by date and location
+        // result table is either returned for display or exported as an Excel file
+        public List<ViewModels.QueryCheckoutsView> QueryCheckoutsByDate(DateTime startDate, DateTime endDate, string location, string action)
         {
             // get contents of tb_CSUCheckoutCheckin with date/loc parameters
             var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
@@ -331,7 +356,6 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     ExportModels.ExportCheckoutsByDate e = new ExportModels.ExportCheckoutsByDate();
                     e.CheckoutDate = Convert.ToDateTime(item.CheckoutDate).ToShortDateString();
-                    //e.CheckoutDate.Replace(" 12:00:00 AM", "");
                     e.NumberOfCheckouts = item.NumCheckouts;
                     data.Add(e);
                 }
@@ -349,15 +373,85 @@ namespace Check_Out_App_ULC.Controllers
                 Response.Write(sw.ToString());
                 Response.End();
 
-                ViewBag.Message = "The exported results should now be available in your default downloads folder as " + fname;
-                List<ViewModels.QueryCheckoutsView> noresults = new List<ViewModels.QueryCheckoutsView>();
-                return View("UsageReports", noresults);
+                List<ViewModels.QueryCheckoutsView> emptyResults = new List<ViewModels.QueryCheckoutsView>();
+                return emptyResults;
             }
-            return View("UsageReports", results);
+            return results;
         }
 
-        // returns db query of checkouts by hour and location
-        public ActionResult QueryCheckoutsByHour(DateTime startDate, DateTime endDate, string location, string action)
+        // queries # of checkouts by day of week and location
+        // result table is either returned for display or exported as an Excel file
+        public List<ViewModels.QueryCheckoutsView> QueryCheckoutsByDayOfWeek (DateTime startDate, DateTime endDate, string location, string action)
+        {
+            // get contents of tb_CSUCheckoutCheckin with date/loc parameters
+            var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
+
+            // tally checkouts by date and location into the view model
+            List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
+
+            foreach (var c in checkouts)
+            {
+                if (location == "All" || location == c.CheckoutLocationFK)
+                {
+                    bool containsDayAlready = results.Any(item => item.CheckoutDayOfWeek == Convert.ToDateTime(c.CheckoutDate).DayOfWeek.ToString());
+                    if (containsDayAlready)
+                    {
+                        // increment date tally
+                        foreach (var r in results)
+                        {
+                            if (r.CheckoutDayOfWeek == Convert.ToDateTime(c.CheckoutDate).DayOfWeek.ToString())
+                            {
+                                r.NumCheckouts++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // add date to list and set the tally to 1
+                        ViewModels.QueryCheckoutsView entry = new ViewModels.QueryCheckoutsView();
+                        entry.CheckoutDayOfWeek = Convert.ToDateTime(c.CheckoutDate).DayOfWeek.ToString();
+                        entry.NumCheckouts = 1;
+                        results.Add(entry);
+                    }
+                }
+            }
+
+            var sortedResults = results.OrderBy(a => a.NumCheckouts).ToList();
+
+            if (action == "excel")
+            {
+                List<ExportModels.ExportCheckoutsByDayOfWeek> data = new List<ExportModels.ExportCheckoutsByDayOfWeek>();
+
+                foreach (var item in results)
+                {
+                    ExportModels.ExportCheckoutsByDayOfWeek e = new ExportModels.ExportCheckoutsByDayOfWeek();
+                    e.CheckoutDayOfWeek = item.CheckoutDayOfWeek;
+                    e.NumberOfCheckouts = item.NumCheckouts;
+                    data.Add(e);
+                }
+
+                var grid = new System.Web.UI.WebControls.GridView();
+                grid.DataSource = data;
+                grid.DataBind();
+                Response.ClearContent();
+                var fname = "CheckoutsByDayOfWeek_" + location + ".xls";
+                Response.AddHeader("content-disposition", "attachment; filename=" + fname);
+                Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                System.Web.UI.HtmlTextWriter htw = new System.Web.UI.HtmlTextWriter(sw);
+                grid.RenderControl(htw);
+                Response.Write(sw.ToString());
+                Response.End();
+
+                List<ViewModels.QueryCheckoutsView> emptyResults = new List<ViewModels.QueryCheckoutsView>();
+                return emptyResults;
+            }
+            return results;
+        }
+
+        // queries # of checkouts by hour and location
+        // result table is either returned for display or exported as an Excel file
+        public List<ViewModels.QueryCheckoutsView> QueryCheckoutsByHour(DateTime startDate, DateTime endDate, string location, string action)
         {
             // get contents of tb_CSUCheckoutCheckin with date/loc parameters
             var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
@@ -392,7 +486,7 @@ namespace Check_Out_App_ULC.Controllers
                 }
             }
 
-            var sortedResults = results.OrderBy(a => a.CheckoutHour);
+            var sortedResults = results.OrderBy(a => a.CheckoutHour).ToList();
 
             if (action == "excel")
             {
@@ -419,12 +513,83 @@ namespace Check_Out_App_ULC.Controllers
                 Response.Write(sw.ToString());
                 Response.End();
 
-                ViewBag.Message = "The exported results should now be available in your default downloads folder as " + fname;
-                List<ViewModels.QueryCheckoutsView> noresults = new List<ViewModels.QueryCheckoutsView>();
-                return View("UsageReports", noresults);
+                List<ViewModels.QueryCheckoutsView> emptyResults = new List<ViewModels.QueryCheckoutsView>();
+                return emptyResults;
             }
-            return View("UsageReports", sortedResults);
+            return sortedResults;
         }
+
+        // queries # of checkouts by item and location
+        // result table is either returned for display or exported as an Excel file
+        public List<ViewModels.QueryCheckoutsView> QueryCheckoutsByItem(DateTime startDate, DateTime endDate, string location, string action)
+        {
+            // get contents of tb_CSUCheckoutCheckin with date/loc parameters
+            var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
+
+            // tally checkouts by date and location into the view model
+            List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
+
+            foreach (var c in checkouts)
+            {
+                if (location == "All" || location == c.CheckoutLocationFK)
+                {
+                    bool containsItemAlready = results.Any(item => item.ItemUpc == c.ItemUPCFK);
+                    if (containsItemAlready)
+                    {
+                        // increment hour tally
+                        foreach (var r in results)
+                        {
+                            if (r.ItemUpc == c.ItemUPCFK)
+                            {
+                                r.NumCheckouts++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // add hour to list and set the tally to 1
+                        ViewModels.QueryCheckoutsView entry = new ViewModels.QueryCheckoutsView();
+                        entry.ItemUpc = c.ItemUPCFK;
+                        entry.NumCheckouts = 1;
+                        results.Add(entry);
+                    }
+                }
+            }
+
+            var sortedResults = results.OrderByDescending(a => a.NumCheckouts).ToList();
+
+            if (action == "excel")
+            {
+                List<ExportModels.ExportCheckoutsByItem> data = new List<ExportModels.ExportCheckoutsByItem>();
+
+                foreach (var item in sortedResults)
+                {
+                    ExportModels.ExportCheckoutsByItem e = new ExportModels.ExportCheckoutsByItem();
+                    e.ItemUpc = item.ItemUpc;
+                    e.NumberOfCheckouts = item.NumCheckouts;
+                    data.Add(e);
+                }
+
+                var grid = new System.Web.UI.WebControls.GridView();
+                grid.DataSource = data;
+                grid.DataBind();
+                Response.ClearContent();
+                var fname = "CheckoutsByItem_" + location + ".xls";
+                Response.AddHeader("content-disposition", "attachment; filename=" + fname);
+                Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                System.Web.UI.HtmlTextWriter htw = new System.Web.UI.HtmlTextWriter(sw);
+                grid.RenderControl(htw);
+                Response.Write(sw.ToString());
+                Response.End();
+
+                List<ViewModels.QueryCheckoutsView> emptyResults = new List<ViewModels.QueryCheckoutsView>();
+                return emptyResults;
+            }
+            return sortedResults;
+        }
+
+
 
         #endregion
 

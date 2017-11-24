@@ -9,17 +9,26 @@
 
 <div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
 
-    @using (Html.BeginForm("QueryCheckoutsByDate", "tb_CSUCheckoutCheckin", FormMethod.Post))
+    @using (Html.BeginForm("QueryCheckouts", "tb_CSUCheckoutCheckin", FormMethod.Post))
     {
 
         <center>
-            <p style="font-size:20px"><strong><u>Query Checkouts by Date:</u></strong></p>
+            <p style="font-size:20px"><strong><u>Query Checkouts:</u></strong></p>
         </center>
         <center>
+            &nbsp Query By:
+            @Html.DropDownList("queryType", new List<SelectListItem>
+                {
+                new SelectListItem{ Text = "Date", Value = "date" },
+                new SelectListItem{ Text = "Day Of Week", Value = "dayofweek" },
+                new SelectListItem{ Text = "Hour", Value = "hour" },
+                new SelectListItem{ Text = "Item", Value = "item" }
+                }, new { onchange = "getAlldata()" })
+            &nbsp
             Start Date: <input name="startDate" type="date">
-            &nbsp &nbsp
+            &nbsp
             End Date: <input name="endDate" type="date">
-            &nbsp &nbsp Location(s):
+            &nbsp Location(s):
             @Html.DropDownList("location", new List<SelectListItem>
                 {
                 new SelectListItem{ Text = "BSB", Value = "BSB" },
@@ -27,44 +36,13 @@
                 new SelectListItem{ Text = "TLT", Value = "TLT" },
                 new SelectListItem{ Text = "All Locations", Value = "All" }
                 }, new { onchange = "getAlldata()" })
-            &nbsp &nbsp Options:
+            &nbsp Options:
             @Html.DropDownList("action", new List<SelectListItem>
                 {
                 new SelectListItem{ Text = "Display Results", Value = "display" },
                 new SelectListItem{ Text = "Export to Excel", Value = "excel" }
                 }, new { onchange = "getAlldata()" })
-            &nbsp &nbsp &nbsp &nbsp
-            <input type="submit" value="Submit" />
-        </center>
-    }
-
-    <br />
-
-    @using (Html.BeginForm("QueryCheckoutsByHour", "tb_CSUCheckoutCheckin", FormMethod.Post))
-    {
-
-        <center>
-            <p style="font-size:20px"><strong><u>Query Checkouts by Hour:</u></strong></p>
-        </center>
-        <center>
-            Start Date: <input name="startDate" type="date">
-            &nbsp &nbsp
-            End Date: <input name="endDate" type="date">
-            &nbsp &nbsp Location(s):
-            @Html.DropDownList("location", new List<SelectListItem>
-                {
-                new SelectListItem{ Text = "BSB", Value = "BSB" },
-                new SelectListItem{ Text = "LSC", Value = "LSC" },
-                new SelectListItem{ Text = "TLT", Value = "TLT" },
-                new SelectListItem{ Text = "All Locations", Value = "All" }
-                }, new { onchange = "getAlldata()" })
-            &nbsp &nbsp Options:
-            @Html.DropDownList("action", new List<SelectListItem>
-                {
-                new SelectListItem{ Text = "Display Results", Value = "display" },
-                new SelectListItem{ Text = "Export to Excel", Value = "excel" }
-                }, new { onchange = "getAlldata()" })
-            &nbsp &nbsp &nbsp &nbsp
+            <br/><br/>
             <input type="submit" value="Submit" />
         </center>
     }
@@ -74,14 +52,24 @@
 @if(Model != null)
 {
     var date = false;
+    var dayOfWeek = false;
     var hour = false;
+    var item = false;
     foreach (var d in Model)
     {
         if (d.CheckoutDate != null)
         {
             date = true;
         }
+        if (d.CheckoutDayOfWeek != null)
+        {
+            dayOfWeek = true;
+        }
         if (d.CheckoutHour != null)
+        {
+            hour = true;
+        }
+        if (d.ItemUpc != null)
         {
             hour = true;
         }
@@ -91,11 +79,17 @@
     {
         @Html.Partial("_QueryCheckoutsByDateResults", Model, new ViewDataDictionary())
     }
-
+    if (dayOfWeek)
+    {
+        @Html.Partial("_QueryCheckoutsByDayOfWeekResults", Model, new ViewDataDictionary())
+    }
     if (hour)
     {
         @Html.Partial("_QueryCheckoutsByHourResults", Model, new ViewDataDictionary())
     }
-
+    if (item)
+    {
+        @Html.Partial("_QueryCheckoutsByItemResults", Model, new ViewDataDictionary())
+    }
 
 }

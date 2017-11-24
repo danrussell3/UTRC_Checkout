@@ -506,6 +506,8 @@
     <Content Include="Views\Home\_SlingArticles.cshtml" />
     <Content Include="Views\tb_CSUCheckoutCheckin\_QueryCheckoutsByDateResults.cshtml" />
     <Content Include="Views\tb_CSUCheckoutCheckin\_QueryCheckoutsByHourResults.cshtml" />
+    <Content Include="Views\tb_CSUCheckoutCheckin\_QueryCheckoutsByDayOfWeekResults.cshtml" />
+    <Content Include="Views\tb_CSUCheckoutCheckin\_QueryCheckoutsByItemResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Report\" />
