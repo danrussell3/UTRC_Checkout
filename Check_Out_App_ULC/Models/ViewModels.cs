@@ -155,7 +155,11 @@ namespace Check_Out_App_ULC.Models
             [Display(Name = "Item UPC", Prompt = "Item UPC", Description = "Item UPC")]
             public string ItemUpc { get; set; }
             [Display(Name = "Number of Checkouts", Prompt = "Number of Checkouts", Description = "Number of Checkouts")]
-            public int NumCheckouts { get; set; }
+            public int? NumCheckouts { get; set; }
+            [Display(Name = "Number of Late Checkouts", Prompt = "Number of Late Checkouts", Description = "Number of Late Checkouts")]
+            public int? NumLateCheckouts { get; set; }
+            [Display(Name = "Avg Checkout Length (Minutes)", Prompt = "Avg Checkout Length (Minutes)", Description = "Avg Checkout Length (Minutes)")]
+            public double? AvgCheckoutLength { get; set; }
 
             #endregion
         }

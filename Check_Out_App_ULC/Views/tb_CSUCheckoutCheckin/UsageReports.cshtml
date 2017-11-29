@@ -49,45 +49,21 @@
 </div>
 
 
-@if(Model != null)
+@if(Model != null && ViewBag.queryType != null)
 {
-    var date = false;
-    var dayOfWeek = false;
-    var hour = false;
-    var item = false;
-    foreach (var d in Model)
-    {
-        if (d.CheckoutDate != null)
-        {
-            date = true;
-        }
-        if (d.CheckoutDayOfWeek != null)
-        {
-            dayOfWeek = true;
-        }
-        if (d.CheckoutHour != null)
-        {
-            hour = true;
-        }
-        if (d.ItemUpc != null)
-        {
-            item = true;
-        }
-        break;
-    }
-    if (date)
+    if (ViewBag.queryType == "date")
     {
         @Html.Partial("_QueryCheckoutsByDateResults", Model, new ViewDataDictionary())
     }
-    if (dayOfWeek)
+    else if (ViewBag.queryType == "dayofweek")
     {
         @Html.Partial("_QueryCheckoutsByDayOfWeekResults", Model, new ViewDataDictionary())
     }
-    if (hour)
+    else if (ViewBag.queryType == "hour")
     {
         @Html.Partial("_QueryCheckoutsByHourResults", Model, new ViewDataDictionary())
     }
-    if (item)
+    else if (ViewBag.queryType == "item")
     {
         @Html.Partial("_QueryCheckoutsByItemResults", Model, new ViewDataDictionary())
     }

@@ -28,6 +28,8 @@
                     <tr>
                         <th data-field="ItemUpc" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemUpc)</th>
                         <th data-field="NumCheckouts" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.NumCheckouts)</th>
+                        <th data-field="NumLateCheckouts" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.NumLateCheckouts)</th>
+                        <th data-field="AvgCheckoutLength" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.AvgCheckoutLength)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +41,12 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.NumCheckouts)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumLateCheckouts)
+                            </td>
+                            <td>
+                                @Convert.ToInt32(item.AvgCheckoutLength)
                             </td>
                         </tr>
                     }

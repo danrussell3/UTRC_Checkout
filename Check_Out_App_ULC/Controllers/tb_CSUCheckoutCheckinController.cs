@@ -308,6 +308,7 @@ namespace Check_Out_App_ULC.Controllers
                 results = QueryCheckoutsByItem(startDate, endDate, location, action);
             }
 
+            ViewBag.queryType = queryType;
             return View("UsageReports", results);
         }
 
@@ -356,7 +357,7 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     ExportModels.ExportCheckoutsByDate e = new ExportModels.ExportCheckoutsByDate();
                     e.CheckoutDate = Convert.ToDateTime(item.CheckoutDate).ToShortDateString();
-                    e.NumberOfCheckouts = item.NumCheckouts;
+                    e.NumberOfCheckouts = Convert.ToInt32(item.NumCheckouts);
                     data.Add(e);
                 }
                 
@@ -426,7 +427,7 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     ExportModels.ExportCheckoutsByDayOfWeek e = new ExportModels.ExportCheckoutsByDayOfWeek();
                     e.CheckoutDayOfWeek = item.CheckoutDayOfWeek;
-                    e.NumberOfCheckouts = item.NumCheckouts;
+                    e.NumberOfCheckouts = Convert.ToInt32(item.NumCheckouts);
                     data.Add(e);
                 }
 
@@ -496,7 +497,7 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     ExportModels.ExportCheckoutsByHour e = new ExportModels.ExportCheckoutsByHour();
                     e.CheckoutHour = item.CheckoutHour.ToString();
-                    e.NumberOfCheckouts = item.NumCheckouts;
+                    e.NumberOfCheckouts = Convert.ToInt32(item.NumCheckouts);
                     data.Add(e);
                 }
 
@@ -529,6 +530,7 @@ namespace Check_Out_App_ULC.Controllers
             // tally checkouts by date and location into the view model
             List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
 
+            var numCheckedBackIn = 0;
             foreach (var c in checkouts)
             {
                 if (location == "All" || location == c.CheckoutLocationFK)
@@ -536,21 +538,43 @@ namespace Check_Out_App_ULC.Controllers
                     bool containsItemAlready = results.Any(item => item.ItemUpc == c.ItemUPCFK);
                     if (containsItemAlready)
                     {
-                        // increment hour tally
                         foreach (var r in results)
                         {
                             if (r.ItemUpc == c.ItemUPCFK)
                             {
+                                if (c.isLate == true)
+                                {
+                                    r.NumLateCheckouts++;
+                                }
+                                if (c.CheckinDate != null)
+                                {
+                                    numCheckedBackIn++;
+                                    var duration = (TimeSpan)(c.CheckinDate - c.CheckoutDate);
+                                    r.AvgCheckoutLength = ((r.AvgCheckoutLength * (numCheckedBackIn-1)) + duration.TotalMinutes) / numCheckedBackIn;
+                                }
                                 r.NumCheckouts++;
                             }
                         }
                     }
                     else
                     {
-                        // add hour to list and set the tally to 1
                         ViewModels.QueryCheckoutsView entry = new ViewModels.QueryCheckoutsView();
                         entry.ItemUpc = c.ItemUPCFK;
                         entry.NumCheckouts = 1;
+                        if(c.isLate==true)
+                        {
+                            entry.NumLateCheckouts = 1;
+                        }
+                        else
+                        {
+                            entry.NumLateCheckouts = 0;
+                        }
+                        if (c.CheckinDate != null)
+                        {
+                            numCheckedBackIn++;
+                            TimeSpan duration = (TimeSpan)(c.CheckinDate - c.CheckoutDate);
+                            entry.AvgCheckoutLength = duration.TotalMinutes;
+                        }
                         results.Add(entry);
                     }
                 }
@@ -566,7 +590,9 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     ExportModels.ExportCheckoutsByItem e = new ExportModels.ExportCheckoutsByItem();
                     e.ItemUpc = item.ItemUpc;
-                    e.NumberOfCheckouts = item.NumCheckouts;
+                    e.NumberOfCheckouts = Convert.ToInt32(item.NumCheckouts);
+                    e.NumberOfLateCheckouts = Convert.ToInt32(item.NumLateCheckouts);
+                    e.AverageLengthOfCheckout = Convert.ToDouble(item.AvgCheckoutLength);
                     data.Add(e);
                 }
 

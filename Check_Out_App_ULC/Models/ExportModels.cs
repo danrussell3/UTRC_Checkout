@@ -33,6 +33,8 @@ namespace Check_Out_App_ULC.Models
         {
             public string ItemUpc { get; set; }
             public int NumberOfCheckouts { get; set; }
+            public int NumberOfLateCheckouts { get; set; }
+            public double AverageLengthOfCheckout { get; set; }
         }
     }
 }

@@ -73,7 +73,7 @@ namespace Check_Out_App_ULC.App_Start
                   (s =>
                      s.WithIntervalInHours(24)
                     .OnEveryDay()
-                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(21, 15))
+                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(22, 15))
                   )
                 .Build();
 
