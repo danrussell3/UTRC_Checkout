@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_SlingCache>
 
 @if (SessionVariables.CurrentUser != null)
-{
-    <br/>
-    <h3>Here's the latest from Sling:</h3>
+{   
+    <hr />
     <div style="border:4px; border-style:solid; border-color:#018a13; padding: 1em;">
+        <h4>Here's the latest from Sling:</h4>
         @if (Model != null)
         {
             <table id="table"
@@ -27,10 +27,10 @@
                    data-toolbar="#toolbar">
                 <thead>
                     <tr>
-                        <th data-field="PostedBy" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.PostedBy)</th>
-                        <th data-field="Posted" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.Posted)</th>
-                        <th data-field="Content" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.PostContent)</th>
-                        <th data-field="Comments" data-sortable="false" data-filter-control="input">@Html.DisplayNameFor(model => model.PostComments)</th>
+                        <th data-field="PostedBy" data-sortable="true" data-filter-control="input"><span class="glyphicon glyphicon-user"></span>&nbsp @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th data-field="Posted" data-sortable="true" data-filter-control="input"><span class="glyphicon glyphicon-time"></span>&nbsp @Html.DisplayNameFor(model => model.Posted)</th>
+                        <th data-field="Content" data-sortable="true" data-filter-control="input"><span class="glyphicon glyphicon-envelope"></span>&nbsp @Html.DisplayNameFor(model => model.PostContent)</th>
+                        <th data-field="Comments" data-sortable="false" data-filter-control="input"><span class="glyphicon glyphicon-comment"></span>&nbsp @Html.DisplayNameFor(model => model.PostComments)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +59,6 @@
                         </tr>
                     }
                 </tbody>
-
             </table>
         }
     </div>

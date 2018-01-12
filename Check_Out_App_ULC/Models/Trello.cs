@@ -1,0 +1,323 @@
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web;
+using System.Web.Helpers;
+using Check_Out_App_ULC.Models;
+using Check_Out_App_ULC.Controllers.Api;
+using RestSharp;
+
+namespace Check_Out_App_ULC.Models
+{
+    public class Trello
+    {
+        private RestClient client;
+        private const string apiKey = "96ea6537d9e333b29feda8dcfe38f48d";
+        private const string apiToken = "bc91a392cd8b86d9a0e26fc68627ea150ffaa6791598d55ba252680576fd42d3";
+        private const string sharedUserId = "utrccheckout";
+
+        public Trello()
+        {
+            client = new RestClient("https://api.trello.com/1/");
+        }
+
+        public class Board
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string desc { get; set; }
+            public string descData { get; set; }
+            public bool closed { get; set; }
+            public string idOrganization { get; set; }
+            public bool pinned { get; set; }
+            public string url { get; set; }
+            public string shortUrl { get; set; }
+            public Prefs prefs { get; set; }
+            public LabelNames labelNames { get; set; }
+
+            public class Prefs
+            {
+                public string permissionLevel { get; set; }
+                public string voting { get; set; }
+                public string comments { get; set; }
+                public string invitations { get; set; }
+                public bool selfJoin { get; set; }
+                public bool cardCovers { get; set; }
+                public string cardAging { get; set; }
+                public bool calendarFeedEnabled { get; set; }
+                public string background { get; set; }
+                public string backgroundImage { get; set; }
+                public List<BackgroundImage> backgroundImageScaled { get; set; }
+                public bool backgroundTile { get; set; }
+                public string backgroundBrightness { get; set; }
+                public bool canBePublic { get; set; }
+                public bool canBeOrg { get; set; }
+                public bool canBePrivate { get; set; }
+                public bool canInvite { get; set; }
+            }
+
+            public class BackgroundImage
+            {
+                public string width { get; set; }
+                public string height { get; set; }
+                public string url { get; set; }
+            }
+
+            public class LabelNames
+            {
+                public string green { get; set; }
+                public string yellow { get; set; }
+                public string orange { get; set; }
+                public string red { get; set; }
+                public string purple { get; set; }
+                public string blue { get; set; }
+                public string sky { get; set; }
+                public string lime { get; set; }
+                public string pink { get; set; }
+                public string black { get; set; }
+            }
+        }
+
+        public class Card
+        {
+            public string id { get; set; }
+            public Badges badges { get; set; }
+            public List<string> checkItemStates { get; set; }
+            public bool closed { get; set; }
+            public string dateLastActivity { get; set; }
+            public string desc { get; set; }
+            public DescData descData { get; set; }
+            public string due { get; set; }
+            public bool dueComplete { get; set; }
+            public string email { get; set; }
+            public string idAttachmentCover { get; set; }
+            public string idBoard { get; set; }
+            public List<string> idChecklists { get; set; }
+            public List<string> idLabels { get; set; }
+            public string idList { get; set; }
+            public List<string> idMembers { get; set; }
+            public List<string> idMembersVoted { get; set; }
+            public int idShort { get; set; }
+            public List<Label> labels { get; set; }
+            public bool manualCoverAttachment { get; set; }
+            public string name { get; set; }
+            public float pos { get; set; }
+            public string shortLink { get; set; }
+            public string shortUrl { get; set; }
+            public bool subscribed { get; set; }
+            public string url { get; set; }
+
+            public class DescData
+            {
+                public Emoji emoji { get; set; }
+            }
+
+            public class Emoji
+            {
+                public string morty { get; set; }
+            }
+
+            public class Label
+            {
+                public string id { get; set; }
+                public string idBoard { get; set; }
+                public string name { get; set; }
+                public string color { get; set; }
+                public int uses { get; set; }
+            }
+
+            public class Badges
+            {
+                public int votes { get; set; }
+                public bool viewingMemberVoted { get; set; }
+                public bool subscribed { get; set; }
+                public string fogbugz { get; set; }
+                public int checkItems { get; set; }
+                public int checkItemsChecked { get; set; }
+                public int comments { get; set; }
+                public int attachments { get; set; }
+                public bool description { get; set; }
+                public string due { get; set; }
+                public bool dueComplete { get; set; }
+            }
+        }
+
+        public List<Board> GetBoardsList()
+        {
+            string apiUrl = "members/" + sharedUserId + "/boards";
+            var request = new RestRequest(apiUrl, Method.GET);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // execute the request
+            var response = client.Execute(request);
+
+            // parse the response
+            var jarray = JArray.Parse(response.Content);
+            List<Board> boardList = new List<Board>();
+            foreach (var brd in jarray)
+            {
+                Board b = new Board();
+                b.name = brd["name"].ToString();
+                b.id = brd["id"].ToString();
+                boardList.Add(b);
+            }
+            return boardList;
+        }
+
+        public List<Card> GetCardsList(string board)
+        {
+            var listOfBoards = GetBoardsList();
+            string boardId = null;
+            foreach (var b in listOfBoards)
+            {
+                if(b.name == board)
+                {
+                    boardId = b.id;
+                }
+            }
+
+            if (boardId != null)
+            {
+                string apiUrl = "boards/" + boardId + "/cards";
+                var request = new RestRequest(apiUrl, Method.GET);
+
+                // add required parameters
+                request.AddParameter("key", apiKey);
+                request.AddParameter("token", apiToken);
+
+                // execute the request
+                var response = client.Execute<List<Card>>(request);
+                List<Card> cards = response.Data;
+                return cards;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public string PostBoard(string name, string desc = null, bool defaultLists = false)
+        {
+            string apiUrl = "boards/";
+            var request = new RestRequest(apiUrl, Method.POST);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("name", name);
+            if (desc != null) { request.AddParameter("desc", desc); }
+            request.AddParameter("defaultLists", defaultLists);
+
+            // execute the request
+            var response = client.Execute(request);
+            var jarray = JArray.Parse(response.Content);
+            var newBoardId = jarray["id"].ToString();
+
+            return newBoardId;
+        }
+
+        public string PostBoardChecklist(string id, string name = null)
+        {
+            string apiUrl = "boards/" + id + "/checklists";
+            var request = new RestRequest(apiUrl, Method.POST);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("name", name);
+
+            // execute the request
+            var response = client.Execute(request);
+            var jarray = JArray.Parse(response.Content);
+            var newChecklistId = jarray["id"].ToString();
+
+            return newChecklistId;
+        }
+
+        public string PostCard(string idList, string name, string desc = null, string pos = null, string date = null, string idLabels = null)
+        {
+            string apiUrl = "cards";
+            var request = new RestRequest(apiUrl, Method.POST);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("idList", idList);
+            request.AddParameter("name", name);
+            if (desc != null) { request.AddParameter("desc", desc); }
+            if (pos != null) { request.AddParameter("pos", pos); }
+            if (date != null) { request.AddParameter("date", date); }
+            if (idLabels != null) { request.AddParameter("idLabels", idLabels); }
+
+            // execute the request
+            var response = client.Execute(request);
+            var jarray = JArray.Parse(response.Content);
+            var newCardId = jarray["id"].ToString();
+
+            return newCardId;
+        }
+
+        public string PostCardComment(string id, string text)
+        {
+            string apiUrl = "cards/" + id + "/actions/comments";
+            var request = new RestRequest(apiUrl, Method.POST);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("text", text);
+            
+            // execute the request
+            var response = client.Execute(request);
+            var jarray = JArray.Parse(response.Content);
+            var newCommentId = jarray["id"].ToString();
+
+            return newCommentId;
+        }
+
+        public string PostCardChecklist(string id, string name = null, string idChecklistSource = null)
+        {
+            string apiUrl = "cards/" + id + "/checklists";
+            var request = new RestRequest(apiUrl, Method.POST);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("name", name);
+            if (idChecklistSource != null) { request.AddParameter("idChecklistSource", idChecklistSource); }
+
+            // execute the request
+            var response = client.Execute(request);
+            var jarray = JArray.Parse(response.Content);
+            var newChecklistId = jarray["id"].ToString();
+
+            return newChecklistId;
+        }
+
+        public int GenerateCards(string location)
+        {
+            // get boardId for location
+
+
+            // get list of upcs in inventory
+
+
+            // get list of existing cards on board
+
+
+            // if upc doesn't have a card, create one
+
+
+            // return number of cards created
+            return 0;
+        }
+    }
+}

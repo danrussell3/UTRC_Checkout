@@ -319,7 +319,6 @@ namespace Check_Out_App_ULC.Controllers
             // get contents of tb_CSUCheckoutCheckin with date/loc parameters
             var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
 
-            // tally checkouts by date and location into the view model
             List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
 
             foreach (var c in checkouts)
@@ -387,7 +386,6 @@ namespace Check_Out_App_ULC.Controllers
             // get contents of tb_CSUCheckoutCheckin with date/loc parameters
             var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
 
-            // tally checkouts by date and location into the view model
             List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
 
             foreach (var c in checkouts)
@@ -457,7 +455,6 @@ namespace Check_Out_App_ULC.Controllers
             // get contents of tb_CSUCheckoutCheckin with date/loc parameters
             var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
 
-            // tally checkouts by date and location into the view model
             List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
 
             foreach (var c in checkouts)
@@ -527,7 +524,6 @@ namespace Check_Out_App_ULC.Controllers
             // get contents of tb_CSUCheckoutCheckin with date/loc parameters
             var checkouts = db.tb_CSUCheckoutCheckin.Where(m => m.CheckoutDate >= startDate && m.CheckoutDate <= endDate);
 
-            // tally checkouts by date and location into the view model
             List<ViewModels.QueryCheckoutsView> results = new List<ViewModels.QueryCheckoutsView>();
 
             var numCheckedBackIn = 0;

@@ -404,31 +404,29 @@ namespace Check_Out_App_ULC.Controllers
 
         public bool? WaiverCheck(tb_CSUStudent tbs)
         {
-            /*
-            // TEST
+            var v = db.tb_CSUStudent.FirstOrDefault(s => s.CSU_ID == tbs.CSU_ID);
             // ping SmartWaiver API to verify signed waiver before continuing
             var sw = smartwaiver.GetSignedWaivers(tbs.LAST_NAME);
             foreach (var s in sw)
             {
-                var pic = s.photos.ElementAt(0).photo;
-                var p = pic;
                 // check tags in each returned waiver for match with student id
                 foreach (var t in s.tags)
                 {
-                    if (t == tbs.CSU_ID)
+                    if (t == v.CSU_ID)
                     {
+                        // grab first photo in s.photos and cache in db
                         if (s.photos.Count() > 0)
                         {
-                            tbs.PHOTO = s.photos.ElementAt(0).ToString();
+                            v.PHOTO = s.photos.ElementAt(0).photo;
                         }
-                        return true;
+                        v.SIGNEDWAIVER = true;
+                        email.WaiverEmail(v);
+                        db.Entry(v).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
             }
-            // END TEST
-            */
-
-            return tbs.SIGNEDWAIVER;
+            return v.SIGNEDWAIVER;
         }
 
         //alter record for waiver signed

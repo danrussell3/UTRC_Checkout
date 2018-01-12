@@ -47,6 +47,36 @@ namespace Check_Out_App_ULC.Controllers
             return View();
         }
 
+        public ActionResult Trello()
+        {
+            tb_ItemRepair view = new tb_ItemRepair();
+            return View("Trello", view);
+        }
+
+        //
+        public ActionResult GenerateNewCards(string location)
+        {
+            Trello t = new Trello();
+            var result = t.GenerateCards(location);
+            return RedirectToAction("Trello");
+        }
+
+        // retrieves all boards
+        public ActionResult GetBoardsList()
+        {
+            Trello t = new Trello();
+            var result = t.GetBoardsList();
+            return RedirectToAction("Trello");
+        }
+
+        // retrieves all cards
+        public ActionResult GetCardsList(string board)
+        {
+            Trello t = new Trello();
+            var result = t.GetCardsList(board);
+            return View();
+        }
+
         // POST: tb_ItemRepair/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
