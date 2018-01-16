@@ -553,7 +553,6 @@ namespace Check_Out_App_ULC.Models
                     PostCard(listId_Items, upc.ItemUPC, desc: upc.ItemDescription);
                     numCardsCreated++;
                 }
-                
             }
             // return number of cards created
             return numCardsCreated;

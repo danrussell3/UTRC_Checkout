@@ -5,7 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Update Repair Status for Item #@Model.ItemUpc</h2>
+<h3>Update Repair Status for Item <strong>#@Model.ItemUpc</strong></h3>
+<p style="font-size:14px"><u>@Html.ActionLink("Return to Open Repairs", "Index", "tb_ItemRepair")</u></p>
 
 @if (ViewBag.Message != null)
 {
@@ -24,8 +25,22 @@
 
 <button class="accordion">&nbsp Change the repair due date</button>
 <div class="panel">
-    <br />
-    <p>Change the due date here...</p>
+    
+
+    @using (Html.BeginForm("UpdateRepairDueDate", "tb_ItemRepair", FormMethod.Post))
+    {
+        <div style="text-align: center;">
+            <br />
+            <p>The current due date for this repair is: @Model.DueDate</p>
+            
+            To change this, select a new due date: <input name="newDueDate" type="date">
+            <br /><br/>
+            <input type="hidden" name="itemUpc" value=@Model.ItemUpc />
+            <input type="hidden" name="itemLoc" value=@Model.ItemLocation />
+            <input type="submit" value="Submit" />
+        </div>
+    }
+
 </div>
 
 <hr />
@@ -71,12 +86,12 @@
         transition: 0.4s;
     }
 
-    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    /* Add a background color to the button if it is clicked/hovered on */
     .active, .accordion:hover {
         background-color: #ccc;
     }
 
-    /* Style the accordion panel. Note: hidden by default */
+    /* Style the accordion panel (hidden by default) */
     .panel {
         padding: 0 18px;
         background-color: white;

@@ -16,6 +16,7 @@ namespace Check_Out_App_ULC.Controllers
 
         private Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
 
+
         #endregion
 
         #region Public Functions
@@ -71,11 +72,16 @@ namespace Check_Out_App_ULC.Controllers
                 tb_CSULabInventoryItems.CreatedOn = DateTime.Now;
                 tb_CSULabInventoryItems.CreatedBy = SessionVariables.CurrentUserId;
                 db.tb_CSULabInventoryItems.Add(tb_CSULabInventoryItems);
+                var itemLocation = tb_CSULabInventoryItems.ItemLocationFK;
                 db.SaveChanges();
+
+                // run Trello UPC check to add a repair card for the new item
+                Trello t = new Trello();
+                t.GenerateCards(itemLocation);
+
                 ViewBag.Message = "Item Added to Inventory";
                 return RedirectToAction("Index");
             }
-
             return View(tb_CSULabInventoryItems);
         }
 

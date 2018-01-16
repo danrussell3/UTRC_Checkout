@@ -43,6 +43,7 @@ namespace Check_Out_App_ULC.Controllers
                     var checklists = t.GetChecklists(card.id);
                     repair.Checklist = checklists.First().checkItems;
                     repair.RequestDate = checklists.First().name;
+                    repair.DueDate = card.due;
                     foreach (var b in t.GetBoards())
                     {
                         if (b.id == card.idBoard)
@@ -87,7 +88,7 @@ namespace Check_Out_App_ULC.Controllers
                 var checklistId = t.PostCardChecklist(cardId, DateTime.Now.ToString());
                 string newDueDate = null;
                 newDueDate = t.PutNewDueDate(cardId, duedate);
-                // TO DO: add checklist item
+                // TO DO: add checklist items
 
 
                 if (commentId != null && checklistId != null && newDueDate != null) // id's were returned, so success
@@ -123,6 +124,7 @@ namespace Check_Out_App_ULC.Controllers
                     var checklists = t.GetChecklists(card.id);
                     item.Checklist = checklists.First().checkItems;
                     item.RequestDate = checklists.First().name;
+                    item.DueDate = card.due;
                     foreach (var b in t.GetBoards())
                     {
                         if (b.id == card.idBoard)
@@ -134,6 +136,36 @@ namespace Check_Out_App_ULC.Controllers
             }
             return View(item);
         }
+
+        // updates the due date on an open repair
+        public ActionResult UpdateRepairDueDate(string itemUpc, string itemLoc, string newDueDate)
+        {
+            Trello t = new Models.Trello();
+            var cards = t.GetCards(itemLoc);
+            string cardId = null;
+            foreach (var card in cards)
+            {
+                if (card.name == itemUpc)
+                {
+                    cardId = card.id;
+                    continue;
+                }
+            }
+
+            if (cardId != null)
+            {
+                var date = t.PutNewDueDate(cardId, newDueDate);
+
+                TempData["message"] = "Updated due date for Item #" + itemUpc + " to " + newDueDate;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["message"] = "There was an error locating the repair history for Item #" + itemUpc + ". Please try again.";
+                return RedirectToAction("Index");
+            }
+        }
+
 
         // GET: tb_ItemRepair/Details/5
         public ActionResult Details(int? id)

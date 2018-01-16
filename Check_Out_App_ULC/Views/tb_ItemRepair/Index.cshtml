@@ -7,34 +7,39 @@
 
 @if (ViewBag.Message != null)
 {
+    <br/>
     <p style="font-size:20px"><mark><span>@ViewBag.Message</span></mark></p>
 }
 
 <br/>
 
-<div class="form-horizontal" style="border:3px; border-style:solid; border-color:#b30000; padding: 2em;">
-    @using (Html.BeginForm("RequestRepair", "tb_ItemRepair", FormMethod.Post))
-    {
-        <div style="text-align: center;" >
-            <p style="font-size:20px"><strong><u>Submit a new request for repair</u></strong></p>
-            <div>
-                Item UPC:<br/> @Html.TextBox("upc")
-                <br/><br/>
-                Describe what needs to be repaired:<br/> @Html.TextArea("description", null, new { rows=4, cols=60 }) 
-                <br/>
-                Repair Due Date:<br/> <input name="duedate" type="date">
-                <br/><br/>
-                <input type="submit" value="Submit" />
+<button class="accordion">&nbsp <strong><u>Submit a new request for repair</u></strong></button>
+<div class="panel">
+    <br />
+    <div class="form-horizontal" style="border:3px; border-style:solid; border-color:#b30000; padding: 2em;">
+        @using (Html.BeginForm("RequestRepair", "tb_ItemRepair", FormMethod.Post))
+        {
+            <div style="text-align: center;">
+                
+                <div>
+                    Item UPC:<br /> @Html.TextBox("upc")
+                    <br /><br />
+                    Describe what needs to be repaired:<br /> @Html.TextArea("description", null, new { rows = 4, cols = 60 })
+                    <br />
+                    Select a Due Date (or leave empty to use default of 2 weeks):<br /> <input name="duedate" type="date">
+                    <br /><br />
+                    <input type="submit" value="Submit" />
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
-<hr />
+<br /><br/>
 
 <div style="border:12px; border-style:solid; border-color:#cc6600; padding: 1em;">
     
-    <div style="text-align: center;"><h2>Open Repairs</h2></div>
+    <div style="text-align: center;"><h3>Open Repairs</h3></div>
     
     <table id="table"
            data-toggle="table"
@@ -58,6 +63,7 @@
             <tr>
                 <th data-field="ItemUPC" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemUpc)</th>
                 <th data-field="RequestDate" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.RequestDate)</th>
+                <th data-field="DueDate" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.DueDate)</th>
                 <th data-field="Comments" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.Comments)</th>
                 <th data-field="Checklists" data-sortable="true" data-filter-control="select">@Html.DisplayNameFor(model => model.Checklist)</th>
                 <th>
@@ -76,6 +82,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RequestDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DueDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Comments)
@@ -100,3 +109,65 @@
         </tbody>
     </table>
 </div>
+
+
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            /* Toggle between adding and removing the "active" class,
+            to highlight the button that controls the panel */
+            this.classList.toggle("active");
+
+            /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+
+<style>
+    /* Style the buttons that are used to open and close the accordion panel */
+    .accordion {
+        background-color: #eee;
+        color: #444;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        text-align: left;
+        border: none;
+        outline: none;
+        transition: 0.4s;
+    }
+
+        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+
+    /* Style the accordion panel. Note: hidden by default */
+    .panel {
+        padding: 0 18px;
+        background-color: white;
+        display: none;
+    }
+
+    .accordion:after {
+        content: '\02795'; /* Unicode character for "plus" sign (+) */
+        font-size: 13px;
+        color: #777;
+        float: left;
+        margin-left: 5px;
+    }
+
+    .active:after {
+        content: "\2796"; /* Unicode character for "minus" sign (-) */
+    }
+</style>
