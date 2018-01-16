@@ -93,8 +93,8 @@ namespace Check_Out_App_ULC.Models
             public string dateLastActivity { get; set; }
             public string desc { get; set; }
             public DescData descData { get; set; }
-            public string due { get; set; }
-            public bool dueComplete { get; set; }
+            public DateTimeOffset? due { get; set; }
+            public bool? dueComplete { get; set; }
             public string email { get; set; }
             public string idAttachmentCover { get; set; }
             public string idBoard { get; set; }
