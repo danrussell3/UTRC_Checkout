@@ -164,6 +164,20 @@ namespace Check_Out_App_ULC.Models
             #endregion
         }
 
+        public class RepairStatusView
+        {
+            [Display(Name = "Item UPC", Prompt = "Item UPC", Description = "Item UPC")]
+            public string ItemUpc { get; set; }
+            [Display(Name = "Item Location", Prompt = "Item Location", Description = "Item Location")]
+            public string ItemLocation { get; set; }
+            [DataType(DataType.Date)]
+            [Display(Name = "Date Requested", Prompt = "Date Requested", Description = "Date Requested")]
+            public string RequestDate { get; set; }
+            [Display(Name = "Comments", Prompt = "Comments", Description = "Comments")]
+            public List<Trello.Comment> Comments { get; set; }
+            [Display(Name = "Checklist", Prompt = "Checklist", Description = "Checklist")]
+            public List<Trello.CheckItem> Checklist { get; set; }
+        }
 
         #region Public Functions
         public bool IsValidUser(string id)

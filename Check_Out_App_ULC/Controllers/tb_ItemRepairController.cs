@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Check_Out_App_ULC.Models;
+using static Check_Out_App_ULC.Models.ViewModels;
 
 namespace Check_Out_App_ULC.Controllers
 {
@@ -23,7 +24,115 @@ namespace Check_Out_App_ULC.Controllers
         // GET: tb_ItemRepair
         public ActionResult Index()
         {
-            return View(db.tb_ItemRepair.ToList());
+            // get active repairs for current location
+            Trello t = new Trello();
+            var cards = new List<Trello.Card>();
+            cards = t.GetCards(SessionVariables.CurrentLocation.ToString());
+            
+            // populate a view model by inserting cards
+            List<RepairStatusView> view = new List<RepairStatusView>();
+
+            // compile list of cards with active due date, sort by date due
+            foreach (var card in cards)
+            {
+                if (card.due != null && card.dueComplete == false)
+                {
+                    RepairStatusView repair = new RepairStatusView();
+                    repair.ItemUpc = card.name;
+                    repair.Comments = t.GetCardComments(card.id);
+                    var checklists = t.GetChecklists(card.id);
+                    repair.Checklist = checklists.First().checkItems;
+                    repair.RequestDate = checklists.First().name;
+                    foreach (var b in t.GetBoards())
+                    {
+                        if (b.id == card.idBoard)
+                        {
+                            repair.ItemLocation = b.name;
+                        }
+                    }
+                    view.Add(repair);
+                }
+            }
+
+            if (TempData["message"] != null)
+            {
+                ViewBag.Message = TempData["message"];
+            }
+
+            return View(view);
+            //return View(db.tb_ItemRepair.ToList());
+        }
+
+        public ActionResult RequestRepair(string upc, string description, string duedate)
+        {
+            bool success = false;
+            Trello t = new Models.Trello();
+
+            // get card id first
+            var cards = t.GetCards(SessionVariables.CurrentLocation.ToString());
+            string cardId = null;
+            foreach (var card in cards)
+            {
+                if (card.name == upc)
+                {
+                    cardId = card.id;
+                    continue;
+                }
+            }
+
+            if (cardId != null)
+            {
+                // submit request by creating a new checklist on the card and adding the description as a comment
+                var commentId = t.PostCardComment(cardId, description);
+                var checklistId = t.PostCardChecklist(cardId, DateTime.Now.ToString());
+                string newDueDate = null;
+                newDueDate = t.PutNewDueDate(cardId, duedate);
+                // TO DO: add checklist item
+
+
+                if (commentId != null && checklistId != null && newDueDate != null) // id's were returned, so success
+                {
+                    success = true;
+                }
+            }
+
+            if (success) // success
+            {
+                TempData["message"] = "Item " + upc + " was submitted for repair.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["message"] = "There was a problem submitting this request. Please try again.";
+                return RedirectToAction("Index");
+            }
+        }
+
+        // updates an open repair
+        public ActionResult UpdateRepair(string upc)
+        {
+            RepairStatusView item = new RepairStatusView();
+            Trello t = new Models.Trello();
+            var cards = t.GetCards(SessionVariables.CurrentLocation.ToString());
+            foreach (var card in cards)
+            {
+                if (card.name == upc)
+                {
+                    item.ItemUpc = card.name;
+                    item.Comments = t.GetCardComments(card.id);
+                    var checklists = t.GetChecklists(card.id);
+                    item.Checklist = checklists.First().checkItems;
+                    item.RequestDate = checklists.First().name;
+                    foreach (var b in t.GetBoards())
+                    {
+                        if (b.id == card.idBoard)
+                        {
+                            item.ItemLocation = b.name;
+                        }
+                    }
+                }
+            }
+            return View(item);
         }
 
         // GET: tb_ItemRepair/Details/5
@@ -62,10 +171,10 @@ namespace Check_Out_App_ULC.Controllers
         }
 
         // retrieves all boards
-        public ActionResult GetBoardsList()
+        public ActionResult GetBoards()
         {
             Trello t = new Trello();
-            var result = t.GetBoardsList();
+            var result = t.GetBoards();
             return RedirectToAction("Trello");
         }
 
@@ -73,7 +182,7 @@ namespace Check_Out_App_ULC.Controllers
         public ActionResult GetCardsList(string board)
         {
             Trello t = new Trello();
-            var result = t.GetCardsList(board);
+            var result = t.GetCards(board);
             return View();
         }
 

@@ -17,7 +17,7 @@
 }
 
 <div style="border:12px; border-style:solid; border-color:#002db3; padding: 1em;">
-    <p style="font-size:16px"><u>@Html.ActionLink("Get Boards List", "GetBoardsList", "tb_ItemRepair")</u></p>
+    <p style="font-size:16px"><u>@Html.ActionLink("Get Boards List", "GetBoards", "tb_ItemRepair")</u></p>
     <br />
 </div>
 
@@ -45,7 +45,7 @@
 {
     <div style="border:3px; border-style:solid; border-color:#00245a; padding: 2em;">
         <center>
-            <p style="font-size:22px"><strong>Select a location to generate new cards for it's inventory</strong></p>
+            <p style="font-size:22px"><strong>Select a location to generate new cards for it's inventory (if they don't already exist):</strong></p>
             @Html.DropDownList("location", new List<SelectListItem>
                 {
                 new SelectListItem{ Text = "LSC", Value = "LSC" },

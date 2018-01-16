@@ -1,128 +1,102 @@
-﻿@model IEnumerable<Check_Out_App_ULC.Models.tb_ItemRepair>
+﻿@model IEnumerable<Check_Out_App_ULC.Models.ViewModels.RepairStatusView>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div style="text-align: center;"><h2>Check-Ins</h2></div>
+
 @if (ViewBag.Message != null)
 {
     <p style="font-size:20px"><mark><span>@ViewBag.Message</span></mark></p>
 }
 
-<div class="form-horizontal" style="border:3px; border-style:solid; border-color:#b30000; padding: 2em;">
-    @using (Html.BeginForm("ItemCheckIn", "tb_CSUCheckin", FormMethod.Post))
+<br/>
 
+<div class="form-horizontal" style="border:3px; border-style:solid; border-color:#b30000; padding: 2em;">
+    @using (Html.BeginForm("RequestRepair", "tb_ItemRepair", FormMethod.Post))
     {
         <div style="text-align: center;" >
-            <p style="font-size:20px"><strong><u>Check In an Item</u></strong></p>
-
+            <p style="font-size:20px"><strong><u>Submit a new request for repair</u></strong></p>
             <div>
-                <label for="ItemUPCFK"> Item Number </label>
-                @Html.TextBox("item")
-
-                <input type="submit" value="Submit" onclick="document.forms.valueOf()" />
+                Item UPC:<br/> @Html.TextBox("upc")
+                <br/><br/>
+                Describe what needs to be repaired:<br/> @Html.TextArea("description", null, new { rows=4, cols=60 }) 
+                <br/>
+                Repair Due Date:<br/> <input name="duedate" type="date">
+                <br/><br/>
+                <input type="submit" value="Submit" />
             </div>
         </div>
-
     }
 </div>
 
-<h2>Request a Repair</h2>
+<hr />
 
-<p>
-    @Html.BeginForm("Create New", "Create")
-</p>
-<div style="border:12px; border-style:solid; border-color:#b30000; padding: 1em;">
-    @if (Model != null && Model.Any())
-    {
-        <div style="text-align: center;"><h2>Items currently checked out</h2></div>
-
-        <table id="table"
-               data-toggle="table"
-               data-sort-name="name"
-               data-sort-order="desc"
-               data-search="true"
-               data-show-refresh="true"
-               data-show-toggle="true"
-               data-show-columns="true"
-               data-show-multi-sort="true"
-               data-filter-control="true"
-               data-filter-show-clear="true"
-               data-response-handler="responseHandler"
-               data-toolbar="#toolbar">
-            <thead>
-                <tr>
-                    <th data-field="Issue" data-sortable="true" data-filter-control="input">
-                        @Html.DisplayNameFor(model => model.Issue)
-                    <th>
-                        @Html.DisplayNameFor(model => model.Notes)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DateIssued)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DateRepaired)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.RequestedBy)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.UnRepairable)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.RepairedBy)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ItemUpcFk)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ItemIdFk)
-                    </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
+<div style="border:12px; border-style:solid; border-color:#cc6600; padding: 1em;">
+    
+    <div style="text-align: center;"><h2>Open Repairs</h2></div>
+    
+    <table id="table"
+           data-toggle="table"
+           data-sort-name="name"
+           data-sort-order="desc"
+           data-search="true"
+           data-show-pagination-switch="true"
+           data-page-list="[100, ALL]"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-multi-sort="true"
+           data-show-export="true"
+           data-pagination="true"
+           data-filter-control="true"
+           data-click-to-select="true"
+           data-filter-show-clear="true"
+           data-response-handler="responseHandler"
+           data-toolbar="#toolbar">
+        <thead>
+            <tr>
+                <th data-field="ItemUPC" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.ItemUpc)</th>
+                <th data-field="RequestDate" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.RequestDate)</th>
+                <th data-field="Comments" data-sortable="true" data-filter-control="input">@Html.DisplayNameFor(model => model.Comments)</th>
+                <th data-field="Checklists" data-sortable="true" data-filter-control="select">@Html.DisplayNameFor(model => model.Checklist)</th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (SessionVariables.CurrentLocation.ToString() == item.ItemLocation || SessionVariables.CurrentLocation.ToString() == "notset")
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AssignedTo)
+                            @Html.DisplayFor(modelItem => item.ItemUpc)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Issue)
+                            @Html.DisplayFor(modelItem => item.RequestDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Notes)
+                            @Html.DisplayFor(modelItem => item.Comments)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateIssued)
+                            <ul style="list-style-type:square">
+                                @foreach (var i in item.Checklist)
+                                {
+                                    <li>@i.name</li>
+                                }
+                            </ul>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateRepaired)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RequestedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UnRepairable)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RepairedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ItemUpcFk)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ItemIdFk)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.RepairId }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.RepairId }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.RepairId })
+                            <form action="~/tb_ItemRepair/UpdateRepair" Method="GET">
+                                <input type="hidden" name="upc" value=@item.ItemUpc />
+                                <button type="submit">Update Repair Status</button>
+                            </form>
                         </td>
                     </tr>
                 }
-
-        </table>
-    }
+            }
+        </tbody>
+    </table>
 </div>

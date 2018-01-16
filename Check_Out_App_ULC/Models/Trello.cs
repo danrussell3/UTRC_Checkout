@@ -16,6 +16,7 @@ namespace Check_Out_App_ULC.Models
 {
     public class Trello
     {
+        private readonly Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
         private RestClient client;
         private const string apiKey = "96ea6537d9e333b29feda8dcfe38f48d";
         private const string apiToken = "bc91a392cd8b86d9a0e26fc68627ea150ffaa6791598d55ba252680576fd42d3";
@@ -147,6 +148,36 @@ namespace Check_Out_App_ULC.Models
             }
         }
 
+        public class Comment
+        {
+            public string text { get; set; }
+            public string date { get; set; }
+            public string commentId { get; set; }
+            public string cardId { get; set; }
+        }
+
+        public class Checklist
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string idBoard { get; set; }
+            public string idCard { get; set; }
+            public int pos { get; set; }
+            public List<CheckItem> checkItems { get; set; }
+
+        }
+
+        public class CheckItem
+        {
+            public string state { get; set; }
+            public string idChecklist { get; set; }
+            public string id { get; set; }
+            public string name { get; set; }
+            public string nameData { get; set; }
+            public int pos { get; set; }
+        }
+
+        /*
         public List<Board> GetBoardsList()
         {
             string apiUrl = "members/" + sharedUserId + "/boards";
@@ -171,20 +202,39 @@ namespace Check_Out_App_ULC.Models
             }
             return boardList;
         }
+        */
 
-        public List<Card> GetCardsList(string board)
+        public List<Board> GetBoards()
         {
-            var listOfBoards = GetBoardsList();
-            string boardId = null;
-            foreach (var b in listOfBoards)
+            string apiUrl = "members/" + sharedUserId + "/boards";
+            var request = new RestRequest(apiUrl, Method.GET);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // execute the request
+            var response = client.Execute<List<Board>>(request);
+            List<Board> boards = response.Data;
+            
+            return boards;
+        }
+
+        public List<Card> GetCards(string boardName)
+        {
+            var boards = GetBoards();
+            List<string> boardIds = new List<string>();
+            foreach (var b in boards)
             {
-                if(b.name == board)
+                if(b.name == boardName || boardName == "notset")
                 {
-                    boardId = b.id;
+                    boardIds.Add(b.id);
                 }
             }
 
-            if (boardId != null)
+            List<Card> cardList = new List<Card>();
+
+            foreach (var boardId in boardIds)
             {
                 string apiUrl = "boards/" + boardId + "/cards";
                 var request = new RestRequest(apiUrl, Method.GET);
@@ -196,12 +246,167 @@ namespace Check_Out_App_ULC.Models
                 // execute the request
                 var response = client.Execute<List<Card>>(request);
                 List<Card> cards = response.Data;
-                return cards;
+                foreach (var c in cards)
+                {
+                    cardList.Add(c);
+                }
+            }
+
+            // if location is all, sort the cards to show most recent first
+            if (boardName == "notset")
+            {
+                // TO DO
+
+            }
+
+            return cardList;
+        }
+
+        // retrieves the id of the list for the given board name and list name
+        public string GetListId(string boardName, string listName)
+        {
+            var boards = GetBoards();
+            string boardId = null;
+            foreach (var b in boards)
+            {
+                if (b.name == boardName)
+                {
+                    boardId = b.id;
+                }
+            }
+
+            if (boardId != null)
+            {
+                string apiUrl = "boards/" + boardId + "/lists";
+                var request = new RestRequest(apiUrl, Method.GET);
+
+                // add required parameters
+                request.AddParameter("key", apiKey);
+                request.AddParameter("token", apiToken);
+
+                // execute the request
+                var response = client.Execute(request);
+
+                // parse the response
+                var checklists = JArray.Parse(response.Content);
+                string itemsListId = null;
+                foreach (var c in checklists)
+                {
+                    if (c["name"].ToString() == listName)
+                    {
+                        itemsListId = c["id"].ToString();
+                    }
+                }
+                return itemsListId;
             }
             else
             {
                 return null;
             }
+        }
+
+        // get checklists for a card
+        public List<Checklist> GetChecklists(string cardId)
+        {
+            string apiUrl = "cards/" + cardId + "/checklists";
+            var request = new RestRequest(apiUrl, Method.GET);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // execute the request
+            var response = client.Execute<List<Checklist>>(request);
+
+            /*
+            var data = JArray.Parse(response.Content);
+            List<Checklist> checklists = new List<Checklist>();
+            foreach (var item in data)
+            {
+                Checklist c = new Checklist();
+                c.id = item["id"].ToString();
+                c.name = item["name"].ToString();
+                c.idBoard = item["idBoard"].ToString();
+                c.idCard = item["idCard"].ToString();
+                c.pos = Convert.ToInt32(item["pos"]);
+                c.checkItems = item["checkItems"].ToString().ToList();
+                checklists.Add(c);
+            }
+            */
+            return response.Data;
+        }
+
+        // retrieve comments from a card
+        public List<Comment> GetCardComments(string cardId, string since = null)
+        {
+            string apiUrl = "cards/" + cardId + "/actions";
+            var request = new RestRequest(apiUrl, Method.GET);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // add optional parameters
+            if (since != null) { request.AddParameter("since", since); }
+
+            // execute the request
+            var response = client.Execute<List<Card>>(request);
+            var data = JArray.Parse(response.Content);
+            List<Comment> comments = new List<Comment>();
+            foreach (var item in data)
+            {
+                Comment c = new Comment();
+                c.text = item["data"]["text"].ToString();
+                c.date = item["date"].ToString();
+                c.commentId = item["id"].ToString();
+                c.cardId = item["data"]["card"]["id"].ToString();
+                comments.Add(c);
+            }
+            return comments;
+        }
+
+        // sets new due date for card (due date of repair)
+        public string PutNewDueDate(string id, string duedate)
+        {
+            if (duedate == null)
+            {
+                // set default due date
+                duedate = DateTime.Now.AddDays(14).ToString();
+            }
+
+            string apiUrl = "cards/" + id;
+            var request = new RestRequest(apiUrl, Method.PUT);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("due", duedate);
+
+            // execute the request
+            var response = client.Execute(request);
+            var cardDetails = JObject.Parse(response.Content);
+            var newDate = cardDetails["due"].ToString();
+
+            return newDate;
+        }
+
+        // sets due date for card as closed (due date of repair)
+        public string PutCloseDueDate(string id)
+        {
+            string apiUrl = "cards/" + id;
+            var request = new RestRequest(apiUrl, Method.PUT);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("dueComplete", true);
+
+            // execute the request
+            var response = client.Execute(request);
+            var cardDetails = JObject.Parse(response.Content);
+            var completeStatus = cardDetails["dueComplete"].ToString();
+
+            return completeStatus;
         }
 
         public string PostBoard(string name, string desc = null, bool defaultLists = false)
@@ -259,7 +464,7 @@ namespace Check_Out_App_ULC.Models
 
             // execute the request
             var response = client.Execute(request);
-            var jarray = JArray.Parse(response.Content);
+            var jarray = JObject.Parse(response.Content);
             var newCardId = jarray["id"].ToString();
 
             return newCardId;
@@ -277,8 +482,9 @@ namespace Check_Out_App_ULC.Models
             
             // execute the request
             var response = client.Execute(request);
-            var jarray = JArray.Parse(response.Content);
+            var jarray = JObject.Parse(response.Content);
             var newCommentId = jarray["id"].ToString();
+            //var newCommentId = response.Content
 
             return newCommentId;
         }
@@ -296,28 +502,61 @@ namespace Check_Out_App_ULC.Models
 
             // execute the request
             var response = client.Execute(request);
-            var jarray = JArray.Parse(response.Content);
+            var jarray = JObject.Parse(response.Content);
             var newChecklistId = jarray["id"].ToString();
 
             return newChecklistId;
         }
 
+        // for given location, this method checks the existing cards against the location's UPCs;
+        // if a UPC doesn't already have a card, it creates one
+        // returns the number of new cards created
         public int GenerateCards(string location)
         {
             // get boardId for location
-
+            var boards = GetBoards();
+            string boardId = null;
+            foreach (var b in boards)
+            {
+                if(b.name == location)
+                {
+                    boardId = b.id;
+                }
+            }
+            var listId_Items = GetListId(location, "Items");
 
             // get list of upcs in inventory
-
+            var upcs = db.tb_CSULabInventoryItems.Where(m => m.ItemLocationFK == location);
 
             // get list of existing cards on board
-
+            var cards = GetCards(location);
 
             // if upc doesn't have a card, create one
+            var numCardsCreated = 0;
 
+            foreach (var upc in upcs)
+            {
+                // for each upc in inventory, see if a card already exists
+                bool alreadyExists = false;
+                foreach (var card in cards)
+                {
+                    if (card.name == upc.ItemUPC)
+                    {
+                        alreadyExists = true;
+                        continue;
+                    }
+                }
 
+                if (alreadyExists == false)
+                {
+                    // create new card for that upc
+                    PostCard(listId_Items, upc.ItemUPC, desc: upc.ItemDescription);
+                    numCardsCreated++;
+                }
+                
+            }
             // return number of cards created
-            return 0;
+            return numCardsCreated;
         }
     }
 }
