@@ -175,7 +175,7 @@ namespace Check_Out_App_ULC.Models
             public string RequestDate { get; set; }
             [DataType(DataType.Date)]
             [Display(Name = "Due Date", Prompt = "Due Date", Description = "Due Date")]
-            public DateTimeOffset? DueDate { get; set; }
+            public DateTime? DueDate { get; set; }
             [Display(Name = "Comments", Prompt = "Comments", Description = "Comments")]
             public List<Trello.Comment> Comments { get; set; }
             [Display(Name = "Checklist", Prompt = "Checklist", Description = "Checklist")]

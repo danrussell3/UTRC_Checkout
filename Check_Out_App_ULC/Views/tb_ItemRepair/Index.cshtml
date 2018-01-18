@@ -90,10 +90,20 @@
                             @Html.DisplayFor(modelItem => item.Comments)
                         </td>
                         <td>
-                            <ul style="list-style-type:square">
+                            <ul style="list-style-type:none">
                                 @foreach (var i in item.Checklist)
                                 {
-                                    <li>@i.name</li>
+                                    <li>
+                                        @if (@i.state == "complete")
+                                        {
+                                            <span class="glyphicon glyphicon-check"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                        &nbsp @i.name
+                                    </li>
                                 }
                             </ul>
                         </td>

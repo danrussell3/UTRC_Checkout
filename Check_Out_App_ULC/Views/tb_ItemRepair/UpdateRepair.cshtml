@@ -15,7 +15,7 @@
 
 <br/>
 
-<button class="accordion">&nbsp Update the repair checklist</button>
+<button class="accordion">&nbsp Update or make changes to the repair checklist</button>
 <div class="panel">
     <br/>
     <p>Edit checklist items here...</p>
@@ -25,13 +25,11 @@
 
 <button class="accordion">&nbsp Change the repair due date</button>
 <div class="panel">
-    
-
     @using (Html.BeginForm("UpdateRepairDueDate", "tb_ItemRepair", FormMethod.Post))
     {
         <div style="text-align: center;">
             <br />
-            <p>The current due date for this repair is: @Model.DueDate</p>
+            <p>The current due date for this repair is: @Html.DisplayFor(modelItem => Model.DueDate)</p>
             
             To change this, select a new due date: <input name="newDueDate" type="date">
             <br /><br/>
@@ -40,15 +38,34 @@
             <input type="submit" value="Submit" />
         </div>
     }
-
 </div>
 
 <hr />
 
-<button class="accordion">&nbsp Close out the repair</button>
+<button class="accordion">&nbsp Close out this repair</button>
 <div class="panel">
     <br />
-    <p>Confirm that the repair has been completed...</p>
+    <p>Confirm that the repair has been completed</p>
+    <p>(Please note: This will mark any existing checklist items as complete, close the due date, and mark the repair request as closed.)</p>
+    @using (Html.BeginForm("CloseRepair", "tb_ItemRepair", FormMethod.Post))
+    {
+        <div style="text-align: center;">
+            <strong>Item UPC: @Model.ItemUpc </strong>
+            <br /><br />
+            Leave a note about the completed repair:<br /> @Html.TextArea("description", null, new { rows = 4, cols = 60 })
+            <br />
+                
+            <select id="confirm" name="confirm">
+                <option value="close">Close this repair request</option>
+                <option value="nevermind">Nevermind, I have erred</option>
+            </select>
+                
+            <br /><br />
+            <input type="hidden" name="itemUpc" value=@Model.ItemUpc />
+            <input type="hidden" name="itemLoc" value=@Model.ItemLocation />
+            <input type="submit" value="Submit" />
+        </div>
+    }
 </div>
 
 <script>

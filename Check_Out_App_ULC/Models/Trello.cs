@@ -93,7 +93,7 @@ namespace Check_Out_App_ULC.Models
             public string dateLastActivity { get; set; }
             public string desc { get; set; }
             public DescData descData { get; set; }
-            public DateTimeOffset? due { get; set; }
+            public DateTime? due { get; set; }
             public bool? dueComplete { get; set; }
             public string email { get; set; }
             public string idAttachmentCover { get; set; }
@@ -233,7 +233,6 @@ namespace Check_Out_App_ULC.Models
             }
 
             List<Card> cardList = new List<Card>();
-
             foreach (var boardId in boardIds)
             {
                 string apiUrl = "boards/" + boardId + "/cards";
@@ -248,6 +247,11 @@ namespace Check_Out_App_ULC.Models
                 List<Card> cards = response.Data;
                 foreach (var c in cards)
                 {
+                    if (c.due != null)
+                    {
+                        c.due = Convert.ToDateTime(c.due).AddHours(12);
+                        c.due = Convert.ToDateTime(c.due).Date;
+                    }
                     cardList.Add(c);
                 }
             }
@@ -317,22 +321,23 @@ namespace Check_Out_App_ULC.Models
 
             // execute the request
             var response = client.Execute<List<Checklist>>(request);
+            
+            return response.Data;
+        }
 
-            /*
-            var data = JArray.Parse(response.Content);
-            List<Checklist> checklists = new List<Checklist>();
-            foreach (var item in data)
-            {
-                Checklist c = new Checklist();
-                c.id = item["id"].ToString();
-                c.name = item["name"].ToString();
-                c.idBoard = item["idBoard"].ToString();
-                c.idCard = item["idCard"].ToString();
-                c.pos = Convert.ToInt32(item["pos"]);
-                c.checkItems = item["checkItems"].ToString().ToList();
-                checklists.Add(c);
-            }
-            */
+        // retrieves a list of CheckItems from the checklist matching the provided id
+        public List<CheckItem> GetChecklistItems(string checklistId)
+        {
+            string apiUrl = "checklists/" + checklistId + "/checkItems";
+            var request = new RestRequest(apiUrl, Method.GET);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // execute the request
+            var response = client.Execute<List<CheckItem>>(request);
+
             return response.Data;
         }
 
@@ -366,13 +371,15 @@ namespace Check_Out_App_ULC.Models
         }
 
         // sets new due date for card (due date of repair)
-        public string PutNewDueDate(string id, string duedate)
+        public string PutNewDueDate(string id, DateTime duedate)
         {
+            /*
             if (duedate == null)
             {
                 // set default due date
                 duedate = DateTime.Now.AddDays(14).ToString();
             }
+            */
 
             string apiUrl = "cards/" + id;
             var request = new RestRequest(apiUrl, Method.PUT);
@@ -380,14 +387,16 @@ namespace Check_Out_App_ULC.Models
             // add required parameters
             request.AddParameter("key", apiKey);
             request.AddParameter("token", apiToken);
-            request.AddParameter("due", duedate);
+            request.AddParameter("due", duedate.Date);
 
             // execute the request
             var response = client.Execute(request);
             var cardDetails = JObject.Parse(response.Content);
-            var newDate = cardDetails["due"].ToString();
+            //var newDate = cardDetails["due"];
+            var newDate = Convert.ToDateTime(cardDetails["due"]).Date;
+            //var newDate3 = newDate2.Date;
 
-            return newDate;
+            return newDate.ToString();
         }
 
         // sets due date for card as closed (due date of repair)
@@ -399,7 +408,7 @@ namespace Check_Out_App_ULC.Models
             // add required parameters
             request.AddParameter("key", apiKey);
             request.AddParameter("token", apiToken);
-            request.AddParameter("dueComplete", true);
+            request.AddParameter("dueComplete", "true");
 
             // execute the request
             var response = client.Execute(request);
@@ -407,6 +416,25 @@ namespace Check_Out_App_ULC.Models
             var completeStatus = cardDetails["dueComplete"].ToString();
 
             return completeStatus;
+        }
+
+        // marks a checklist item as complete
+        public string PutChangeChecklistItem(string cardId, string checkitemId, string state)
+        {
+            string apiUrl = "cards/" + cardId + "/checkItem/" + checkitemId;
+            var request = new RestRequest(apiUrl, Method.PUT);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("state", state);
+
+            // execute the request
+            var response = client.Execute(request);
+            var itemDetails = JObject.Parse(response.Content);
+            var itemState = itemDetails["state"].ToString();
+
+            return itemState;
         }
 
         public string PostBoard(string name, string desc = null, bool defaultLists = false)

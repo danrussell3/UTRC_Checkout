@@ -305,15 +305,31 @@ namespace Check_Out_App_ULC.Models
             get
             {
                 DateTime supposedTime;
-                if (CurrentLocation == Location.LSC || CurrentLocation == Location.BSB || CurrentLocation == Location.notset)
+                if (CurrentLocation == Location.LSC || CurrentLocation == Location.notset)
                 {
 
                     var tgif = DateTime.Now.DayOfWeek.ToString();
 
                     supposedTime = DateTime.Now.AddHours(6);
-                    if (supposedTime > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 20, 45, 00) && tgif != "Friday") // after 6pm
+                    if (supposedTime > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 45, 00) && tgif != "Friday") // after 6pm
                     {
-                        supposedTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 20, 45, 00);
+                        supposedTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 45, 00);
+                        return supposedTime;
+                    }
+                    if (supposedTime > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 00, 00) && tgif == "Friday")
+                    {
+                        supposedTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 16, 45, 00);
+                        return supposedTime;
+                    }
+                }
+                if (CurrentLocation == Location.BSB)
+                {
+                    var tgif = DateTime.Now.DayOfWeek.ToString();
+
+                    supposedTime = DateTime.Now.AddHours(6);
+                    if (supposedTime > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 45, 00) && tgif != "Friday") // after 6pm
+                    {
+                        supposedTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 45, 00);
                         return supposedTime;
                     }
                     if (supposedTime > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 00, 00) && tgif == "Friday")
