@@ -24,6 +24,7 @@ namespace Check_Out_App_ULC.Controllers.Api
         [System.Web.Mvc.HttpGet]
         public List<ViewModels.SlingArticlesView> SlingGetArticles(string channel)
         {
+            //Sling s = new Sling();
             var result = Sling.GetArticles(channel);
             return result;
         }

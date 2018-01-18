@@ -54,8 +54,11 @@
             <br /><br />
             Leave a note about the completed repair:<br /> @Html.TextArea("description", null, new { rows = 4, cols = 60 })
             <br />
-                
+            <br/>
+            Please confirm that you want to close this repair:
+            <br/>
             <select id="confirm" name="confirm">
+                <option value="" disabled selected hidden>Please Choose...</option>
                 <option value="close">Close this repair request</option>
                 <option value="nevermind">Nevermind, I have erred</option>
             </select>

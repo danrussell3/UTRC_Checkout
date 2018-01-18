@@ -9,12 +9,14 @@ using Check_Out_App_ULC.Controllers.Api;
 using Check_Out_App_ULC.Models;
 using System.Net.Mail;
 using System.Net;
+using System.Threading.Tasks;
+using System.Collections.Specialized;
 
 namespace Check_Out_App_ULC.App_Start
 {
     public class EmailJob : IJob
     {
-        public void Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
             // job details
             ReportController controller = new ReportController();
@@ -23,6 +25,7 @@ namespace Check_Out_App_ULC.App_Start
             controller.EmailEndOfDayReport();
             tb_LongtermWaitlistController wl = new tb_LongtermWaitlistController();
             wl.WaitlistStatusCheck();
+            await Task.FromResult(0);
         }
     }
 
@@ -30,7 +33,7 @@ namespace Check_Out_App_ULC.App_Start
     {
         private readonly Checkin_Checkout_Entities db = new Checkin_Checkout_Entities();
 
-        public void Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
             // job details
             SlingController sling = new SlingController();
@@ -52,15 +55,27 @@ namespace Check_Out_App_ULC.App_Start
                 db.tb_SlingCache.Add(slingEntry);
                 db.SaveChanges();
             }
+            await Task.FromResult(0);
         }
     }
 
     public class JobScheduler
     {
-        public static void Start()
+        public static async Task StartAsync()
         {
-            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
-            scheduler.Start();
+            // construct a scheduler factory
+            NameValueCollection props = new NameValueCollection
+            {
+                { "quartz.serializer.type", "binary" }
+            };
+            StdSchedulerFactory factory = new StdSchedulerFactory(props);
+
+            // get a scheduler
+            IScheduler scheduler = await factory.GetScheduler();
+            await scheduler.Start();
+
+            //IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+            //scheduler.Start();
 
             // email job settings
             IJobDetail job = JobBuilder.Create<EmailJob>()
@@ -86,15 +101,15 @@ namespace Check_Out_App_ULC.App_Start
                 .WithIdentity("trigger2", "group2")
                 .WithDailyTimeIntervalSchedule
                   (s =>
-                     s.WithIntervalInMinutes(15)
+                     s.WithIntervalInMinutes(10)
                     .OnEveryDay()
                     .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(07, 30))
                   )
                 .Build();
 
             // schedule the jobs
-            scheduler.ScheduleJob(job, trigger);
-            scheduler.ScheduleJob(slingJob, slingTrigger);
+            await scheduler.ScheduleJob(job, trigger);
+            await scheduler.ScheduleJob(slingJob, slingTrigger);
         }
     }
 }

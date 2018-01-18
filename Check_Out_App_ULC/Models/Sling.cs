@@ -10,13 +10,20 @@ using System.Web;
 using System.Web.Helpers;
 using Check_Out_App_ULC.Models;
 using Check_Out_App_ULC.Controllers.Api;
+using RestSharp;
 
 namespace Check_Out_App_ULC.Models
 {
 
     public class Sling
     {
-        public static readonly string apiKey = "e98f0ab7fac452dded22f6c01d493e73";
+        private const string apiKey = "55ea852eaad90741dbea036f4cd85e90";
+        private RestClient client;
+
+        public Sling()
+        {
+            client = new RestClient("https://api.sling.is/v1/");
+        }
 
         public class AccountLoginObject
         {
@@ -105,6 +112,7 @@ namespace Check_Out_App_ULC.Models
             using (Stream stream = webResponse.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                 resultString = reader.ReadToEnd();
+            
 
             if (!String.IsNullOrEmpty(resultString))
             {
@@ -127,11 +135,8 @@ namespace Check_Out_App_ULC.Models
 
                     articles.Add(article);
                 }
-
-                
-
                 return articles;
-}
+            }
             else throw new Exception("No response was received from the Sling API");
         }
 

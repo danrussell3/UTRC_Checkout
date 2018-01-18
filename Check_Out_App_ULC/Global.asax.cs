@@ -22,7 +22,7 @@ namespace Check_Out_App_ULC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             
-            JobScheduler.Start();
+            JobScheduler.StartAsync();
         }
 
         
