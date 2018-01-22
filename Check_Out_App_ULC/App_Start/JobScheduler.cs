@@ -78,17 +78,17 @@ namespace Check_Out_App_ULC.App_Start
             //scheduler.Start();
 
             // email job settings
-            IJobDetail job = JobBuilder.Create<EmailJob>()
+            IJobDetail emailJob = JobBuilder.Create<EmailJob>()
                 .WithIdentity("job1", "group1")
                 .Build();
 
-            ITrigger trigger = TriggerBuilder.Create()
+            ITrigger emailTrigger = TriggerBuilder.Create()
                 .WithIdentity("trigger1", "group1")
                 .WithDailyTimeIntervalSchedule
                   (s =>
                      s.WithIntervalInHours(24)
                     .OnEveryDay()
-                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(22, 15))
+                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(21, 15))
                   )
                 .Build();
 
@@ -103,12 +103,12 @@ namespace Check_Out_App_ULC.App_Start
                   (s =>
                      s.WithIntervalInMinutes(10)
                     .OnEveryDay()
-                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(07, 30))
+                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(07, 00))
                   )
                 .Build();
 
             // schedule the jobs
-            await scheduler.ScheduleJob(job, trigger);
+            await scheduler.ScheduleJob(emailJob, emailTrigger);
             await scheduler.ScheduleJob(slingJob, slingTrigger);
         }
     }

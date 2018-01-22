@@ -177,6 +177,16 @@ namespace Check_Out_App_ULC.Models
             public int pos { get; set; }
         }
 
+        public class CheckItemView
+        {
+            public bool state { get; set; }
+            public string idChecklist { get; set; }
+            public string id { get; set; }
+            public string name { get; set; }
+            public string nameData { get; set; }
+            public int pos { get; set; }
+        }
+
         /*
         public List<Board> GetBoardsList()
         {

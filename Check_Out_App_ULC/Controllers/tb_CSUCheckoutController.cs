@@ -405,28 +405,36 @@ namespace Check_Out_App_ULC.Controllers
         public bool? WaiverCheck(tb_CSUStudent tbs)
         {
             var v = db.tb_CSUStudent.FirstOrDefault(s => s.CSU_ID == tbs.CSU_ID);
-            // ping SmartWaiver API to verify signed waiver before continuing
-            var sw = smartwaiver.GetSignedWaivers(tbs.LAST_NAME);
-            foreach (var s in sw)
+
+            if (v.SIGNEDWAIVER == true)
             {
-                // check tags in each returned waiver for match with student id
-                foreach (var t in s.tags)
+                return v.SIGNEDWAIVER;
+            }
+            else
+            {
+                // ping SmartWaiver API to verify signed waiver before continuing
+                var sw = smartwaiver.GetSignedWaivers(tbs.LAST_NAME);
+                foreach (var s in sw)
                 {
-                    if (t == v.CSU_ID)
+                    // check tags in each returned waiver for match with student id
+                    foreach (var t in s.tags)
                     {
-                        // grab first photo in s.photos and cache in db
-                        if (s.photos.Count() > 0)
+                        if (t == v.CSU_ID)
                         {
-                            v.PHOTO = s.photos.ElementAt(0).photo;
+                            // grab first photo in s.photos and cache in db
+                            if (s.photos.Count() > 0)
+                            {
+                                v.PHOTO = s.photos.ElementAt(0).photo;
+                            }
+                            v.SIGNEDWAIVER = true;
+                            //email.WaiverEmail(v);
+                            db.Entry(v).State = EntityState.Modified;
+                            db.SaveChanges();
                         }
-                        v.SIGNEDWAIVER = true;
-                        email.WaiverEmail(v);
-                        db.Entry(v).State = EntityState.Modified;
-                        db.SaveChanges();
                     }
                 }
+                return v.SIGNEDWAIVER;
             }
-            return v.SIGNEDWAIVER;
         }
 
         //alter record for waiver signed

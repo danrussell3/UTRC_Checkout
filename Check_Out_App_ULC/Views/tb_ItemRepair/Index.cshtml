@@ -94,7 +94,7 @@
                                 @foreach (var i in item.Checklist)
                                 {
                                     <li>
-                                        @if (@i.state == "complete")
+                                        @if (@i.state == true)
                                         {
                                             <span class="glyphicon glyphicon-check"></span>
                                         }

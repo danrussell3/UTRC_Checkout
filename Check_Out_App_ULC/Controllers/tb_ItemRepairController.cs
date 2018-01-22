@@ -41,7 +41,29 @@ namespace Check_Out_App_ULC.Controllers
                     repair.ItemUpc = card.name;
                     repair.Comments = t.GetCardComments(card.id);
                     var checklists = t.GetChecklists(card.id);
-                    repair.Checklist = checklists.First().checkItems;
+                    //repair.Checklist = checklists.First().checkItems;
+
+                    var checklist = checklists.First().checkItems;
+                    repair.Checklist = new List<Models.Trello.CheckItemView>();
+                    foreach (var checkitem in checklist)
+                    {
+                        Trello.CheckItemView civ = new Models.Trello.CheckItemView();
+                        civ.id = checkitem.id;
+                        civ.name = checkitem.name;
+                        civ.nameData = checkitem.nameData;
+                        civ.pos = checkitem.pos;
+                        civ.idChecklist = checkitem.idChecklist;
+                        if (checkitem.state == "complete")
+                        {
+                            civ.state = true;
+                        }
+                        else
+                        {
+                            civ.state = false;
+                        }
+                        repair.Checklist.Add(civ);
+                    }
+
                     repair.RequestDate = checklists.First().name;
                     repair.DueDate = Convert.ToDateTime(card.due).Date;
                     foreach (var b in t.GetBoards())
@@ -132,7 +154,26 @@ namespace Check_Out_App_ULC.Controllers
                     item.ItemUpc = card.name;
                     item.Comments = t.GetCardComments(card.id);
                     var checklists = t.GetChecklists(card.id);
-                    item.Checklist = checklists.First().checkItems;
+                    var checklist = checklists.First().checkItems;
+                    item.Checklist = new List<Models.Trello.CheckItemView>();
+                    foreach (var checkitem in checklist)
+                    {
+                        Trello.CheckItemView civ = new Models.Trello.CheckItemView();
+                        civ.id = checkitem.id;
+                        civ.name = checkitem.name;
+                        civ.nameData = checkitem.nameData;
+                        civ.pos = checkitem.pos;
+                        civ.idChecklist = checkitem.idChecklist;
+                        if (checkitem.state == "complete")
+                        {
+                            civ.state = true;
+                        }
+                        else
+                        {
+                            civ.state = false;
+                        }
+                        item.Checklist.Add(civ);
+                    }
                     item.RequestDate = checklists.First().name;
                     item.DueDate = card.due;
                     foreach (var b in t.GetBoards())
@@ -178,6 +219,38 @@ namespace Check_Out_App_ULC.Controllers
                 TempData["message"] = "There was an error locating the repair history for Item #" + itemUpc + ". Please try again.";
                 return RedirectToAction("Index");
             }
+        }
+
+        public ActionResult UpdateChecklist(RepairStatusView repair, string upc)
+        {
+            Trello t = new Models.Trello();
+            var cards = t.GetCards(SessionVariables.CurrentLocation.ToString());
+            foreach (var card in cards)
+            {
+                if (card.name == upc)
+                {
+                    var checklists = t.GetChecklists(card.id);
+                    var checklist = checklists.First().checkItems;
+                    // check if checklist item was changed
+                    for (var i = 0; i < checklist.Count(); i++)
+                    {
+                        if ( (repair.Checklist[i].state == true && checklist[i].state == "incomplete") || (repair.Checklist[i].state == false && checklist[i].state == "complete") )
+                        {
+                            var newState = "incomplete";
+                            if (repair.Checklist[i].state == true)
+                            {
+                                newState = "complete";
+                            }
+                            var result = t.PutChangeChecklistItem(card.id, checklist[i].id, newState);
+                        }
+                    }
+
+                    
+                }
+            }
+
+
+            return RedirectToAction("Index");
         }
 
         // Marks any existing checklist items as complete, closes the due date, and marks the repair request as closed

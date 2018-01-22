@@ -179,7 +179,7 @@ namespace Check_Out_App_ULC.Models
             [Display(Name = "Comments", Prompt = "Comments", Description = "Comments")]
             public List<Trello.Comment> Comments { get; set; }
             [Display(Name = "Checklist", Prompt = "Checklist", Description = "Checklist")]
-            public List<Trello.CheckItem> Checklist { get; set; }
+            public List<Trello.CheckItemView> Checklist { get; set; }
         }
 
         #region Public Functions
