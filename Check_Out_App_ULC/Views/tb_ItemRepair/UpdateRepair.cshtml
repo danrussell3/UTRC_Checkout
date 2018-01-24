@@ -15,20 +15,65 @@
 
 <br/>
 
-<button class="accordion">&nbsp Update or make changes to the repair checklist</button>
+<button class="accordion">&nbsp Add new checklist items</button>
 <div class="panel">
-    <br/>
-    @using (Html.BeginForm("UpdateChecklist", "tb_ItemRepair", FormMethod.Post))
+    <br />
+    @if (Model.Checklist.Count() > 0)
     {
-        for (var i = 0; i < Model.Checklist.Count(); i++)
-        {
-            @Html.CheckBoxFor(m => m.Checklist[i].state)
-            @Html.DisplayFor(m => m.Checklist[i].name)
-            <br/>
-        }
-        <br/>
+        <ul style="list-style-type:none">
+            @foreach (var i in Model.Checklist)
+            {
+                <li>
+                    @if (@i.state == true)
+                    {
+                        <span class="glyphicon glyphicon-check"></span>
+                    }
+                    else
+                    {
+                        <span class="glyphicon glyphicon-unchecked"></span>
+                    }
+                    &nbsp @i.name
+                </li>
+            }
+        </ul>
+    }
+    <br/>
+    @using (Html.BeginForm("AddItemToChecklist", "tb_ItemRepair", FormMethod.Post))
+    {
+        <p>
+            Add an item to this checklist: <br/> @Html.TextArea("newCheckItem", null, new { rows = 1, cols = 50 })
+        </p>
         <input type="hidden" name="upc" value=@Model.ItemUpc />
         <input type="submit" value="Submit" />
+    }
+</div>
+
+<hr />
+
+<button class="accordion">&nbsp Mark checklist items as completed (or remove checklist items)</button>
+<div class="panel">
+    <br/>
+    @if(Model.Checklist.Count() > 0)
+    {
+        using (Html.BeginForm("UpdateChecklist", "tb_ItemRepair", FormMethod.Post))
+        {
+            for (var i = 0; i < Model.Checklist.Count(); i++)
+            {
+                @Html.CheckBoxFor(m => m.Checklist[i].state)
+                @Html.Raw("&nbsp")
+                @Html.DisplayFor(m => m.Checklist[i].name)
+                @Html.Raw("&nbsp&nbsp&nbsp")
+                @Html.DropDownListFor(model => model.Checklist[i].delete,
+                    new SelectList(new List<Object>{
+                        new { value = false , text = "Keep this item"  },
+                        new { value = true , text = "Remove item" }
+                    }, "value", "text", Model.Checklist[i].delete))
+                <br/>
+            }
+            <br/>
+            <input type="hidden" name="upc" value=@Model.ItemUpc />
+            <input type="submit" value="Submit" />
+        }
     }
 </div>
 

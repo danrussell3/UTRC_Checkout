@@ -221,6 +221,23 @@ namespace Check_Out_App_ULC.Controllers
             }
         }
 
+        public ActionResult AddItemToChecklist(string upc, string newCheckItem)
+        {
+            Trello t = new Models.Trello();
+            var cards = t.GetCards(SessionVariables.CurrentLocation.ToString());
+            foreach (var card in cards)
+            {
+                if (card.name == upc)
+                {
+                    var checklists = t.GetChecklists(card.id);
+                    //var checklist = checklists.First().checkItems;
+                    var result = t.PostCardChecklistItem(checklists.First().id, newCheckItem);
+                }
+            }
+
+            return RedirectToAction("UpdateRepair", new { upc = upc});
+        }
+
         public ActionResult UpdateChecklist(RepairStatusView repair, string upc)
         {
             Trello t = new Models.Trello();
@@ -242,6 +259,10 @@ namespace Check_Out_App_ULC.Controllers
                                 newState = "complete";
                             }
                             var result = t.PutChangeChecklistItem(card.id, checklist[i].id, newState);
+                        }
+                        if (repair.Checklist[i].delete == true)
+                        {
+                            t.DeleteChecklistItem(card.id, checklist[i].id);
                         }
                     }
 

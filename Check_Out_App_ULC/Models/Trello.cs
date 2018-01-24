@@ -185,6 +185,7 @@ namespace Check_Out_App_ULC.Models
             public string name { get; set; }
             public string nameData { get; set; }
             public int pos { get; set; }
+            public bool? delete { get; set; }
         }
 
         /*
@@ -447,6 +448,39 @@ namespace Check_Out_App_ULC.Models
             return itemState;
         }
 
+        // deletes a checklist item
+        public void DeleteChecklistItem(string cardId, string checkitemId)
+        {
+            string apiUrl = "cards/" + cardId + "/checkItem/" + checkitemId;
+            var request = new RestRequest(apiUrl, Method.DELETE);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // execute the request
+            var response = client.Execute(request);
+            var itemDetails = JObject.Parse(response.Content);
+        }
+
+        // deletes a checklist
+        public string DeleteChecklist(string cardId, string checklistId)
+        {
+            string apiUrl = "cards/" + cardId + "/checklists/" + checklistId;
+            var request = new RestRequest(apiUrl, Method.DELETE);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+
+            // execute the request
+            var response = client.Execute(request);
+            var itemDetails = JObject.Parse(response.Content);
+            var itemState = itemDetails["state"].ToString();
+
+            return itemState;
+        }
+
         public string PostBoard(string name, string desc = null, bool defaultLists = false)
         {
             string apiUrl = "boards/";
@@ -544,6 +578,24 @@ namespace Check_Out_App_ULC.Models
             var newChecklistId = jarray["id"].ToString();
 
             return newChecklistId;
+        }
+
+        public string PostCardChecklistItem(string checklistId, string name)
+        {
+            string apiUrl = "checklists/" + checklistId + "/checkItems";
+            var request = new RestRequest(apiUrl, Method.POST);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("name", name);
+
+            // execute the request
+            var response = client.Execute(request);
+            var jobject = JObject.Parse(response.Content);
+            var newChecklistItemId = jobject["id"].ToString();
+
+            return newChecklistItemId;
         }
 
         // for given location, this method checks the existing cards against the location's UPCs;
