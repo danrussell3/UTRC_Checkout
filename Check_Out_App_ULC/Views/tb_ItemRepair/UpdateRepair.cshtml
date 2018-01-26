@@ -98,6 +98,24 @@
 
 <hr />
 
+<button class="accordion">&nbsp Add an update comment to this repair</button>
+<div class="panel">
+    @using (Html.BeginForm("UpdateRepairAddComment", "tb_ItemRepair", FormMethod.Post))
+    {
+        <div style="text-align: center;">
+            <br />
+            <p>Add a new comment for this repair below:</p>
+            @Html.TextArea("newComment", null, new { rows = 4, cols = 60 })
+            <br /><br />
+            <input type="hidden" name="itemUpc" value=@Model.ItemUpc />
+            <input type="hidden" name="itemLoc" value=@Model.ItemLocation />
+            <input type="submit" value="Submit" />
+        </div>
+    }
+</div>
+
+<hr />
+
 <button class="accordion">&nbsp Close out this repair</button>
 <div class="panel">
     <br />

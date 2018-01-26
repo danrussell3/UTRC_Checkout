@@ -380,7 +380,7 @@ namespace Check_Out_App_ULC.Controllers
                 mailMessage.To.Add("jdruss@colostate.edu");
                 mailMessage.To.Add("mgbrake@colostate.edu");
                 mailMessage.To.Add("charbert@rams.colostate.edu");
-   
+                
             }
             
             // add subject

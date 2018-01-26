@@ -89,6 +89,7 @@ namespace Check_Out_App_ULC.App_Start
                      s.WithIntervalInHours(24)
                     .OnEveryDay()
                     .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(21, 15))
+                    .InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"))
                   )
                 .Build();
 
@@ -104,6 +105,7 @@ namespace Check_Out_App_ULC.App_Start
                      s.WithIntervalInMinutes(10)
                     .OnEveryDay()
                     .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(07, 00))
+                    .InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"))
                   )
                 .Build();
 

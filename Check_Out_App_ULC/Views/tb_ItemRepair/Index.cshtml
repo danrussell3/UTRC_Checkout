@@ -87,10 +87,17 @@
                             @Html.DisplayFor(modelItem => item.DueDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Comments)
+                            <ul style="list-style-type:none; padding-left: 0;">
+                                @foreach (var i in item.Comments)
+                                {
+                                    <li>
+                                        <p><span class="glyphicon glyphicon-comment"></span> &nbsp @i.text </p>
+                                    </li>
+                                }
+                            </ul>
                         </td>
                         <td>
-                            <ul style="list-style-type:none">
+                            <ul style="list-style-type:none; padding-left: 0;">
                                 @foreach (var i in item.Checklist)
                                 {
                                     <li>

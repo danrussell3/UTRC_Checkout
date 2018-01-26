@@ -188,33 +188,6 @@ namespace Check_Out_App_ULC.Models
             public bool? delete { get; set; }
         }
 
-        /*
-        public List<Board> GetBoardsList()
-        {
-            string apiUrl = "members/" + sharedUserId + "/boards";
-            var request = new RestRequest(apiUrl, Method.GET);
-
-            // add required parameters
-            request.AddParameter("key", apiKey);
-            request.AddParameter("token", apiToken);
-
-            // execute the request
-            var response = client.Execute(request);
-
-            // parse the response
-            var jarray = JArray.Parse(response.Content);
-            List<Board> boardList = new List<Board>();
-            foreach (var brd in jarray)
-            {
-                Board b = new Board();
-                b.name = brd["name"].ToString();
-                b.id = brd["id"].ToString();
-                boardList.Add(b);
-            }
-            return boardList;
-        }
-        */
-
         public List<Board> GetBoards()
         {
             string apiUrl = "members/" + sharedUserId + "/boards";
@@ -420,6 +393,25 @@ namespace Check_Out_App_ULC.Models
             request.AddParameter("key", apiKey);
             request.AddParameter("token", apiToken);
             request.AddParameter("dueComplete", "true");
+
+            // execute the request
+            var response = client.Execute(request);
+            var cardDetails = JObject.Parse(response.Content);
+            var completeStatus = cardDetails["dueComplete"].ToString();
+
+            return completeStatus;
+        }
+
+        // sets due date for card as open (due date of repair)
+        public string PutOpenDueDate(string id)
+        {
+            string apiUrl = "cards/" + id;
+            var request = new RestRequest(apiUrl, Method.PUT);
+
+            // add required parameters
+            request.AddParameter("key", apiKey);
+            request.AddParameter("token", apiToken);
+            request.AddParameter("dueComplete", "false");
 
             // execute the request
             var response = client.Execute(request);

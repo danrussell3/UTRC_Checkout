@@ -39,11 +39,11 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     RepairStatusView repair = new RepairStatusView();
                     repair.ItemUpc = card.name;
-                    repair.Comments = t.GetCardComments(card.id);
+                    
                     var checklists = t.GetChecklists(card.id);
                     //repair.Checklist = checklists.First().checkItems;
 
-                    var checklist = checklists.First().checkItems;
+                    var checklist = checklists.Last().checkItems;
                     repair.Checklist = new List<Models.Trello.CheckItemView>();
                     foreach (var checkitem in checklist)
                     {
@@ -64,7 +64,7 @@ namespace Check_Out_App_ULC.Controllers
                         repair.Checklist.Add(civ);
                     }
 
-                    repair.RequestDate = checklists.First().name;
+                    repair.RequestDate = checklists.Last().name;
                     repair.DueDate = Convert.ToDateTime(card.due).Date;
                     foreach (var b in t.GetBoards())
                     {
@@ -73,6 +73,20 @@ namespace Check_Out_App_ULC.Controllers
                             repair.ItemLocation = b.name;
                         }
                     }
+
+                    var comments = t.GetCardComments(card.id);
+                    if (repair.Comments == null)
+                    {
+                        repair.Comments = new List<Models.Trello.Comment>();
+                    }
+                    foreach (var comment in comments)
+                    {
+                        if (Convert.ToDateTime(repair.RequestDate) <= Convert.ToDateTime(comment.date) && !comment.text.StartsWith("CLOSED"))
+                        {
+                            repair.Comments.Add(comment);
+                        }
+                    }
+
                     view.Add(repair);
                 }
             }
@@ -112,15 +126,24 @@ namespace Check_Out_App_ULC.Controllers
             {
                 var user = db.tb_CSULabTechs.FirstOrDefault(m => m.ENAME == SessionVariables.CurrentUserId);
                 // submit request by creating a new checklist on the card and adding the description as a comment
-                description = description + "  -- Posted by: " + user.First_Name + " " + user.Last_Name + "(" + DateTime.Now.ToString() + ")";
+                description = description + "  -- Posted by: " + user.First_Name + " " + user.Last_Name + " (" + DateTime.Now.ToString() + ")";
                 var commentId = t.PostCardComment(cardId, description);
                 var checklistId = t.PostCardChecklist(cardId, DateTime.Now.ToString());
 
-                // convert the string to a DateTimeOffset type
-                DateTime newDate = Convert.ToDateTime(duedate).Date;
+                DateTime newDate;
+                if (duedate == "")
+                {
+                    newDate = DateTime.Now.Date.AddDays(14);
+                }
+                else
+                {
+                    newDate = Convert.ToDateTime(duedate).Date;
+                }
 
                 string newDueDate = t.PutNewDueDate(cardId, newDate);
-                // TO DO: add checklist items
+                string checkItem1 = t.PostCardChecklistItem(checklistId, "Diagnose");
+                string checkItem2 = t.PostCardChecklistItem(checklistId, "Resolve issue");
+                var dueDateOpened = t.PutOpenDueDate(cardId);
 
 
                 if (commentId != null && checklistId != null && newDueDate != null) // id's were returned, so success
@@ -154,7 +177,7 @@ namespace Check_Out_App_ULC.Controllers
                     item.ItemUpc = card.name;
                     item.Comments = t.GetCardComments(card.id);
                     var checklists = t.GetChecklists(card.id);
-                    var checklist = checklists.First().checkItems;
+                    var checklist = checklists.Last().checkItems;
                     item.Checklist = new List<Models.Trello.CheckItemView>();
                     foreach (var checkitem in checklist)
                     {
@@ -174,7 +197,7 @@ namespace Check_Out_App_ULC.Controllers
                         }
                         item.Checklist.Add(civ);
                     }
-                    item.RequestDate = checklists.First().name;
+                    item.RequestDate = checklists.Last().name;
                     item.DueDate = card.due;
                     foreach (var b in t.GetBoards())
                     {
@@ -221,6 +244,37 @@ namespace Check_Out_App_ULC.Controllers
             }
         }
 
+        // updates the due date on an open repair
+        public ActionResult UpdateRepairAddComment(string itemUpc, string itemLoc, string newComment)
+        {
+            Trello t = new Models.Trello();
+            var cards = t.GetCards(itemLoc);
+            string cardId = null;
+            foreach (var card in cards)
+            {
+                if (card.name == itemUpc)
+                {
+                    cardId = card.id;
+                    continue;
+                }
+            }
+
+            if (cardId != null)
+            {
+                var user = db.tb_CSULabTechs.FirstOrDefault(m => m.ENAME == SessionVariables.CurrentUserId);
+                newComment = newComment + "  -- Posted by: " + user.First_Name + " " + user.Last_Name + " (" + DateTime.Now.ToString() + ")";
+                var date = t.PostCardComment(cardId, newComment);
+
+                TempData["message"] = "Added new comment for Item #" + itemUpc + ".";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["message"] = "There was an error locating the repair history for Item #" + itemUpc + ". Please try again.";
+                return RedirectToAction("Index");
+            }
+        }
+
         public ActionResult AddItemToChecklist(string upc, string newCheckItem)
         {
             Trello t = new Models.Trello();
@@ -231,7 +285,7 @@ namespace Check_Out_App_ULC.Controllers
                 {
                     var checklists = t.GetChecklists(card.id);
                     //var checklist = checklists.First().checkItems;
-                    var result = t.PostCardChecklistItem(checklists.First().id, newCheckItem);
+                    var result = t.PostCardChecklistItem(checklists.Last().id, newCheckItem);
                 }
             }
 
@@ -247,7 +301,7 @@ namespace Check_Out_App_ULC.Controllers
                 if (card.name == upc)
                 {
                     var checklists = t.GetChecklists(card.id);
-                    var checklist = checklists.First().checkItems;
+                    var checklist = checklists.Last().checkItems;
                     // check if checklist item was changed
                     for (var i = 0; i < checklist.Count(); i++)
                     {
@@ -309,7 +363,7 @@ namespace Check_Out_App_ULC.Controllers
                 
                 // retrieves the checklist and close any open checklist items
                 var checklists = t.GetChecklists(cardId);
-                var checklistId = checklists.First().id;
+                var checklistId = checklists.Last().id;
                 List<Trello.CheckItem> checklistItems = t.GetChecklistItems(checklistId);
                 foreach (var item in checklistItems)
                 {
@@ -317,7 +371,7 @@ namespace Check_Out_App_ULC.Controllers
                 }
 
                 // post the close note as a comment
-                description = description + "  -- Posted by: " + user.First_Name + " " + user.Last_Name + "(" + DateTime.Now.ToString() + ")";
+                description = "CLOSED --> " + description + "  -- Posted by: " + user.First_Name + " " + user.Last_Name + "(" + DateTime.Now.ToString() + ")";
                 var commentId = t.PostCardComment(cardId, description);
                 
                 // mark the due date as complete

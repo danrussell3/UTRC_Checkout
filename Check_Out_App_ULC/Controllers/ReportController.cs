@@ -173,10 +173,78 @@ namespace Check_Out_App_ULC.Controllers
             }
             Sb.Append("<tr> <tbody> </table>");
 
+            // retrieve open repairs and recently completed repairs
+            Trello t = new Trello();
+            var cards = t.GetCards("notset");
+            List<Trello.Card> openRepairs = new List<Trello.Card>();
+            List<Trello.Card> recentlyClosedRepairs = new List<Trello.Card>();
+            foreach (var card in cards)
+            {
+                if (card.dueComplete == false && card.due != null && !card.name.StartsWith("test"))
+                {
+                    openRepairs.Add(card);
+                }
+                else if (card.dueComplete == true && (DateTime.Now < Convert.ToDateTime(card.dateLastActivity).AddHours(24)) && !card.name.StartsWith("test"))
+                {
+                    recentlyClosedRepairs.Add(card);
+                }
+            }
+
+            // add open repairs to report
+            Sb.Append("<h1> Open Repairs </h1><table border='1px' WIDTH='50%' CELLPADDING='4' CELLSPACING='3'> <thead> <tr> <th>Item UPC</th>" + "<th>Repair Request Date</th>" +
+                      "<th>Issue</th>" + "<th>Location</th>" + " <th>Due Date</th> </tr> </thead> <tbody> ");
+            foreach (var repair in openRepairs)
+            {
+                var requestDate = t.GetChecklists(repair.id).First().name;
+                var comments = t.GetCardComments(repair.id);
+                string issue = "";
+                foreach (var comment in comments)
+                {
+                    if (Convert.ToDateTime(requestDate) <= Convert.ToDateTime(comment.date))
+                    {
+                        issue += "<p>" + comment.text + "</p>";
+                    }
+                }
+                var location = t.GetBoards().Where(m => m.id == repair.idBoard).FirstOrDefault().name;
+                var due = Convert.ToDateTime(repair.due).Date;
+                var row = "<tr><td>" + repair.name + " </td><td> " + requestDate + "</td><td>" + issue + " </td><td> " + location + "</td><td>" + due.ToString() + "</td></tr> ";
+                Sb.Append(row);
+            }
+            Sb.Append("<tr> <tbody> </table>");
+            if (openRepairs.Count() == 0)
+            {
+                Sb.Append("<p>There are no open repairs.</p>");
+            }
+
+            // add recently closed repairs to report
+            Sb.Append("<h1> Completed Repairs </h1><table border='1px' WIDTH='50%' CELLPADDING='4' CELLSPACING='3'> <thead> <tr> <th>Item UPC</th>" + "<th>Repair Request Date</th>" +
+                      "<th>Issue</th>" + "<th>Location</th>" + "</tr> </thead> <tbody> ");
+            foreach (var repair in recentlyClosedRepairs)
+            {
+                var requestDate = t.GetChecklists(repair.id).First().name;
+                var comments = t.GetCardComments(repair.id);
+                string issue = "";
+                foreach (var comment in comments)
+                {
+                    if (Convert.ToDateTime(requestDate) <= Convert.ToDateTime(comment.date))
+                    {
+                        issue += "<p>" + comment.text + "</p>";
+                    }
+                }
+                var location = t.GetBoards().Where(m => m.id == repair.idBoard).FirstOrDefault().name;
+                var row = "<tr><td>" + repair.name + " </td><td> " + requestDate + "</td><td>" + issue + " </td><td> " + location + "</td></tr> ";
+                Sb.Append(row);
+            }
+            Sb.Append("<tr> <tbody> </table>");
+            if (recentlyClosedRepairs.Count() == 0)
+            {
+                Sb.Append("<p>There were no repairs closed today.</p>");
+            }
+
             // convert StringBuilder to string
             var compiledReport = Sb.ToString();
 
-            // email compiled report to management (will be routed to current user's email if isTest==true)
+            // email compiled report to management (note: will be routed to current user's email if isTest==true)
             email.EndOfDayReport(compiledReport, isTest);
             
             ViewBag.Message = "Email Sent!";
