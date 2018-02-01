@@ -24,7 +24,6 @@ namespace Check_Out_App_ULC.Controllers
 
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -126,17 +125,31 @@ namespace Check_Out_App_ULC.Controllers
             var checkoutRecords = db.tb_CSUCheckoutCheckin.Where(m => m.CheckinDate == null && m.isLongterm != true);
             var longtermRecords = db.tb_CSUCheckoutCheckin.Where(m => m.CheckinDate == null && m.isLongterm == true);
 
+            var lscUniqueIds = new List<string>();
+            foreach (var rec in lscCheckouts)
+            {
+                if (!lscUniqueIds.Contains(rec.CSU_IDFK))
+                {
+                    lscUniqueIds.Add(rec.CSU_IDFK);
+                }
+            }
+            var bsbUniqueIds = new List<string>();
+            foreach (var rec in bsbCheckouts)
+            {
+                if (!bsbUniqueIds.Contains(rec.CSU_IDFK))
+                {
+                    bsbUniqueIds.Add(rec.CSU_IDFK);
+                }
+            }
+
             Sb.Append("</div><div><h3> # of Checkouts </h3>" +
-                      "<li>LSC Checkouts: " + lscCheckouts.Count() + "</li>" +
-                      "<li>BSB Checkouts: " + bsbCheckouts.Count() + "</li>");
-
-
+                      "<li>LSC Total Checkouts: " + lscCheckouts.Count() + " (" + lscUniqueIds.Count() + " unique students)</li>" +
+                      "<li>BSB Total Checkouts: " + bsbCheckouts.Count() + " (" + bsbUniqueIds.Count() + " unique students)</li>");
 
             // create html table of items not checked in when report is run, filter by location and longterm
             Sb.Append("<h1>LSC Items not returned </h1><table border='1px' WIDTH='50%'   CELLPADDING='4' CELLSPACING='3' bordercolor='red'> <thead> <tr> <th>First Name</th>" + "<th>Last Name</th>" + "<th>CSU ID</th>" + "<th>Item</th>" + "<th>Checkout Date</th><th>Due Date</th> </tr> </thead> <tbody>");
             foreach (var rec in checkoutRecords.Where(m => m.CheckoutLocationFK == "LSC"))
             {
-
                 CsuStudent = db.tb_CSUStudent.FirstOrDefault(m => m.CSU_ID == rec.CSU_IDFK);
 
                 if (CsuStudent == null) continue;
@@ -158,7 +171,6 @@ namespace Check_Out_App_ULC.Controllers
                 Sb.Append(name);
             }
             Sb.Append("<tr> <tbody> </table>");
-
 
             Sb.Append("<h1> Items in Longterm </h1><table border='1px' WIDTH='50%' CELLPADDING='4' CELLSPACING='3'> <thead> <tr> <th>First Name</th>" + "<th>Last Name</th>" +
                       "<th>CSU ID</th>" + "<th>Item</th>" + "<th>Checkout Date</th> <th>Due Date</th> </tr> </thead> <tbody> ");
